@@ -1,0 +1,54 @@
+/* 在全局CSS里引用: */
+
+/* 滚动条宽度 */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+/* 滚动条的滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: #a1a3a9;
+  border-radius: 3px;
+}
+
+/* 有时，一些区域可能不显示滚动条： */
+
+/* div::-webkit-scrollbar {
+ width: 0;
+ } */
+@media only screen and (min-width: 320px) {
+  html {
+    font-size: 475% !important;
+  }
+}
+
+@media only screen and (min-width: 480px) {
+  html {
+    font-size: 475% !important;
+  }
+}
+
+@media only screen and (min-width: 640px) {
+  html {
+    font-size: 500% !important;
+  }
+}
+
+@media only screen and (min-width: 750px) {
+  html {
+    font-size: 525% !important;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  html {
+    font-size: 575% !important;
+  }
+}
+
+@media only screen and (min-width: 1242px) {
+  html {
+    font-size: 625% !important;
+  }
+}
