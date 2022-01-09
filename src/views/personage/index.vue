@@ -1,0 +1,113 @@
+<!--  -->
+<template>
+  <div class="home">
+    <a-card
+      :loading="loading"
+      style="width: 25%;"
+    >
+      <Infos />
+    </a-card>
+    <a-card
+      :loading="loading"
+      style="width: 75%;margin-left: 24px;"
+      :tab-list="tabListNoTitle"
+      :active-tab-key="noTitleKey"
+      @tab-change="(key) => onTabChange(key, 'noTitleKey')"
+    >
+      <div
+        v-if="noTitleKey === 'article'"
+        class="content"
+      >
+        <RecordList />
+      </div>
+      <div v-else-if="noTitleKey === 'app'">
+        <CardItem>
+          <div class="item-content">
+            <div class="title">
+              创造力测评
+            </div>
+            <div class="des">
+              <div class="">
+                测评次数：
+              </div>
+              <div class="">
+                1次
+              </div>
+            </div>
+            <div class="info">
+              <div class="num">
+                开始时间：
+              </div>
+              <div class="imgs">
+                2022.03.03 16:30
+              </div>
+            </div>
+          </div>
+        </CardItem>
+      </div>
+    </a-card>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
+import CardItem from '@/components/card-item/index.vue'
+import RecordList from '@/components/record-list/index.vue'
+import Infos from './components/Infos.vue'
+const loading = ref<boolean>(true)
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 3000)
+})
+const tabListNoTitle = [
+  {
+    key: 'article',
+    tab: '测评人数'
+  },
+  {
+    key: 'app',
+    tab: '访问量'
+  }
+]
+const key = ref('tab1')
+const noTitleKey = ref('article')
+const onTabChange = (value: string, type: string) => {
+  console.log(value, type)
+  if (type === 'key') {
+    key.value = value
+  } else if (type === 'noTitleKey') {
+    noTitleKey.value = value
+  }
+}
+</script>
+<style lang="scss" scoped>
+@import "@/assets/css/mixin";
+.home {
+  display: flex;
+  margin: 24px;
+  .item-content {
+    padding: 12px 24px 12px 24px;
+    .title {
+      font-weight: bold;
+      @include sc(0.17rem, rgba(0, 0, 0, 0.85));
+    }
+    .des {
+      @include faj();
+      margin-top: 15px;
+      @include sc(0.14rem, rgba(0, 0, 0, 0.45));
+    }
+    .info {
+      @include faj();
+      margin-top: 10px;
+      .num {
+        @include sc(0.12rem, rgba(0, 0, 0, 0.45));
+      }
+      .imgs {
+        display: flex;
+        color: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+}
+</style>

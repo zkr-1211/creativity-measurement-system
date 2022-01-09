@@ -12,20 +12,26 @@
           >
         </div>
       </div>
-      <div class="evaluation-num">
-        <count-to
-          :start-val="0"
-          :end-val="2017"
-          :duration="3000"
-        />
-      </div>
-      <div class="slot">
-        <slot />
-      </div>
-      <div class="evaluation-bottom">
-        日均测评数：
-        <span>123123</span>
-      </div>
+
+      <a-skeleton
+        active
+        :loading="loading"
+      >
+        <div class="evaluation-num">
+          <count-to
+            :start-val="0"
+            :end-val="2017"
+            :duration="3000"
+          />
+        </div>
+        <div class="slot">
+          <slot />
+        </div>
+        <div class="evaluation-bottom">
+          日均测评数：
+          <span>123123</span>
+        </div>
+      </a-skeleton>
     </div>
   </div>
 </template>
@@ -33,23 +39,26 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted, defineComponent } from 'vue'
 import CountTo from '@/components/vue-count-to/index.vue'
-export default defineComponent(
-  {
-    name: 'EvaluationCard',
-    components: {
-      CountTo
-    },
-    setup() {
-      const data = reactive({})
-      onMounted(() => {})
-      const refData = toRefs(data)
-      return {
-        ...refData
-      }
+export default defineComponent({
+  name: 'EvaluationCard',
+  components: {
+    CountTo
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      default: true
+    }
+  },
+  setup() {
+    const data = reactive({})
+    onMounted(() => {})
+    const refData = toRefs(data)
+    return {
+      ...refData
     }
   }
-)
-
+})
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

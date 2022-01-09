@@ -2,7 +2,7 @@
 <template>
   <div class="body">
     <div class="top-total">
-      <evaluation-card>
+      <evaluation-card :loading="loading">
         <div class="link-relative-ratio">
           <div class="relative-ratio">
             周同比
@@ -17,15 +17,24 @@
         </div>
       </evaluation-card>
       <!--  -->
-      <evaluation-card style="margin-left:30px">
+      <evaluation-card
+        style="margin-left:30px"
+        :loading="loading"
+      >
         <chart-line1 />
       </evaluation-card>
       <!--  -->
-      <evaluation-card style="margin-left:30px">
+      <evaluation-card
+        style="margin-left:30px"
+        :loading="loading"
+      >
         <chart-line2 />
       </evaluation-card>
       <!--  -->
-      <evaluation-card style="margin-left:30px">
+      <evaluation-card
+        style="margin-left:30px"
+        :loading="loading"
+      >
         <div class="progress">
           <a-progress
             :percent="50"
@@ -38,20 +47,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
 import ChartLine1 from '@/components/chart-lint1/index.vue'
 import ChartLine2 from '@/components/chart-lint2/index.vue'
-import EvaluationCard from '@/views/home-page/components/EvaluationCard.vue'
+import EvaluationCard from '@/views/home/components/EvaluationCard.vue'
 
-export default defineComponent({
-  name: 'FourItemCard',
-  components: { EvaluationCard, CaretUpOutlined, CaretDownOutlined, ChartLine1, ChartLine2 },
-  setup() {
-    onMounted(() => {})
-    return {}
-  }
+const loading = ref<boolean>(true)
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 3000)
 })
 </script>
 <style lang="scss" scoped>

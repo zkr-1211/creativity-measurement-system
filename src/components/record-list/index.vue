@@ -41,7 +41,6 @@ export default defineComponent({
 .eva-record {
   padding-left: 10px;
   overflow: auto;
-  height: 650px;
   width: 100%;
   .eva-record-item {
     display: flex;
@@ -49,6 +48,7 @@ export default defineComponent({
     border-bottom: 1px solid #e9e9e9;
     padding: 10px;
     .header {
+      min-width: 32px;
       @include wh(32px, 32px);
       background: rgba(0, 0, 0, 1);
       border-radius: 50%;

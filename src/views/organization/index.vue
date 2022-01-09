@@ -41,6 +41,10 @@
           </div>
         </div>
       </div>
+      <i />
+      <i />
+      <i />
+      <i />
     </div>
   </div>
 </template>
@@ -64,12 +68,13 @@ export default defineComponent({
 @import "@/assets/css/mixin";
 .body {
   .content-card {
-        margin: 24px;
-
-    display: grid;
+    margin: 24px;
+    display: flex;
     justify-content: space-between;
-    grid-template-columns: repeat(auto-fill, 3.78rem);
-    grid-gap: 32px;
+    flex-wrap: wrap;
+    .content-card > i {
+      width: 3.58rem;
+    }
     .add-org {
       cursor: pointer;
       @include wh(3.78rem, 1.84rem);
@@ -80,7 +85,11 @@ export default defineComponent({
       line-height: 1.84rem;
       text-align: center;
     }
+
     .content-item {
+      margin-bottom: 25px;
+      min-width: 3.58rem;
+      width: 3.78rem;
       height: 1.84rem;
       background: #ffffff;
       border: 1px solid #e9e9e9;

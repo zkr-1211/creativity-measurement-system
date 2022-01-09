@@ -24,6 +24,8 @@ import {
   Form,
   Collapse,
   Modal,
+  Skeleton,
+  Card,
   message
 } from 'ant-design-vue'
 
@@ -53,6 +55,8 @@ const plugins = [
   Form,
   Collapse,
   Modal,
+  Skeleton,
+  Card,
   message
 ]
 

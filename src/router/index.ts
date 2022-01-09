@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { useStore } from '@/store'
+import { AppRouteRecordRaw } from '@/types'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -13,7 +14,7 @@ const routes = [
       {
         path: '/homepage',
         name: 'HomePage',
-        component: () => import(/* webpackChunkName: "homepage" */ '@/views/home-page/index.vue'),
+        component: () => import(/* webpackChunkName: "homepage" */ '@/views/home/index.vue'),
         meta: {
           keepAlive: true
         }
@@ -21,7 +22,7 @@ const routes = [
       {
         path: '/evaluation/allevaluation',
         name: 'AllEvaluation',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation-manage/AllEvaluation.vue'),
+        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/AllEvaluation.vue'),
         meta: {
           keepAlive: true
         }
@@ -29,7 +30,7 @@ const routes = [
       {
         path: '/evaluation/design',
         name: 'EvaluationManage',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation-manage/EvaluationDesign.vue'),
+        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDesign.vue'),
         meta: {
           keepAlive: true
         }
@@ -37,7 +38,7 @@ const routes = [
       {
         path: '/evaluation/evaluationset',
         name: 'evaluationset',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation-manage/EvaluationSet.vue'),
+        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationSet.vue'),
         meta: {
           keepAlive: true
         }
@@ -45,7 +46,7 @@ const routes = [
       {
         path: '/evaluation/model-dimension-edit',
         name: 'ModelDimensionEdit',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation-manage/ModelDimensionEdit.vue'),
+        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/ModelDimensionEdit.vue'),
         meta: {
           keepAlive: true
         }
@@ -53,7 +54,7 @@ const routes = [
       {
         path: '/detailpage',
         name: 'detailPage',
-        component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail-page/index.vue'),
+        component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
         meta: {
           keepAlive: true
         }
@@ -85,7 +86,7 @@ const routes = [
       {
         path: '/listpage/searchtable',
         name: 'SearchTable',
-        component: () => import(/* webpackChunkName: "listpage" */ '@/views/list-page/SearchTable.vue'),
+        component: () => import(/* webpackChunkName: "listpage" */ '@/views/list/SearchTable.vue'),
         meta: {
           keepAlive: true
         }
@@ -93,7 +94,7 @@ const routes = [
       {
         path: '/personage-page',
         name: 'personagePage',
-        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage-page/index.vue'),
+        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/index.vue'),
         meta: {
           keepAlive: true
         }
@@ -101,7 +102,7 @@ const routes = [
       {
         path: '/personage-set',
         name: 'personageSet',
-        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage-page/personageSet.vue'),
+        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/personageSet.vue'),
         meta: {
           keepAlive: true
         }
@@ -109,7 +110,7 @@ const routes = [
       {
         path: '/personnelmanage/administrator',
         name: 'Administrator',
-        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel-manage/Administrator.vue'),
+        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Administrator.vue'),
         meta: {
           keepAlive: true
         }
@@ -117,7 +118,7 @@ const routes = [
       {
         path: '/instrument-board/workbench',
         name: 'WorkBench',
-        component: () => import(/* webpackChunkName: "instrumentBoard" */ '@/views/instrument-board/WorkBench.vue'),
+        component: () => import(/* webpackChunkName: "instrumentBoard" */ '@/views/instrument/WorkBench.vue'),
         meta: {
           keepAlive: true
         }
