@@ -16,7 +16,8 @@ const routes = [
         name: 'HomePage',
         component: () => import(/* webpackChunkName: "homepage" */ '@/views/home/index.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '首页'
         }
       },
       {
@@ -24,7 +25,8 @@ const routes = [
         name: 'AllEvaluation',
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/AllEvaluation.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '全部测评'
         }
       },
       {
@@ -32,7 +34,9 @@ const routes = [
         name: 'EvaluationManage',
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDesign.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          isCache: false, // 是否缓存
+          title: '测评设计'
         }
       },
       {
@@ -40,7 +44,9 @@ const routes = [
         name: 'evaluationset',
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationSet.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '测评设置'
+
         }
       },
       {
@@ -48,7 +54,9 @@ const routes = [
         name: 'ModelDimensionEdit',
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/ModelDimensionEdit.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '测评设置'
+
         }
       },
       {
@@ -56,7 +64,8 @@ const routes = [
         name: 'detailPage',
         component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '详情页'
         }
       },
       {
@@ -64,7 +73,9 @@ const routes = [
         name: 'organization',
         component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/index.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '机构'
+
         }
       },
       {
@@ -72,7 +83,8 @@ const routes = [
         name: 'AddOrganization',
         component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/AddOrganization.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '添加机构'
         }
       },
       {
@@ -80,7 +92,8 @@ const routes = [
         name: 'OrganizationDetail',
         component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/OrganizationDetail.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '机构详情'
         }
       },
       {
@@ -96,7 +109,8 @@ const routes = [
         name: 'personagePage',
         component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/index.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '测评师'
         }
       },
       {
@@ -104,7 +118,8 @@ const routes = [
         name: 'personageSet',
         component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/personageSet.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '个人页设置'
         }
       },
       {
@@ -112,7 +127,8 @@ const routes = [
         name: 'Administrator',
         component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Administrator.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '管理员'
         }
       },
       {
@@ -120,7 +136,8 @@ const routes = [
         name: 'WorkBench',
         component: () => import(/* webpackChunkName: "instrumentBoard" */ '@/views/instrument/WorkBench.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '工作台'
         }
       }
     ]

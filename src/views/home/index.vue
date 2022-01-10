@@ -1,16 +1,20 @@
 <template>
   <div class="home">
     <!-- 第一部分 -->
-    <FourItemCard />
+    <FourItemCard class="animated fadeInUpBig" />
     <!-- 第二部分 -->
-    <tendency-run />
+    <tendency-run class="animated fadeInUpBig delay-1s" />
     <!-- 第三部分 -->
-    <div class="run-list">
+    <div
+      class="run-list animated fadeInUpBig delay-2s"
+    >
       <ParticipationRun />
       <InstitutionOpenProject />
     </div>
     <!-- 第四部分 -->
-    <div class="view-list">
+    <div
+      class="view-list animated fadeInUpBig delay-3s"
+    >
       <ReviewList />
       <ReviewList style="margin-left: 24px;" />
     </div>

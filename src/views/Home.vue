@@ -1,3 +1,4 @@
+/* eslint-disable vue/v-on-event-hyphenation */
 <template>
   <div id="components-layout-demo-basic">
     <a-layout>
@@ -14,8 +15,9 @@
             v-model:selectedKeys="selectedKeys"
             mode="inline"
             :theme="theme"
+            @open-change="onOpenChange"
           >
-            <a-menu-item key="1">
+            <a-menu-item key="HomePage">
               <template #icon>
                 <MailOutlined />
               </template>
@@ -31,18 +33,18 @@
               <template #title>
                 测评管理
               </template>
-              <a-menu-item key="2">
+              <a-menu-item key="AllEvaluation">
                 <router-link to="/evaluation/allevaluation">
                   全部测评
                 </router-link>
               </a-menu-item>
-              <a-menu-item key="3">
+              <a-menu-item key="EvaluationManage">
                 <router-link to="/evaluation/design">
                   测评设计
                 </router-link>
               </a-menu-item>
             </a-sub-menu>
-            <a-menu-item key="4">
+            <a-menu-item key="organization">
               <template #icon>
                 <CalendarOutlined />
               </template>
@@ -61,19 +63,19 @@
                 Option 7
               </a-menu-item>
             </a-sub-menu>
-            <a-sub-menu key="sub3">
+            <a-sub-menu key="sub4">
               <template #icon>
                 <SettingOutlined />
               </template>
               <template #title>
                 人员管理
               </template>
-              <a-menu-item key="8">
+              <a-menu-item key="Administrator">
                 <router-link to="/personnelmanage/administrator">
                   管理员
                 </router-link>
               </a-menu-item>
-              <a-menu-item key="9">
+              <a-menu-item key="personagePage">
                 <router-link to="/personage-page">
                   测评师
                 </router-link>
@@ -90,6 +92,7 @@
             style="width: 256px"
             :mode="mode"
             :theme="theme"
+            @openChange="onOpenChange"
           >
             <a-sub-menu key="sub1">
               <template #icon>
@@ -198,42 +201,21 @@
       <!-- 右半部分 -->
       <a-layout>
         <!-- 头部 -->
-        <a-layout-header>
-          <div class="header">
-            <div class="user">
-              <div class="user-serach">
-                <img
-                  src=""
-                  alt=""
-                >
-              </div>
-              <div class="user-message">
-                <img
-                  src=""
-                  alt=""
-                >
-              </div>
-              <div class="user-info">
-                <div class="user-header">
-                  <img
-                    src=""
-                    alt=""
-                  >
-                </div>
-                <div class="user-name">
-                  用户名
-                </div>
-              </div>
-              <div class="user-state" />
-            </div>
-          </div>
-        </a-layout-header>
+        <Header />
         <!-- 内容部分 -->
         <a-layout-content>
+          <div class="Tabs">
+            <Tabs />
+          </div>
           <div class="content">
             <router-view v-slot="{ Component }">
               <keep-alive>
-                <component :is="Component" />
+                <transition
+                  name="scale"
+                  mode="out-in"
+                >
+                  <component :is="Component" />
+                </transition>
               </keep-alive>
             </router-view>
           </div>
@@ -244,29 +226,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, watch } from 'vue'
 import {
   MailOutlined,
   CalendarOutlined,
   AppstoreOutlined,
   SettingOutlined
 } from '@ant-design/icons-vue'
+import { useRoute } from 'vue-router'
+import Tabs from '@/components/tabs/index.vue'
+import Header from '@/layouts/header/index.vue'
 export default defineComponent({
   name: 'MyHome',
   components: {
     MailOutlined,
     CalendarOutlined,
     AppstoreOutlined,
-    SettingOutlined
+    SettingOutlined,
+    Tabs,
+    Header
   },
 
   setup(props, context) {
     const state = reactive({
       mode: 'inline',
       theme: 'dark',
-      selectedKeys: ['1'],
-      openKeys: ['sub1']
+      rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
+      openKeys: ['sub1'],
+      selectedKeys: ['HomePage']
     })
+    // const selectedKeys = ref<string[]>(['HomePage'])
+    const route = useRoute()
+    const onOpenChange = (openKeys: string[]) => {
+      const latestOpenKey = openKeys.find(
+        (key) => state.openKeys.indexOf(key) === -1
+      )
+      if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+        state.openKeys = openKeys
+      } else {
+        state.openKeys = latestOpenKey ? [latestOpenKey] : []
+      }
+    }
+    watch(
+      () => route.name,
+      () => {
+        const name = route.name
+        state.selectedKeys = [String(name)]
+      },
+      {
+        immediate: true
+      }
+    )
+
     const collapsed = ref<boolean>(false)
     window.onresize = () => {
       const ddw = document.documentElement.clientWidth
@@ -284,13 +295,34 @@ export default defineComponent({
       ...toRefs(state),
       changeMode,
       changeTheme,
-      collapsed
+      collapsed,
+      onOpenChange
     }
   }
 })
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
+.Tabs {
+  position: fixed;
+  top: 48px;
+  width: calc(100% - 256px);
+  z-index: 9;
+  background-color: #fff;
+  border-bottom: 3px solid rgb(84, 133, 224);
+  padding: 10px;
+}
+.scale-enter-active,
+.scale-leave-active {
+  transition: all 0.5s ease;
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
 #components-layout-demo-basic {
   @include wh(100vw, 100vh);
   overflow: hidden;
@@ -302,48 +334,6 @@ export default defineComponent({
   box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.12);
   @include faj();
   flex-direction: row-reverse;
-  .user {
-    @include faj();
-    &-serach {
-      @include borderRadius(50%);
-      @include wh(0.14rem, 0.14rem);
-      background: rgba(0, 0, 0, 1);
-      img {
-      }
-    }
-    &-message {
-      @include borderRadius(50%);
-      margin-left: 0.35rem;
-      @include wh(0.14rem, 0.14rem);
-      background: rgb(145, 38, 38);
-      img {
-      }
-    }
-    &-info {
-      margin-left: 0.35rem;
-      @include faj();
-      .user-header {
-        display: flex;
-        @include wh(0.34rem, 0.34rem);
-        background: #aad315;
-        @include borderRadius(50%);
-        img {
-          display: none;
-        }
-      }
-      .user-name {
-        margin-left: 0.12rem;
-        white-space: nowrap;
-      }
-    }
-    &-state {
-      margin-left: 0.15rem;
-      @include wh(0.14rem, 0.14rem);
-      background: rgba(0, 0, 0, 0.65);
-      @include borderRadius(50%);
-    }
-  }
-  // }
 }
 #components-layout-demo-basic .ant-layout-sider {
   height: 100vh;
@@ -353,6 +343,8 @@ export default defineComponent({
   @include sc(0.2rem, #fff);
 }
 #components-layout-demo-basic .ant-layout-content {
+  position: relative;
+  margin-top: 42px;
   overflow: overlay;
   flex: none;
   color: #fff;
