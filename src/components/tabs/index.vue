@@ -1,19 +1,13 @@
 <template>
-  <!-- <el-scrollbar
-    id="scrollBar"
-    ref="scrollContainer"
-    class="margin-top-10 scroll-container"
-    @mousewheel.prevent="handleScroll"
-  > -->
-  <div
-    class="tabs"
-  >
-    <div>
+  <div class="tabs">
+    <div class="content">
       <a-tag
-        v-for="(item) in tabs"
+        v-for="(item, index) in tabs"
         :key="item.name"
-        closable
-        @close="handleClose(tabs[currentContextIndex], currentContextIndex)"
+        :closable="item.name !== 'HomePage'"
+        :color="currentRouteName === item.name ? '#108ee9' : ''"
+        @close="handleClose(tabs[tabIndex], index)"
+        @click="(e) => handleOpenContext(e, item, index)"
       >
         <router-link
           :to="{
@@ -26,63 +20,56 @@
         </router-link>
       </a-tag>
     </div>
-    <div
-      style="color: rgb(81, 152, 218);font-weight: bold;cursor: pointer;"
-      @click="reload"
-    >
-      刷新
+    <div style="color: rgb(81, 152, 218); font-weight: bold; cursor: pointer">
+      <a-dropdown :trigger="['click']">
+        <a
+          style="margin-right: 10px; color: rgb(81, 152, 218)"
+          class="ant-dropdown-link"
+          @click.prevent
+        >
+          更多
+          <DownOutlined />
+        </a>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item
+              v-if="tabs[tabIndex].name !== 'HomePage'"
+              key="0"
+            >
+              <li @click="handleClose(tabs[tabIndex], tabIndex)">
+                关闭
+              </li>
+            </a-menu-item>
+            <a-menu-item key="1">
+              <li @click="handleCloseOther">
+                关闭其他
+              </li>
+            </a-menu-item>
+            <a-menu-divider />
+            <a-menu-item key="3">
+              <li @click="handleCloseAll">
+                关闭所有
+              </li>
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
+      <span @click="reload">
+        刷新
+        <RedoOutlined class="reload" />
+      </span>
     </div>
   </div>
-
-  <!-- <span
-    v-for="(item, index) in tabs"
-    :key="item.name"
-    :class="{ 'active': currentRouteName === item.name }"
-    @contextmenu.prevent="(e) => handleOpenContext(e, item, index)"
-  >
-    <router-link
-      :to="{
-        name: item.name,
-        params: item.params,
-        query: item.query
-      }"
-    >{{ item.title }}</router-link>
-    <i
-      v-if="item.name !== 'Home'"
-      class="el-icon-close"
-      @click="handleClose(item, index)"
-    />
-  </span> -->
-  <!-- </el-scrollbar> -->
-  <!-- <ul
-    v-if="contentVisible"
-    class="context-menu"
-    :style="{
-      left: `${positionContext.left}px`,
-      top: `${positionContext.top}px`,
-    }"
-  >
-    <li
-      v-if="currentContextIndex !== 0"
-      @click="handleClose(tabs[currentContextIndex], currentContextIndex)"
-    >
-      关闭
-    </li>
-    <li @click="handleCloseOther">
-      关闭其他
-    </li>
-    <li @click="handleCloseAll">
-      关闭所有
-    </li>
-  </ul> -->
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, computed, ref, reactive, inject } from 'vue'
+import { defineComponent, watch, computed, ref, inject } from 'vue'
 import { useTabsStore, ITabsItem } from '@/store/tabs'
 import { useRoute, useRouter } from 'vue-router'
+import { RedoOutlined, DownOutlined } from '@ant-design/icons-vue'
 export default defineComponent({
   name: 'MyTabs',
+  components: { RedoOutlined, DownOutlined },
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -90,11 +77,10 @@ export default defineComponent({
     const tabs = computed(() => {
       return store.tabs
     })
-    // 右键菜单的位置
-    const positionContext = reactive({
-      left: 0,
-      top: 0
+    const tabIndex = computed(() => {
+      return store.tabIndex
     })
+    // 右键菜单的位置
     const onRefresh = inject<Function>('reload')
     const reload = () => {
       onRefresh && onRefresh()
@@ -121,6 +107,7 @@ export default defineComponent({
     })
     const handleCloseOther = () => {
       // 如果当前路由与右击页签路由不一致，则跳转至右击页签的路由
+      currentContextIndex.value = tabIndex.value
       if (
         currentRouteName.value !== tabs.value[currentContextIndex.value].name
       ) {
@@ -149,19 +136,11 @@ export default defineComponent({
           params: tabs.value[tabs.value.length - 1].params
         })
     }
-    const scrollContainer = ref<InstanceType<typeof ElScrollbar> | null>(null)
-    const handleScroll = (e: any) => {
-      const eventDelta = e.wheelDelta || -e.deltaY * 40
-      const $scrollWrapper = scrollContainer.value!.wrap
-      $scrollWrapper.scrollLeft -= eventDelta / 4
-    }
     const contentVisible = ref(false)
     const currentContextIndex = ref(0)
     const handleOpenContext = (e: any, item: ITabsItem, index: number) => {
-      currentContextIndex.value = index
+      store.tabIndex = index
       contentVisible.value = true
-      positionContext.left = e.x
-      positionContext.top = e.y
     }
     watch(contentVisible, (val: boolean) => {
       const _fn = () => {
@@ -177,24 +156,65 @@ export default defineComponent({
       tabs,
       currentRouteName,
       handleClose,
-      handleScroll,
-      scrollContainer,
       handleOpenContext,
-      positionContext,
-      contentVisible,
       currentContextIndex,
       handleCloseOther,
       handleCloseAll,
-      reload
+      reload,
+      tabIndex
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.tabs{
+// /* 滚动条宽度 */
+// ::-webkit-scrollbar {
+//   height: 5px;
+// }
+/* 滚动条的滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(81, 152, 218);
+  border-radius: 3px;
+}
+.tabs {
   display: flex;
   justify-content: space-between;
+  .content {
+    max-width: 90%;
+    display: flex;
+    flex-wrap: nowrap;
+    max-height: 30px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .reload {
+    // min-width: 200px;
+    -webkit-animation: myRotate 1s linear;
+    animation: myRotate 1s linear;
+  }
+}
+@-webkit-keyframes myRotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes myRotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 .context-menu {
   position: fixed;
@@ -213,57 +233,6 @@ export default defineComponent({
     line-height: 30px;
     border-bottom: 1px solid #606266;
     list-style: none;
-  }
-}
-.el-scrollbar {
-  padding: 0 10px;
-  line-height: 30px;
-  height: 40px;
-  white-space: nowrap;
-  position: relative;
-  width: 100%;
-  overflow: auto !important;
-  :deep(.el-scrollbar__view) {
-    white-space: nowrap;
-    span {
-      display: inline-block;
-      width: 160px;
-      text-align: center;
-      background: #fff;
-      border-radius: 8px 8px 0 0;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      position: relative;
-      color: #606266;
-      a {
-        color: #606266;
-        display: inline-block;
-        width: 100%;
-        text-decoration: none;
-        font-size: 14px;
-      }
-      &.active {
-        // color: #409eff !important;
-        border-color: #409eff;
-        a {
-          color: #409eff;
-        }
-      }
-      .el-icon-close {
-        position: absolute;
-        right: 5px;
-        top: 9px;
-        opacity: 0;
-        cursor: pointer;
-      }
-      &:hover {
-        border-color: #409eff;
-        .el-icon-close {
-          opacity: 1;
-          transition: all 0.5s;
-        }
-      }
-    }
   }
 }
 </style>

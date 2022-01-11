@@ -26,7 +26,9 @@ import {
   Modal,
   Skeleton,
   Card,
-  message
+  message,
+  Dropdown,
+  List
 } from 'ant-design-vue'
 
 const plugins = [
@@ -57,7 +59,9 @@ const plugins = [
   Modal,
   Skeleton,
   Card,
-  message
+  message,
+  Dropdown,
+  List
 ]
 
 export const setupAntd = (app: any, options = {}) => {

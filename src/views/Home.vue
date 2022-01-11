@@ -1,6 +1,8 @@
 /* eslint-disable vue/v-on-event-hyphenation */
 <template>
-  <div id="components-layout-demo-basic">
+  <div
+    id="components-layout-demo-basic"
+  >
     <a-layout>
       <a-layout-sider
         v-model:collapsed="collapsed"
@@ -9,10 +11,12 @@
       >
         <!-- 树课测评系统 -->
         <template v-if="true">
-          树课测评系统
+          <span @click="toggle">
+            树课测评系统
+          </span>
           <a-menu
-            v-model:openKeys="openKeys"
             v-model:selectedKeys="selectedKeys"
+            :open-keys="openKeys"
             mode="inline"
             :theme="theme"
             @open-change="onOpenChange"
@@ -203,23 +207,7 @@
         <!-- 头部 -->
         <Header />
         <!-- 内容部分 -->
-        <a-layout-content>
-          <div class="Tabs">
-            <Tabs />
-          </div>
-          <div class="content">
-            <router-view v-slot="{ Component }">
-              <keep-alive>
-                <transition
-                  name="scale"
-                  mode="out-in"
-                >
-                  <component :is="Component" />
-                </transition>
-              </keep-alive>
-            </router-view>
-          </div>
-        </a-layout-content>
+        <Content />
       </a-layout>
     </a-layout>
   </div>
@@ -227,6 +215,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref, watch } from 'vue'
+import { useFullscreen } from '@vueuse/core'
 import {
   MailOutlined,
   CalendarOutlined,
@@ -234,8 +223,8 @@ import {
   SettingOutlined
 } from '@ant-design/icons-vue'
 import { useRoute } from 'vue-router'
-import Tabs from '@/components/tabs/index.vue'
 import Header from '@/layouts/header/index.vue'
+import Content from '@/layouts/content/index.vue'
 export default defineComponent({
   name: 'MyHome',
   components: {
@@ -243,8 +232,8 @@ export default defineComponent({
     CalendarOutlined,
     AppstoreOutlined,
     SettingOutlined,
-    Tabs,
-    Header
+    Header,
+    Content
   },
 
   setup(props, context) {
@@ -255,6 +244,7 @@ export default defineComponent({
       openKeys: ['sub1'],
       selectedKeys: ['HomePage']
     })
+    const { enter, toggle, exit, isFullscreen } = useFullscreen()
     // const selectedKeys = ref<string[]>(['HomePage'])
     const route = useRoute()
     const onOpenChange = (openKeys: string[]) => {
@@ -296,32 +286,17 @@ export default defineComponent({
       changeMode,
       changeTheme,
       collapsed,
-      onOpenChange
+      onOpenChange,
+      enter,
+      toggle,
+      exit,
+      isFullscreen
     }
   }
 })
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-.Tabs {
-  position: fixed;
-  top: 48px;
-  width: calc(100% - 256px);
-  z-index: 9;
-  background-color: #fff;
-  border-bottom: 3px solid rgb(84, 133, 224);
-  padding: 10px;
-}
-.scale-enter-active,
-.scale-leave-active {
-  transition: all 0.5s ease;
-}
-
-.scale-enter-from,
-.scale-leave-to {
-  opacity: 0;
-  transform: scale(0.9);
-}
 
 #components-layout-demo-basic {
   @include wh(100vw, 100vh);
@@ -341,18 +316,6 @@ export default defineComponent({
   line-height: 0.6rem;
   text-align: center;
   @include sc(0.2rem, #fff);
-}
-#components-layout-demo-basic .ant-layout-content {
-  position: relative;
-  margin-top: 42px;
-  overflow: overlay;
-  flex: none;
-  color: #fff;
-  @include wh(100%, 95vh);
-  // margin: 32px 0 32px 24px;
-  .content {
-    min-width: 1166px;
-  }
 }
 #components-layout-demo-basic > .ant-layout {
   margin-bottom: 0.48rem;

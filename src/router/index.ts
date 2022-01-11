@@ -17,7 +17,8 @@ const routes = [
         component: () => import(/* webpackChunkName: "homepage" */ '@/views/home/index.vue'),
         meta: {
           keepAlive: true,
-          title: '首页'
+          title: '首页',
+          auth: true
         }
       },
       {
@@ -26,7 +27,8 @@ const routes = [
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/AllEvaluation.vue'),
         meta: {
           keepAlive: true,
-          title: '全部测评'
+          title: '全部测评',
+          auth: true
         }
       },
       {
@@ -36,7 +38,8 @@ const routes = [
         meta: {
           keepAlive: true,
           isCache: false, // 是否缓存
-          title: '测评设计'
+          title: '测评设计',
+          auth: true
         }
       },
       {
@@ -46,7 +49,6 @@ const routes = [
         meta: {
           keepAlive: true,
           title: '测评设置'
-
         }
       },
       {
@@ -62,7 +64,7 @@ const routes = [
       {
         path: '/detailpage',
         name: 'detailPage',
-        component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
+        // component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
         meta: {
           keepAlive: true,
           title: '详情页'

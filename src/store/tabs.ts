@@ -1,5 +1,7 @@
-
-import { defineStore } from 'pinia'
+import { defineStore, createPinia } from 'pinia'
+import piniaPluginPersist from 'pinia-plugin-persist'
+const store = createPinia()
+store.use(piniaPluginPersist)
 
 export interface ITabsItem {
   name: string; // 路由名
@@ -16,26 +18,32 @@ export interface ITabsItem {
 
 interface IState {
   tabs: ITabsItem[];
+  tabIndex: number;
 }
 
 const NO_PUSH_ROUTES = ['404']
 
 const HOME_PAGE = {
-  name: 'Home',
-  path: '/homepage'
+  name: 'HomePage',
+  path: '/homepage',
+  title: '首页'
 }
 
 export const useTabsStore = defineStore({
   id: 'tabs',
   state: (): IState => ({
-    tabs: JSON.parse(window.sessionStorage.getItem('tabs') as string) || [
-      // HOME_PAGE
-    ]
+    tabs:
+      JSON.parse(window.sessionStorage.getItem('tabs') as string) ||
+      [
+        // HOME_PAGE
+      ],
+    tabIndex: 0
   }),
   actions: {
     // 设置缓存
     setStorage() {
       // window.sessionStorage.setItem('tabs', JSON.stringify(this.tabs))
+      // window.sessionStorage.setItem('tabIndex', JSON.stringify(this.tabIndex))
     },
     // 增加路由
     handleAddRoute(route: any) {
@@ -50,31 +58,43 @@ export const useTabsStore = defineStore({
         query: route.query,
         params: route.params
       })
+      const index = this.tabs.findIndex((item) => {
+        return item.name === route.name
+      })
+      this.tabIndex = index
       this.setStorage()
     },
     // 关闭路由
-    handleClose(index: number) {
+    handleClose(index) {
       this.tabs.splice(index, 1)
+      this.tabIndex = this.tabs.length - 1
       this.setStorage()
     },
     // 关闭其他路由
     handleCloseOther(index: number) {
       // 通过传入的下标，保存该路由与首页
       const obj = JSON.parse(JSON.stringify(this.tabs[index]))
-      this.tabs = obj.name === 'Home' ? [
-        HOME_PAGE
-      ] : [
-        HOME_PAGE,
-        obj
-      ]
+      this.tabs = obj.name === 'HomePage' ? [HOME_PAGE] : [HOME_PAGE, obj]
+      this.tabIndex = this.tabs.length - 1
+
       this.setStorage()
     },
     // 关闭全部路由
     handleCloseAll() {
-      this.tabs = [
-        HOME_PAGE
-      ]
+      this.tabs = [HOME_PAGE]
+      this.tabIndex = this.tabs.length - 1
       this.setStorage()
     }
+  },
+  // 开启数据缓存
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: 'my_tabs',
+        storage: localStorage
+      }
+    ]
   }
 })
+
