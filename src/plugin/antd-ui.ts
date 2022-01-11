@@ -28,7 +28,8 @@ import {
   Card,
   message,
   Dropdown,
-  List
+  List,
+  Avatar
 } from 'ant-design-vue'
 
 const plugins = [
@@ -61,7 +62,8 @@ const plugins = [
   Card,
   message,
   Dropdown,
-  List
+  List,
+  Avatar
 ]
 
 export const setupAntd = (app: any, options = {}) => {

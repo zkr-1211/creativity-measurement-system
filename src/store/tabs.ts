@@ -1,7 +1,7 @@
-import { defineStore, createPinia } from 'pinia'
-import piniaPluginPersist from 'pinia-plugin-persist'
-const store = createPinia()
-store.use(piniaPluginPersist)
+import { defineStore } from 'pinia'
+// import piniaPluginPersist from 'pinia-plugin-persist'
+// const store = createPinia()
+// store.use(piniaPluginPersist)
 
 export interface ITabsItem {
   name: string; // 路由名
@@ -85,16 +85,16 @@ export const useTabsStore = defineStore({
       this.tabIndex = this.tabs.length - 1
       this.setStorage()
     }
-  },
-  // 开启数据缓存
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: 'my_tabs',
-        storage: localStorage
-      }
-    ]
   }
+  // 开启数据缓存
+  // persist: {
+  //   enabled: true,
+  //   strategies: [
+  //     {
+  //       key: 'my_tabs',
+  //       storage: localStorage
+  //     }
+  //   ]
+  // }
 })
 

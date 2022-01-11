@@ -1,8 +1,8 @@
-import { defineStore, createPinia } from 'pinia'
-import piniaPluginPersist from 'pinia-plugin-persist'
+import { defineStore } from 'pinia'
+// import piniaPluginPersist from 'pinia-plugin-persist'
 
-const store = createPinia()
-store.use(piniaPluginPersist)
+// const store = createPinia()
+// store.use(piniaPluginPersist)
 
 export const useStore = defineStore('store', {
   state: () => ({
@@ -50,18 +50,18 @@ export const useStore = defineStore('store', {
     //     token,
     //   });
     // },
-  },
-  // 开启数据缓存
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: 'my_user',
-        storage: localStorage,
-        paths: ['token', 'userInfo']
-      }
-    ]
   }
+  // 开启数据缓存
+  // persist: {
+  //   enabled: true,
+  //   strategies: [
+  //     {
+  //       key: 'my_user',
+  //       storage: localStorage,
+  //       paths: ['token', 'userInfo']
+  //     }
+  //   ]
+  // }
 })
 // function clearToken(state) {
 //   state.token = '';

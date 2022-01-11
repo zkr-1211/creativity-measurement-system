@@ -3,7 +3,7 @@
   <div class="body">
     <div class="content">
       <div
-        v-for="(item, index) in 3"
+        v-for="(item, index) in 20"
         :key="index"
         class="content-item"
       >

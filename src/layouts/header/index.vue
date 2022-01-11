@@ -2,39 +2,85 @@
   <a-layout-header>
     <div class="header">
       <div class="user">
-        <div class="user-serach">
-          <img
-            src=""
-            alt=""
-          >
-        </div>
-        <div class="user-message">
-          <img
-            src=""
-            alt=""
-          >
-        </div>
-        <div class="user-info">
-          <div class="user-header">
-            <img
-              src=""
-              alt=""
-            >
+        <a-tooltip placement="bottom">
+          <template #title>
+            <span>搜索</span>
+          </template>
+          <ZoomInOutlined :style="{ fontSize: '20px' }" />
+        </a-tooltip>
+        <a-tooltip placement="bottom">
+          <template #title>
+            <span>消息</span>
+          </template>
+          <BellOutlined :style="{ fontSize: '20px', marginLeft: '20px' }" />
+        </a-tooltip>
+        <a-tooltip placement="bottom">
+          <template #title>
+            <span>{{ !isFullScree ? "全屏" : "退出全屏" }}</span>
+          </template>
+          <FullscreenOutlined
+            v-if="!isFullScree"
+            :style="{ fontSize: '20px', marginLeft: '20px' }"
+            @click="FullScree"
+          />
+          <FullscreenExitOutlined
+            v-else
+            :style="{ fontSize: '20px', marginLeft: '20px' }"
+            @click="FullScree"
+          />
+        </a-tooltip>
+        <a-dropdown>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item key="1">
+                <UserOutlined />
+                个人信息
+              </a-menu-item>
+              <a-menu-item key="2">
+                <LogoutOutlined />
+                退出登入
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <div class="user-info">
+            <div class="user-header">
+              <img
+                src=""
+                alt=""
+              >
+            </div>
+            <div class="user-name">
+              用户名
+            </div>
           </div>
-          <div class="user-name">
-            用户名
-          </div>
-        </div>
+        </a-dropdown>
         <div class="user-state" />
       </div>
     </div>
   </a-layout-header>
 </template>
 
-<script lang='ts' setup>
+<script lang="ts" setup>
+import {
+  ZoomInOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
+  BellOutlined,
+  UserOutlined,
+  LogoutOutlined
+} from '@ant-design/icons-vue'
+import { useFullscreen } from '@vueuse/core'
+import { ref } from 'vue'
+const { enter, exit } = useFullscreen()
+const isFullScree = ref(false)
+const FullScree = () => {
+  !isFullScree.value && enter()
+  isFullScree.value && exit()
+  isFullScree.value = !isFullScree.value
+}
 </script>
 <style lang="scss" scoped>
-@import '@/assets/css/mixin';
+@import "@/assets/css/mixin";
 #components-layout-demo-basic .ant-layout-header {
   background: #ffffff;
   z-index: 999;
@@ -43,45 +89,34 @@
   @include faj();
   flex-direction: row-reverse;
 }
-  .user {
+.user {
+  @include faj;
+  &-info {
+    height: 48px;
+    overflow: hidden;
+    padding: 0px 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(233, 233, 233);
+    }
+    margin-left: 0.2rem;
     @include faj();
-    &-serach {
+    .user-header {
+      display: flex;
+      @include wh(0.34rem, 0.34rem);
+      background: #aad315;
       @include borderRadius(50%);
-      @include wh(0.14rem, 0.14rem);
-      background: rgba(0, 0, 0, 1);
-      img {
-      }
     }
-    &-message {
-      @include borderRadius(50%);
-      margin-left: 0.35rem;
-      @include wh(0.14rem, 0.14rem);
-      background: rgb(145, 38, 38);
-      img {
-      }
-    }
-    &-info {
-      margin-left: 0.35rem;
-      @include faj();
-      .user-header {
-        display: flex;
-        @include wh(0.34rem, 0.34rem);
-        background: #aad315;
-        @include borderRadius(50%);
-        img {
-          display: none;
-        }
-      }
-      .user-name {
-        margin-left: 0.12rem;
-        white-space: nowrap;
-      }
-    }
-    &-state {
-      margin-left: 0.15rem;
-      @include wh(0.14rem, 0.14rem);
-      background: rgba(0, 0, 0, 0.65);
-      @include borderRadius(50%);
+    .user-name {
+      margin-left: 0.12rem;
+      white-space: nowrap;
     }
   }
+  &-state {
+    margin-left: 0.15rem;
+    @include wh(0.14rem, 0.14rem);
+    background: rgba(0, 0, 0, 0.65);
+    @include borderRadius(50%);
+  }
+}
 </style>

@@ -6,10 +6,7 @@
           测评总人数
         </div>
         <div class="evaluation-top-tip">
-          <img
-            src=""
-            alt=""
-          >
+          <ExclamationCircleOutlined />
         </div>
       </div>
 
@@ -38,11 +35,14 @@
 
 <script lang="ts">
 import { reactive, toRefs, onMounted, defineComponent } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+
 import CountTo from '@/components/vue-count-to/index.vue'
 export default defineComponent({
   name: 'EvaluationCard',
   components: {
-    CountTo
+    CountTo,
+    ExclamationCircleOutlined
   },
   props: {
     loading: {
@@ -78,11 +78,6 @@ export default defineComponent({
         @include sc(0.14rem, rgba(0, 0, 0, 0.45));
       }
       .evaluation-top-tip {
-        background: #666666;
-        border-radius: 50%;
-        @include wh(0.14rem, 0.14rem);
-        img {
-        }
       }
     }
     .evaluation-num {

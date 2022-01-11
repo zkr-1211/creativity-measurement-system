@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <page-header />
-    <div class="content-card">
+    <!-- <div class="content-card">
       <div class="add-org">
         <router-link to="/organization/addorganization">
           + 新增机构
@@ -13,9 +13,7 @@
         class="content-item"
       >
         <div class="item-top">
-          <div class="header">
-            <!-- <img src="" alt="" /> -->
-          </div>
+          <div class="header" />
           <div class="item-infos">
             <div class="title">
               凤蝶
@@ -45,27 +43,74 @@
       <i />
       <i />
       <i />
-    </div>
+    </div> -->
+
+    <a-list
+      :data-source="data"
+      :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
+      class="content-card"
+    >
+      <template #renderItem="{ item }">
+        <a-list-item>
+          <template v-if="item.id === 0">
+            <router-link to="/organization/addorganization">
+              <a-button
+                class="new-btn"
+                type="dashed"
+              >
+                <PlusOutlined />
+                新增产品
+              </a-button>
+            </router-link>
+          </template>
+          <template v-else>
+            <a-card :hoverable="true">
+              <a-card-meta>
+                <template #title>
+                  测试学生
+                </template>
+                <template #avatar>
+                  <a-avatar
+                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  />
+                </template>
+                <template #description>
+                  测试学生的创造力水平测试学生的创造力水平
+                </template>
+              </a-card-meta>
+              <template #actions>
+                <a>操作一</a>
+                <a>操作二</a>
+              </template>
+            </a-card>
+          </template>
+        </a-list-item>
+      </template>
+    </a-list>
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent } from 'vue'
+<script lang="ts" setup>
 import PageHeader from '@/components/page-header/index.vue'
-
-export default defineComponent({
-  name: 'MyOrganization',
-  components: {
-    PageHeader
-  },
-  setup() {
-    onMounted(() => {})
-    return {}
-  }
-})
+import { PlusOutlined } from '@ant-design/icons-vue'
+const data: any[] = []
+for (let i = 0; i < 11; i++) {
+  data.push({
+    id: i,
+    title: 'Alipay',
+    avatar:
+      'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png'
+  })
+}
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
+.new-btn {
+  background-color: #fff;
+  border-radius: 2px;
+  width: 100%;
+  height: 166px;
+}
 .body {
   .content-card {
     margin: 24px;
@@ -84,64 +129,6 @@ export default defineComponent({
       border: 1px dashed #1890ff;
       line-height: 1.84rem;
       text-align: center;
-    }
-
-    .content-item {
-      margin-bottom: 25px;
-      min-width: 3.58rem;
-      width: 3.78rem;
-      height: 1.84rem;
-      background: #ffffff;
-      border: 1px solid #e9e9e9;
-      @include borderRadius(0.03rem);
-      .item-top {
-        @include wh(100%, 1.36rem);
-        padding: 25px;
-        @include faj(none);
-        .header {
-          height: 48px;
-          min-width: 48px;
-          background: #1890ff;
-          @include borderRadius(50%);
-          img {
-            @include wh(0.64rem, 0.64rem);
-          }
-        }
-        .item-infos {
-          margin-left: 22px;
-          .title {
-            font-weight: bold;
-            @include sc(0.16rem, rgba(0, 0, 0, 0.85));
-          }
-          .des {
-            @include tbm(3);
-            @include sc(0.14rem, rgba(0, 0, 0, 0.45));
-            margin-top: 20px;
-          }
-        }
-      }
-      .item-bottom-info {
-        padding: 0px 70px 0px 70px;
-        line-height: 28px;
-        @include wh(100%, 0.48rem);
-        background: #e9e9e9;
-        color: #000;
-        border: 1px solid #dddcdc;
-        .info {
-          @include faj();
-          margin-top: 10px;
-          .num {
-            @include sc(0.14rem, rgba(0, 0, 0, 0.45));
-            cursor: pointer;
-            &:hover {
-              color: #108ee9;
-            }
-          }
-          .imgs {
-            color: #b9b9b9;
-          }
-        }
-      }
     }
   }
 }

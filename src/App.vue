@@ -21,14 +21,14 @@ provide('reload', onRefresh)
       v-if="isRouterAlive"
       v-slot="{ Component }"
     >
-      <keep-alive>
-        <transition
-          name="fade"
-          mode="out-in"
-        >
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <keep-alive>
           <component :is="Component" />
-        </transition>
-      </keep-alive>
+        </keep-alive>
+      </transition>
     </router-view>
   </a-config-provider>
 </template>

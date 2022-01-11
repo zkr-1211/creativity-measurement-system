@@ -5,14 +5,14 @@
     </div>
     <div class="content">
       <router-view v-slot="{ Component }">
-        <keep-alive>
-          <transition
-            name="scale"
-            mode="out-in"
-          >
+        <transition
+          name="scale"
+          mode="out-in"
+        >
+          <keep-alive>
             <component :is="Component" />
-          </transition>
-        </keep-alive>
+          </keep-alive>
+        </transition>
       </router-view>
     </div>
   </a-layout-content>
@@ -32,7 +32,7 @@ import Tabs from '@/components/tabs/index.vue'
   @include wh(100%, 90vh);
   // margin: 32px 0 32px 24px;
   .content {
-    min-width: 1166px;
+    // min-width: 1166px;
   }
 }
 .Tabs {

@@ -3,82 +3,116 @@
   <div class="body">
     <page-header />
     <div class="main-content">
-      <div class="search-info">
-        <div class="tags">
-          <div class="tags-text">
-            标签类目：
+      <a-card>
+        <div class="search-info">
+          <div class="tags">
+            <div class="tags-text">
+              标签类目：
+            </div>
+            <div class="tags-content">
+              <div
+                v-for="item in tagList"
+                :key="item.id"
+                class="tags-item"
+                :class="selectTagId === item.id ? 'tags-active' : ''"
+                @click="selectTag(item.id)"
+              >
+                {{ item.name }}
+              </div>
+            </div>
           </div>
-          <div class="tags-content">
-            <div
-              v-for="item in tagList"
-              :key="item.id"
-              class="tags-item"
-              :class="selectTagId === item.id ? 'tags-active' : ''"
-              @click="selectTag(item.id)"
-            >
-              {{ item.name }}
+          <div class="other-select">
+            <div class="other-text">
+              其他选项：
+            </div>
+            <div class="other-right">
+              <div class="select-item">
+                <div class="select-level">
+                  学段：
+                  <a-select
+                    ref="select"
+                    v-model:value="value1"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="jack">
+                      Jack
+                    </a-select-option>
+                    <a-select-option value="lucy">
+                      Lucy
+                    </a-select-option>
+                    <a-select-option value="Yiminghe">
+                      yiminghe
+                    </a-select-option>
+                  </a-select>
+                </div>
+                <div class="participate-num">
+                  参与人数：
+                  <a-select
+                    ref="select"
+                    v-model:value="value1"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="jack">
+                      Jack
+                    </a-select-option>
+                    <a-select-option value="lucy">
+                      Lucy
+                    </a-select-option>
+                    <a-select-option value="Yiminghe">
+                      yiminghe
+                    </a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="search">
+                <a-input-search
+                  v-model:value="value"
+                  placeholder="请输入"
+                  @search="onSearch"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div class="other-select">
-          <div class="other-text">
-            其他选项：
-          </div>
-          <div class="other-right">
-            <div class="select-item">
-              <div class="select-level">
-                学段：
-                <a-select
-                  ref="select"
-                  v-model:value="value1"
-                  style="width: 260px"
-                  @focus="focus"
-                  @change="handleChange"
+      </a-card>
+      <a-list
+        style="margin-top: 32px"
+        :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
+        :data-source="data"
+      >
+        <template #renderItem="{ item }">
+          <a-list-item>
+            <a-card>
+              <template #cover>
+                <img
+                  alt="example"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                 >
-                  <a-select-option value="jack">
-                    Jack
-                  </a-select-option>
-                  <a-select-option value="lucy">
-                    Lucy
-                  </a-select-option>
-                  <a-select-option value="Yiminghe">
-                    yiminghe
-                  </a-select-option>
-                </a-select>
+              </template>
+              <a-card-meta :title="item.title">
+                <template #description>
+                  测试学生的创造力水平测试学生的创造力水平
+                </template>
+              </a-card-meta>
+              <div class="info">
+                <div class="num">
+                  14679人参与测评
+                </div>
+                <div class="imgs">
+                  <div
+                    v-for="(item, index) in 4"
+                    :key="index"
+                    class="img"
+                  />
+                </div>
               </div>
-              <div class="participate-num">
-                参与人数：
-                <a-select
-                  ref="select"
-                  v-model:value="value1"
-                  style="width: 260px"
-                  @focus="focus"
-                  @change="handleChange"
-                >
-                  <a-select-option value="jack">
-                    Jack
-                  </a-select-option>
-                  <a-select-option value="lucy">
-                    Lucy
-                  </a-select-option>
-                  <a-select-option value="Yiminghe">
-                    yiminghe
-                  </a-select-option>
-                </a-select>
-              </div>
-            </div>
-            <div class="search">
-              <a-input-search
-                v-model:value="value"
-                placeholder="请输入"
-                style="width: 260px"
-                @search="onSearch"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <CardItem>
+            </a-card>
+          </a-list-item>
+        </template>
+      </a-list>
+      <!-- <CardItem>
         <div class="item-content">
           <div class="title">
             创造力测评
@@ -99,7 +133,7 @@
             </div>
           </div>
         </div>
-      </CardItem>
+      </CardItem> -->
     </div>
   </div>
 </template>
@@ -107,19 +141,20 @@
 <script lang="ts">
 import { onMounted, defineComponent, ref } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
-import CardItem from '@/components/card-item/index.vue'
+// import CardItem from '@/components/card-item/index.vue'
 const data: any[] = []
 for (let i = 1; i < 21; i++) {
   data.push({
     id: i.toString(),
-    name: `类目 ${i}`
+    name: `类目 ${i}`,
+    title: '创造力测评'
   })
 }
 export default defineComponent({
   name: 'AllEvaluation',
   components: {
-    PageHeader,
-    CardItem
+    PageHeader
+    // CardItem
   },
   setup() {
     const tagList = ref(data)
@@ -151,7 +186,8 @@ export default defineComponent({
       onSearch,
       focus,
       handleChange,
-      selectTag
+      selectTag,
+      data
     }
   }
 })
@@ -163,14 +199,12 @@ export default defineComponent({
     margin: 24px;
     color: rgba(0, 0, 0, 0.85);
     .search-info {
-      @include wh(100%, 1.74rem);
       @include borderRadius(0.02rem);
       background: #ffffff;
       padding: 15px;
       font-size: 14px;
       .tags {
         border-bottom: 1px solid #e8e8e8;
-        @include wh(100%, 1rem);
         line-height: 30px;
         display: flex;
         .tags-text {
@@ -183,6 +217,7 @@ export default defineComponent({
           display: flex;
           flex-wrap: wrap;
           width: 1100px;
+          min-height: 80px;
           .tags-active {
             color: #fff !important;
             background: #1890ff;
@@ -198,9 +233,9 @@ export default defineComponent({
         }
       }
       .other-select {
+        margin-top: 30px;
         display: flex;
         align-items: center;
-        height: 55px;
         .other-text {
           width: 100px;
           text-align: center;
@@ -209,10 +244,13 @@ export default defineComponent({
         }
         .other-right {
           @include faj();
+          flex-wrap: wrap;
+
           width: 100%;
           .select-item {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             .select-level {
               margin-left: 30px;
             }
@@ -233,40 +271,40 @@ export default defineComponent({
         margin-top: 5px;
         @include sc(0.14rem, rgba(0, 0, 0, 0.45));
       }
-      .info {
-        @include faj();
-        margin-top: 5px;
-        .num {
-          @include sc(0.12rem, rgba(0, 0, 0, 0.45));
-        }
-        .imgs {
-          display: flex;
-          position: relative;
-          .img {
-            @include wh(0.2rem, 0.2rem);
-            @include borderRadius(50%);
-            position: absolute;
-            right: 0;
-            bottom: -10px;
-          }
-          .img:nth-of-type(1) {
-            right: 10px;
-            background: red;
-          }
-          .img:nth-of-type(2) {
-            right: 25px;
-            background: black;
-          }
-          .img:nth-of-type(3) {
-            right: 40px;
-            background-color: blue;
-          }
-          .img:nth-of-type(4) {
-            right: 55px;
-            background-color: chartreuse;
-          }
-        }
-      }
+    }
+  }
+}
+.info {
+  @include faj();
+  margin-top: 5px;
+  .num {
+    @include sc(0.12rem, rgba(0, 0, 0, 0.45));
+  }
+  .imgs {
+    display: flex;
+    position: relative;
+    .img {
+      @include wh(0.2rem, 0.2rem);
+      @include borderRadius(50%);
+      position: absolute;
+      right: 0;
+      bottom: -10px;
+    }
+    .img:nth-of-type(1) {
+      right: 10px;
+      background: red;
+    }
+    .img:nth-of-type(2) {
+      right: 25px;
+      background: black;
+    }
+    .img:nth-of-type(3) {
+      right: 40px;
+      background-color: blue;
+    }
+    .img:nth-of-type(4) {
+      right: 55px;
+      background-color: chartreuse;
     }
   }
 }
