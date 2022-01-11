@@ -11,9 +11,9 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  if (to.path === '/homepage') return next()
-  const store = useStore()
-  if (!store.getToken) return next('/homepage')
+  // if (to.path === '/homepage') return next()
+  // const store = useStore()
+  // if (!store.getToken) return next('/homepage')
   next()
 })
 

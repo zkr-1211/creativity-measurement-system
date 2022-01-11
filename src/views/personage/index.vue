@@ -1,66 +1,79 @@
 <!--  -->
 <template>
   <div class="home">
-    <a-card
-      :loading="loading"
-      style="width: 25%;"
-    >
-      <Infos />
-    </a-card>
-    <a-card
-      :loading="loading"
-      style="width: 75%;margin-left: 24px;"
-      :tab-list="tabListNoTitle"
-      :active-tab-key="noTitleKey"
-      @tab-change="(key) => onTabChange(key, 'noTitleKey')"
-    >
-      <div
-        v-if="noTitleKey === 'article'"
-        class="content"
+    <a-row :gutter="24">
+      <a-col
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :xl="7"
+        :style="{marginBottom:'24px'}"
       >
-        <RecordList />
-      </div>
-      <div v-else-if="noTitleKey === 'app'">
-        <a-list
-          style="margin-top: 32px"
-          :grid="{ gutter: 24, xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }"
-          :data-source="data"
+        <a-card
+          :loading="loading"
         >
-          <template #renderItem="{ item }">
-            <a-list-item>
-              <a-card>
-                <template #cover>
-                  <img
-                    alt="example"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                  >
-                </template>
-                <a-card-meta :title="item.title">
-                  d
-                </a-card-meta>
-                <div class="item-content">
-                  <div class="des">
-                    <div class="">
-                      测评次数：
+          <Infos />
+        </a-card>
+      </a-col>
+      <a-col
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :xl="17"
+      >
+        <a-card
+          :loading="loading"
+          :tab-list="tabListNoTitle"
+          :active-tab-key="noTitleKey"
+          @tab-change="(key) => onTabChange(key, 'noTitleKey')"
+        >
+          <div
+            v-if="noTitleKey === 'article'"
+            class="content"
+          >
+            <RecordList />
+          </div>
+          <div v-else-if="noTitleKey === 'app'">
+            <a-list
+              style="margin-top: 32px"
+              :grid="{ gutter: 24, xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }"
+              :data-source="data"
+            >
+              <template #renderItem="{ item }">
+                <a-list-item>
+                  <a-card>
+                    <template #cover>
+                      <img
+                        alt="example"
+                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                      >
+                    </template>
+                    <a-card-meta :title="item.title">
+                      d
+                    </a-card-meta>
+                    <div class="item-content">
+                      <div class="des">
+                        <div class="">
+                          测评次数：
+                        </div>
+                        <div class="">
+                          1次
+                        </div>
+                      </div>
+                      <div class="info">
+                        <div class="num">
+                          开始时间：
+                        </div>
+                        <div class="imgs">
+                          2022.03.03 16:30
+                        </div>
+                      </div>
                     </div>
-                    <div class="">
-                      1次
-                    </div>
-                  </div>
-                  <div class="info">
-                    <div class="num">
-                      开始时间：
-                    </div>
-                    <div class="imgs">
-                      2022.03.03 16:30
-                    </div>
-                  </div>
-                </div>
-              </a-card>
-            </a-list-item>
-          </template>
-        </a-list>
-        <!-- <CardItem>
+                  </a-card>
+                </a-list-item>
+              </template>
+            </a-list>
+            <!-- <CardItem>
           <div class="item-content">
             <div class="title">
               创造力测评
@@ -83,8 +96,10 @@
             </div>
           </div>
         </CardItem> -->
-      </div>
-    </a-card>
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -131,7 +146,6 @@ const onTabChange = (value: string, type: string) => {
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
 .home {
-  display: flex;
   margin: 24px;
   .item-content {
     .title {

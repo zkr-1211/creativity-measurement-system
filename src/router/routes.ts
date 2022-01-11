@@ -54,14 +54,14 @@ export const frameIn: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/ModelDimensionEdit.vue'),
         meta: {
           keepAlive: true,
-          title: '测评设置'
+          title: '模型设置'
 
         }
       },
       {
         path: '/detailpage',
         name: 'detailPage',
-        // component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
+        component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
         meta: {
           keepAlive: true,
           title: '详情页'

@@ -64,25 +64,27 @@
             </router-link>
           </template>
           <template v-else>
-            <a-card :hoverable="true">
-              <a-card-meta>
-                <template #title>
-                  测试学生
+            <router-link to="/organization/detail">
+              <a-card :hoverable="true">
+                <a-card-meta>
+                  <template #title>
+                    测试学生
+                  </template>
+                  <template #avatar>
+                    <a-avatar
+                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    />
+                  </template>
+                  <template #description>
+                    测试学生的创造力水平测试学生的创造力水平
+                  </template>
+                </a-card-meta>
+                <template #actions>
+                  <a>操作一</a>
+                  <a>操作二</a>
                 </template>
-                <template #avatar>
-                  <a-avatar
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                  />
-                </template>
-                <template #description>
-                  测试学生的创造力水平测试学生的创造力水平
-                </template>
-              </a-card-meta>
-              <template #actions>
-                <a>操作一</a>
-                <a>操作二</a>
-              </template>
-            </a-card>
+              </a-card>
+            </router-link>
           </template>
         </a-list-item>
       </template>

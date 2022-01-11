@@ -8,15 +8,50 @@
     <div
       class="run-list animated fadeInUpBig delay-2s"
     >
-      <ParticipationRun />
-      <InstitutionOpenProject />
+      <a-row :gutter="24">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="12"
+          :style="{ marginBottom: '24px' }"
+        >
+          <ParticipationRun />
+        </a-col>
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="12"
+          :style="{ marginBottom: '24px' }"
+        >
+          <InstitutionOpenProject />
+        </a-col>
+      </a-row>
     </div>
     <!-- 第四部分 -->
     <div
       class="view-list animated fadeInUpBig delay-3s"
     >
-      <ReviewList />
-      <ReviewList style="margin-left: 24px;" />
+      <a-row :gutter="24">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="12"
+          :style="{ marginBottom: '24px' }"
+        >
+          <ReviewList />
+        </a-col>
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="12"
+        >
+          <ReviewList />
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>
@@ -40,13 +75,8 @@ store.$patch((state) => {
   margin: 24px;
   .run-list {
     margin-top: 0.24rem;
-    display: flex;
-    justify-content: space-between;
   }
   .view-list {
-    width: 100%;
-    margin-top: 0.24rem;
-    display: flex;
   }
 }
 </style>

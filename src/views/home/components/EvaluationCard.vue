@@ -63,7 +63,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
 .body {
-  width: 100%;
   overflow: hidden;
   .evaluation-total {
     @include wh(100%, 1.88rem);
@@ -76,8 +75,6 @@ export default defineComponent({
       @include faj();
       .evaluation-top-total {
         @include sc(0.14rem, rgba(0, 0, 0, 0.45));
-      }
-      .evaluation-top-tip {
       }
     }
     .evaluation-num {

@@ -2,7 +2,7 @@
   <a-card
     :loading="loading"
     title="测评访问榜单"
-    style="width: 100%; margin-left: 24px"
+    style="height: 100%;"
   >
     <project-accounte-chart title="机构开通测评项目" />
   </a-card>

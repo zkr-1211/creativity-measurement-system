@@ -34,7 +34,7 @@
 <style lang="scss" scoped>
 @import '@/assets/css/mixin';
  .left {
-    padding: 40px;
+    padding: 20px;
     @include wh(100%, 726px);
     background: #ffffff;
     border-radius: 2px;
@@ -67,7 +67,7 @@
       text-align: center;
       margin-top: 132px;
       .dbutton {
-        margin-left: 20px;
+        margin-left: 15px;
       }
     }
   }

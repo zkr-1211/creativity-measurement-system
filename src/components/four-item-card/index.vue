@@ -2,47 +2,74 @@
 <template>
   <div class="body">
     <div class="top-total">
-      <evaluation-card :loading="loading">
-        <div class="link-relative-ratio">
-          <div class="relative-ratio">
-            周同比
-            <span>12%</span>
-            <CaretUpOutlined />
-          </div>
-          <div class="relative-ratio">
-            日环比
-            <span>12%</span>
-            <CaretDownOutlined />
-          </div>
-        </div>
-      </evaluation-card>
-      <!--  -->
-      <evaluation-card
-        style="margin-left:30px"
-        :loading="loading"
-      >
-        <chart-line1 />
-      </evaluation-card>
-      <!--  -->
-      <evaluation-card
-        style="margin-left:30px"
-        :loading="loading"
-      >
-        <chart-line2 />
-      </evaluation-card>
-      <!--  -->
-      <evaluation-card
-        style="margin-left:30px"
-        :loading="loading"
-      >
-        <div class="progress">
-          <a-progress
-            :percent="50"
-            :show-info="false"
-            stroke-color="#13C2C2"
-          />
-        </div>
-      </evaluation-card>
+      <a-row :gutter="24">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="12"
+          :xl="6"
+        >
+          <evaluation-card :loading="loading">
+            <div class="link-relative-ratio">
+              <div class="relative-ratio">
+                周同比
+                <span>12%</span>
+                <CaretUpOutlined />
+              </div>
+              <div class="relative-ratio">
+                日环比
+                <span>12%</span>
+                <CaretDownOutlined />
+              </div>
+            </div>
+          </evaluation-card>
+        </a-col>
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="12"
+          :xl="6"
+        >
+          <!--  -->
+          <evaluation-card
+            :loading="loading"
+          >
+            <chart-line1 />
+          </evaluation-card>
+        </a-col>
+        <!--  -->
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="12"
+          :xl="6"
+        >
+          <evaluation-card
+            :loading="loading"
+          >
+            <chart-line2 />
+          </evaluation-card>
+        </a-col>
+        <!--  -->
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="12"
+          :xl="6"
+        >
+          <evaluation-card
+            :loading="loading"
+          >
+            <div class="progress">
+              <a-progress
+                :percent="50"
+                :show-info="false"
+                stroke-color="#13C2C2"
+              />
+            </div>
+          </evaluation-card>
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>
@@ -64,8 +91,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
 .top-total {
-  @include faj();
-  width: 100%;
+  // @include faj();
   .link-relative-ratio {
     display: flex;
     align-items: flex-end;

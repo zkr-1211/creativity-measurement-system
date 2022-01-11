@@ -134,7 +134,7 @@ export default defineComponent({
             type: 'pie',
             radius: ['50%', '70%'],
             // center: ['20%', '70%'],
-            center: [140, 180],
+            center: [120, 180],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 0,
@@ -200,8 +200,11 @@ export default defineComponent({
   position: absolute;
   left: 3.2rem;
   top: 28%;
-  @media screen and (max-width: 1550px) {
-    left: 2.6rem !important;
+  @media screen and (max-width: 1550px) and (min-width: 1200px){
+    left: 2.7rem !important;
+  }
+   @media screen and (max-width: 1200px) {
+    left: 5rem !important;
   }
   .info-item {
     display: flex;
@@ -236,7 +239,7 @@ export default defineComponent({
   }
 }
 #ProjectAccounte {
-  @include wh(100%, 3rem);
+  @include wh(100%, 300px);
 }
 .a {
   background: #975fe5;
