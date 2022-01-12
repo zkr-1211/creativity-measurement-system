@@ -78,6 +78,7 @@
         </div>
       </a-card>
       <a-list
+        style="margin-top: 24px"
         :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
         :data-source="data"
       >
