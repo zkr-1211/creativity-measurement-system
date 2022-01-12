@@ -110,7 +110,7 @@
           <chart-card
             :loading="loading"
             title="啊手动阀实打实的"
-            total="5655"
+            :total="5655"
           >
             <template #action>
               <a-tooltip title="asdasdasd">
