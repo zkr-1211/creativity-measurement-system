@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { onMounted, defineComponent, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 interface routeType {
   path:string,
@@ -35,9 +35,9 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const router = useRouter()
+    // const router = useRouter()
     const aaa = () => {
-      router.push({ path: '/404' })
+      // router.push({ path: '/404' })
     }
     const routes = ref<routeType[]>([])
     route?.matched.forEach(item => {

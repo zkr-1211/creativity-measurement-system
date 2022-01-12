@@ -4,7 +4,6 @@
       <div class="left">
         <a-menu
           v-model:selectedKeys="selectedKeys"
-          style="width: 256px"
           :mode="mode"
           :theme="theme"
         >
@@ -18,134 +17,152 @@
           模型维度编辑
         </div>
         <div class="infos">
-          <div class="center">
-            <div class="eva-name">
-              <div class="name">
-                维度选择
-              </div>
-              <div class="radio-group">
-                <a-radio-group v-model:value="attribute">
-                  <a-radio :value="0">
-                    五维
-                  </a-radio>
-                  <a-radio :value="1">
-                    六维
-                  </a-radio>
-                </a-radio-group>
-              </div>
-            </div>
-            <div class="eva-name">
-              <div class="name">
-                第一维属性
-              </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="oneAttribute"
-                  placeholder="请输入第一维属性"
-                />
-              </div>
-            </div>
-            <div class="eva-name">
-              <div class="name">
-                第二维属性
-              </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="twoAttribute"
-                  placeholder="请输入第二维属性"
-                />
-              </div>
-            </div>
-            <div class="eva-name">
-              <div class="name">
-                第三维属性
-              </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="threeAttribute"
-                  placeholder="请输入第三维属性"
-                />
-              </div>
-            </div>
-            <div class="eva-name">
-              <div class="name">
-                第四维属性
-              </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="fourAttribute"
-                  placeholder="请输入第四维属性"
-                />
-              </div>
-            </div>
-            <div class="eva-name">
-              <div class="name">
-                第五维属性
-              </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="fiveAttribute"
-                  placeholder="请输入第五维属性"
-                />
-              </div>
-            </div>
-            <div
-              v-if="attribute"
-              class="eva-name"
+          <a-row :gutter="24">
+            <a-col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :xl="12"
+              :style="{ marginBottom: '24px' }"
             >
-              <div class="name">
-                第六维属性
+              <div class="center">
+                <div class="eva-name">
+                  <div class="name">
+                    维度选择
+                  </div>
+                  <div class="radio-group">
+                    <a-radio-group v-model:value="attribute">
+                      <a-radio :value="0">
+                        五维
+                      </a-radio>
+                      <a-radio :value="1">
+                        六维
+                      </a-radio>
+                    </a-radio-group>
+                  </div>
+                </div>
+                <div class="eva-name">
+                  <div class="name">
+                    第一维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="oneAttribute"
+                      placeholder="请输入第一维属性"
+                    />
+                  </div>
+                </div>
+                <div class="eva-name">
+                  <div class="name">
+                    第二维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="twoAttribute"
+                      placeholder="请输入第二维属性"
+                    />
+                  </div>
+                </div>
+                <div class="eva-name">
+                  <div class="name">
+                    第三维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="threeAttribute"
+                      placeholder="请输入第三维属性"
+                    />
+                  </div>
+                </div>
+                <div class="eva-name">
+                  <div class="name">
+                    第四维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="fourAttribute"
+                      placeholder="请输入第四维属性"
+                    />
+                  </div>
+                </div>
+                <div class="eva-name">
+                  <div class="name">
+                    第五维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="fiveAttribute"
+                      placeholder="请输入第五维属性"
+                    />
+                  </div>
+                </div>
+                <div
+                  v-if="attribute"
+                  class="eva-name"
+                >
+                  <div class="name">
+                    第六维属性
+                  </div>
+                  <div class="input">
+                    <a-input
+                      v-model:value.trim="sixAttribute"
+                      placeholder="请输入第六维属性"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="button"
+                  @click="updateInfo"
+                >
+                  <a-button type="primary">
+                    更新基本信息
+                  </a-button>
+                </div>
               </div>
-              <div class="input">
-                <a-input
-                  v-model:value.trim="sixAttribute"
-                  placeholder="请输入第六维属性"
-                />
-              </div>
-            </div>
-            <div
-              class="button"
-              @click="updateInfo"
+            </a-col>
+            <a-col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :xl="12"
+              :style="{ marginBottom: '24px' }"
             >
-              <a-button type="primary">
-                更新基本信息
-              </a-button>
-            </div>
-          </div>
-          <div class="r-r">
-            <div class="header-info">
-              <div class="name">
-                预览模型
-              </div>
-              <div class="header" />
-              <div class="model-dimension">
-                <ModelDimension
-                  :color-list="colorList"
-                  :data="data"
-                />
-                <div class="model-data">
-                  <div
-                    v-for="(item, index) in 3"
-                    :key="index"
-                    class="model-data-item"
-                  >
-                    <div class="top">
+              <div class="r-r">
+                <div class="header-info">
+                  <div class="name">
+                    预览模型
+                  </div>
+                  <div class="header" />
+                  <div class="model-dimension">
+                    <ModelDimension
+                      :color-list="colorList"
+                      :data="data"
+                    />
+                    <div class="model-data">
                       <div
-                        class="border"
-                        :style="`background-color:${colorList[index]}`"
-                      />
-                      <div class="data-title">
-                        个人
+                        v-for="(item, index) in 3"
+                        :key="index"
+                        class="model-data-item"
+                      >
+                        <div class="top">
+                          <div
+                            class="border"
+                            :style="`background-color:${colorList[index]}`"
+                          />
+                          <div class="data-title">
+                            个人
+                          </div>
+                        </div>
+                        <div class="num">
+                          33
+                        </div>
                       </div>
-                    </div>
-                    <div class="num">
-                      33
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </a-col>
+          </a-row>
         </div>
       </div>
     </div>
@@ -216,7 +233,9 @@ export default defineComponent({
     const loading = ref(false)
     const imageUrl = ref('')
 
-    const handleChange = (info: { file: { status: string; originFileObj: any } }) => {
+    const handleChange = (info: {
+      file: { status: string; originFileObj: any };
+    }) => {
       if (info.file.status === 'uploading') {
         loading.value = true
         return
@@ -253,7 +272,10 @@ export default defineComponent({
     }
     // 上传文件
     const fileList = ref([])
-    const handleChangeFile = (infoFile: { file: { status: string; name: any }; fileList: any }) => {
+    const handleChangeFile = (infoFile: {
+      file: { status: string; name: any };
+      fileList: any;
+    }) => {
       if (infoFile.file.status !== 'uploading') {
         console.log(infoFile.file, infoFile.fileList)
       }
@@ -317,14 +339,13 @@ export default defineComponent({
     .right {
       color: #000;
       padding-left: 30px;
+      width: 100%;
       .title {
         @include sc(0.2rem, rgba(0, 0, 0, 0.85));
         font-weight: bold;
       }
       .infos {
-        display: flex;
         .center {
-          width: 500px;
           .eva-name {
             margin-top: 0.24rem;
             .name {
@@ -336,7 +357,6 @@ export default defineComponent({
             }
             .region {
               margin-top: 0.08rem;
-              display: flex;
               .select {
                 margin-left: 8px;
               }
@@ -348,22 +368,20 @@ export default defineComponent({
         }
         .r-r {
           margin-top: 20px;
+          display: flex;
+
           .header-info {
-            display: flex;
-            flex-direction: column;
             .name {
               @include sc(16px, rgba(0, 0, 0, 0.85));
               font-weight: bold;
               margin-bottom: 10px;
             }
             .header {
-              @include wh(500px, 1px);
+              @include wh(300px, 1px);
               background: #e9e9e9;
             }
             .model-dimension {
-              @include wh(500px, 500px);
               .model-data {
-                width: 100%;
                 @include faj(center, center);
                 .model-data-item {
                   width: 100px;

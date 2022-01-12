@@ -4,7 +4,6 @@
       <div class="left">
         <a-menu
           v-model:selectedKeys="selectedKeys"
-          style="width: 256px"
           :mode="mode"
           :theme="theme"
         >
@@ -22,140 +21,158 @@
             基本设置
           </div>
           <div class="infos">
-            <div class="center">
-              <div class="eva-name">
-                <div class="name">
-                  姓名
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="userName"
-                    placeholder="请输入姓名"
-                  />
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  性别
-                </div>
-                <div class="input">
-                  <a-select
-                    ref="select"
-                    v-model:value.trim="sex"
-                    style="width: 160px"
-                    @focus="focus"
-                    @change="handleChangeState"
-                  >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                  </a-select>
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  班级
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="sclass"
-                    placeholder="请输入班级"
-                  />
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  学号
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="stuId"
-                    placeholder="请输入学号"
-                  />
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  身份证
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="ID"
-                    placeholder="请输入身份证"
-                  />
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  手机号
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="phoneNum"
-                    placeholder="请输入手机号"
-                  />
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  所在省市
-                </div>
-                <div class="region">
-                  <a-select
-                    ref="select"
-                    v-model:value.trim="province"
-                    style="width: 160px"
-                    @focus="focus"
-                    @change="handleChangeState"
-                  >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                  </a-select>
-                  <a-select
-                    ref="select"
-                    v-model:value.trim="city"
-                    class="select"
-                    style="width: 160px"
-                    @focus="focus"
-                    @change="handleChangeState"
-                  >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                  </a-select>
-                </div>
-              </div>
-              <div
-                class="button"
-                @click="updateInfo"
+            <a-row :gutter="24">
+              <a-col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :xl="12"
+                :style="{ marginBottom: '24px' }"
               >
-                <a-button type="primary">
-                  更新基本信息
-                </a-button>
-              </div>
-            </div>
-            <div class="r-r">
-              <div class="header-info">
-                <div class="name">
-                  头像
+                <div class="center">
+                  <div class="eva-name">
+                    <div class="name">
+                      姓名
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="userName"
+                        placeholder="请输入姓名"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      性别
+                    </div>
+                    <div class="input">
+                      <a-select
+                        ref="select"
+                        v-model:value.trim="sex"
+                        style="width: 160px"
+                        @focus="focus"
+                        @change="handleChangeState"
+                      >
+                        <a-select-option value="jack">
+                          Jack
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      班级
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="sclass"
+                        placeholder="请输入班级"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      学号
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="stuId"
+                        placeholder="请输入学号"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      身份证
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="ID"
+                        placeholder="请输入身份证"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      手机号
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="phoneNum"
+                        placeholder="请输入手机号"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      所在省市
+                    </div>
+                    <div class="region">
+                      <a-select
+                        ref="select"
+                        v-model:value.trim="province"
+                        style="width: 160px"
+                        @focus="focus"
+                        @change="handleChangeState"
+                      >
+                        <a-select-option value="jack">
+                          Jack
+                        </a-select-option>
+                      </a-select>
+                      <a-select
+                        ref="select"
+                        v-model:value.trim="city"
+                        class="select"
+                        style="width: 160px"
+                        @focus="focus"
+                        @change="handleChangeState"
+                      >
+                        <a-select-option value="jack">
+                          Jack
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                  <div
+                    class="button"
+                    @click="updateInfo"
+                  >
+                    <a-button type="primary">
+                      更新基本信息
+                    </a-button>
+                  </div>
                 </div>
-                <div class="header" />
-                <a-upload
-                  v-model:file-list="fileList"
-                  class="upload"
-                  name="file"
-                  :multiple="true"
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  @change="handleChangeFile"
-                >
-                  <a-button>
-                    <upload-outlined />
-                    上传文件
-                  </a-button>
-                </a-upload>
-              </div>
-            </div>
+              </a-col>
+              <a-col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :xl="12"
+                :style="{ marginBottom: '24px' }"
+              >
+                <div class="r-r">
+                  <div class="header-info">
+                    <div class="name">
+                      头像
+                    </div>
+                    <div class="header" />
+                    <a-upload
+                      v-model:file-list="fileList"
+                      class="upload"
+                      name="file"
+                      :multiple="true"
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      @change="handleChangeFile"
+                    >
+                      <a-button>
+                        <upload-outlined />
+                        上传文件
+                      </a-button>
+                    </a-upload>
+                  </div>
+                </div>
+              </a-col>
+            </a-row>
           </div>
         </template>
         <template v-else-if="selectedKeys[0] === '2'">
@@ -163,61 +180,79 @@
             监护人信息
           </div>
           <div class="infos">
-            <div class="center">
-              <div class="eva-name">
-                <div class="name">
-                  姓名
+            <a-row :gutter="24">
+              <a-col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :xl="12"
+                :style="{ marginBottom: '24px' }"
+              >
+                <div class="center">
+                  <div class="eva-name">
+                    <div class="name">
+                      姓名
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="guardianName"
+                        placeholder="请输入姓名"
+                      />
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      性别
+                    </div>
+                    <div class="input">
+                      <a-select
+                        ref="select"
+                        v-model:value.trim="guardiansex"
+                        style="width: 160px"
+                        @focus="focus"
+                        @change="handleChangeState"
+                      >
+                        <a-select-option value="jack">
+                          Jack
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                  <div class="eva-name">
+                    <div class="name">
+                      手机号
+                    </div>
+                    <div class="input">
+                      <a-input
+                        v-model:value.trim="guardianPhoneNum"
+                        placeholder="请输入手机号"
+                      />
+                    </div>
+                  </div>
+                  <div class="save">
+                    <a-button type="primary">
+                      保存
+                    </a-button>
+                  </div>
                 </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="guardianName"
-                    placeholder="请输入姓名"
-                  />
+              </a-col>
+              <a-col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :xl="12"
+                :style="{ marginBottom: '24px' }"
+              >
+                <div class="r-r">
+                  <div class="header-info">
+                    <div class="name">
+                      头像
+                    </div>
+                    <div class="header" />
+                  </div>
                 </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  性别
-                </div>
-                <div class="input">
-                  <a-select
-                    ref="select"
-                    v-model:value.trim="guardiansex"
-                    style="width: 160px"
-                    @focus="focus"
-                    @change="handleChangeState"
-                  >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                  </a-select>
-                </div>
-              </div>
-              <div class="eva-name">
-                <div class="name">
-                  手机号
-                </div>
-                <div class="input">
-                  <a-input
-                    v-model:value.trim="guardianPhoneNum"
-                    placeholder="请输入手机号"
-                  />
-                </div>
-              </div>
-              <div class="save">
-                <a-button type="primary">
-                  保存
-                </a-button>
-              </div>
-            </div>
-            <div class="r-r">
-              <div class="header-info">
-                <div class="name">
-                  头像
-                </div>
-                <div class="header" />
-              </div>
-            </div>
+              </a-col>
+            </a-row>
           </div>
         </template>
       </div>
@@ -361,7 +396,6 @@ export default defineComponent({
 .body {
   .content {
     margin: 24px;
-
     padding: 24px 40px 24px 0px;
     background-color: #fff;
     display: flex;
@@ -377,9 +411,8 @@ export default defineComponent({
         font-weight: bold;
       }
       .infos {
-        display: flex;
+        // display: flex;
         .center {
-          width: 500px;
           .eva-name {
             margin-top: 0.24rem;
             .name {
@@ -392,6 +425,7 @@ export default defineComponent({
             .region {
               margin-top: 0.08rem;
               display: flex;
+              flex-wrap: wrap;
               .select {
                 margin-left: 8px;
               }
@@ -403,16 +437,20 @@ export default defineComponent({
         }
         .r-r {
           margin-top: 20px;
+            display: flex;
+
           .header-info {
             display: flex;
+            align-items: center;
             flex-direction: column;
             .header {
+              margin: 15px 0;
               @include wh(144px, 144px);
               background: rgba(0, 0, 0, 1);
               @include borderRadius(50%);
             }
             .upload {
-              margin: 20px auto;
+              // margin: 20px auto;
             }
           }
         }

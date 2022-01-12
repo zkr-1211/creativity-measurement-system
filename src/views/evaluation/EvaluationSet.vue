@@ -4,7 +4,6 @@
       <div class="left">
         <a-menu
           v-model:selectedKeys="selectedKeys"
-          style="width: 256px"
           :mode="mode"
           :theme="theme"
         >
@@ -181,7 +180,6 @@
                 <a-select
                   ref="select"
                   v-model:value.trim="stateValue"
-                  style="width: 120px"
                   @focus="focus"
                   @change="handleChangeState"
                 >
@@ -582,7 +580,7 @@ export default defineComponent({
         }
         .input {
           margin-top: 0.08rem;
-          width: 3.1rem;
+          max-width: 3.1rem;
         }
       }
       .eva-des {
@@ -592,7 +590,7 @@ export default defineComponent({
         }
         .txarea {
           margin-top: 0.08rem;
-          width: 4.68rem;
+          max-width: 4.68rem;
         }
       }
       .eva-tag {
@@ -602,7 +600,7 @@ export default defineComponent({
         }
         .input {
           margin-top: 0.08rem;
-          width: 4.68rem;
+          max-width: 4.68rem;
         }
         .tags {
           margin-top: 0.08rem;
@@ -681,7 +679,7 @@ export default defineComponent({
         }
         .input {
           margin-top: 8px;
-          width: 1.68rem;
+          max-width: 1.68rem;
           @include faj();
           span {
             margin-left: 10px;

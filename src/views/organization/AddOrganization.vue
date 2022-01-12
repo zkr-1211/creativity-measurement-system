@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <page-header />
-    <div class="card">
+    <a-card class="card">
       <div class="content">
         <a-form
           v-if="true"
@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </a-card>
   </div>
 </template>
 
@@ -153,14 +153,13 @@ export default defineComponent({
   .card {
     position: relative;
     margin: 16px 24px 32px 24px;
-    height: 640px;
     background: #ffffff;
     border-radius: 2px;
     .content {
       padding-top: 25px;
       margin-left: 25%;
       .input-width {
-        width: 368px;
+        max-width: 368px;
       }
       .select-width {
         width: 120px;

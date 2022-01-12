@@ -35,7 +35,6 @@
           </div>
           <div v-else-if="noTitleKey === 'app'">
             <a-list
-              style="margin-top: 32px"
               :grid="{ gutter: 24, xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }"
               :data-source="data"
             >
