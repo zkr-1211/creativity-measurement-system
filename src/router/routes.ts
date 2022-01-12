@@ -143,27 +143,37 @@ export const frameIn: Array<RouteRecordRaw> = [
   }
 ]
 // 主框架外显示的路由
-// const frameOut = [
+// const frameOut: Array<RouteRecordRaw> = [
 //   {
 //     path: '/user/login',
 //     name: 'Login',
-//     component: () => import('@/views/sys/login/index.vue'),
+//     component: () => import('@/views/layouts/login/index.vue'),
 //     meta: {
 //       title: '登录'
 //     }
 //   }
 // ]
 
-// const errorPage = [
-//   {
-//     path: '/:pathMatch(.*)*',
-//     name: 'NotFound',
-//     component: () => import('@/views/sys/error/404.vue')
-//   }
-// ]
+const errorPage: Array<RouteRecordRaw> = [
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/exception/403.vue')
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/exception/404.vue')
+  },
+  {
+    path: '/500',
+    name: '500',
+    component: () => import('@/views/exception/500.vue')
+  }
+]
 
 export default [
-  ...frameIn
+  ...frameIn,
   // ...frameOut,
-  // ...errorPage
+  ...errorPage
 ]

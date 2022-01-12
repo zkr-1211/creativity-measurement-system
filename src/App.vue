@@ -12,6 +12,7 @@ const onRefresh = () => {
     isRouterAlive.value = true
   })
 }
+
 provide('reload', onRefresh)
 </script>
 

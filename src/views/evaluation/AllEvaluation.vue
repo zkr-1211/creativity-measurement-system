@@ -84,31 +84,33 @@
       >
         <template #renderItem="{ item }">
           <a-list-item>
-            <a-card>
-              <template #cover>
-                <img
-                  alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                >
-              </template>
-              <a-card-meta :title="item.title">
-                <template #description>
-                  测试学生的创造力水平测试学生的创造力水平
+            <router-link to="/evaluation/model-dimension-edit">
+              <a-card>
+                <template #cover>
+                  <img
+                    alt="example"
+                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  >
                 </template>
-              </a-card-meta>
-              <div class="info">
-                <div class="num">
-                  14679人参与测评
+                <a-card-meta :title="item.title">
+                  <template #description>
+                    测试学生的创造力水平测试学生的创造力水平
+                  </template>
+                </a-card-meta>
+                <div class="info">
+                  <div class="num">
+                    14679人参与测评
+                  </div>
+                  <div class="imgs">
+                    <div
+                      v-for="(item, index) in 4"
+                      :key="index"
+                      class="img"
+                    />
+                  </div>
                 </div>
-                <div class="imgs">
-                  <div
-                    v-for="(item, index) in 4"
-                    :key="index"
-                    class="img"
-                  />
-                </div>
-              </div>
-            </a-card>
+              </a-card>
+            </router-link>
           </a-list-item>
         </template>
       </a-list>

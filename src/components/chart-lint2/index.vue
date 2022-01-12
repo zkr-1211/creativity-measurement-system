@@ -90,12 +90,19 @@ export default defineComponent({
           show: false,
           type: 'value'
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
         series: [
           {
             data: [
               120, 200, 150, 80, 70, 110, 130, 120, 250, 150, 80, 70, 110, 130,
               120, 200, 150, 80
             ],
+            name: '士大夫十分',
             type: 'bar',
             itemStyle: {
               color: '#1890FF'

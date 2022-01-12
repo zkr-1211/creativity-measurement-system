@@ -11,38 +11,57 @@
       v-if="noTitleKey === 'article'"
       class="content"
     >
-      <div class="evaluation-trend-chart">
-        <chart-line3 />
-      </div>
-      <div class="organization-run">
-        <div class="organization-title">
-          机构测评人数排名
-        </div>
-        <div
-          v-for="(item, index) in 7"
-          :key="index"
-          class="organization-item"
+      <a-row :gutter="24">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="18"
+          :style="{ marginBottom: '24px' }"
         >
-          <div class="organization-item-left">
+          <div class="evaluation-trend-chart">
+            <chart-line3 />
+          </div>
+        </a-col>
+
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="6"
+          :style="{ marginBottom: '24px' }"
+        >
+          <div class="organization-run">
+            <div class="organization-title">
+              机构测评人数排名
+            </div>
             <div
-              class="index"
-              :class="index <= 2 ? 'isThree' : ''"
+              v-for="(item, index) in 7"
+              :key="index"
+              class="organization-item"
             >
-              {{ index + 1 }}
-            </div>
-            <div class="organization-name">
-              工专路三号店
+              <div class="organization-item-left">
+                <div
+                  class="index"
+                  :class="index <= 2 ? 'isThree' : ''"
+                >
+                  {{ index + 1 }}
+                </div>
+                <div class="organization-name">
+                  工专路三号店
+                </div>
+              </div>
+              <div class="run-num">
+                <count-to
+                  :start-val="0"
+                  :end-val="2017"
+                  :duration="1000"
+                />
+              </div>
             </div>
           </div>
-          <div class="run-num">
-            <count-to
-              :start-val="0"
-              :end-val="2017"
-              :duration="1000"
-            />
-          </div>
-        </div>
-      </div>
+        </a-col>
+      </a-row>
     </div>
     <p v-else-if="noTitleKey === 'app'">
       访问量
@@ -165,17 +184,13 @@ export default defineComponent({
   }
 }
 .content {
-  display: flex;
   width: 100%;
-  height: 350px;
   .evaluation-trend-chart {
     flex: 1;
   }
   .organization-run {
-    width: 3.5rem;
     font-size: 0.14rem;
     color: rgba(0, 0, 0, 0.65);
-    margin-left: 0.2rem;
     .organization-title {
       font-size: 0.16rem;
       font-weight: bold;

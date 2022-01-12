@@ -100,12 +100,16 @@ export default defineComponent({
             show: false
           }
         },
+        tooltip: {
+          trigger: 'axis'
+        },
         series: [
           {
             data: [
               210, 222, 532, 641, 220, 232, 421, 610, 222, 232, 641, 220, 232,
               221
             ],
+            name: 'y',
             type: 'line',
             symbol: 'none',
             itemStyle: {

@@ -5,9 +5,7 @@
     <!-- 第二部分 -->
     <tendency-run class="animated fadeInUpBig delay-1s" />
     <!-- 第三部分 -->
-    <div
-      class="run-list animated fadeInUpBig delay-2s"
-    >
+    <div class="run-list animated fadeInUpBig delay-2s">
       <a-row :gutter="24">
         <a-col
           :xs="24"
@@ -30,9 +28,7 @@
       </a-row>
     </div>
     <!-- 第四部分 -->
-    <div
-      class="view-list animated fadeInUpBig delay-3s"
-    >
+    <div class="view-list animated fadeInUpBig delay-3s">
       <a-row :gutter="24">
         <a-col
           :xs="24"
@@ -64,10 +60,16 @@ import ParticipationRun from './components/ParticipationRun.vue'
 import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
 const store = useStore()
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+console.log(route.matched)
 store.$patch((state) => {
   state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
   state.token = 'token-asgdfebdvvadfsdfgdfh'
 })
+console.log(router)
+
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

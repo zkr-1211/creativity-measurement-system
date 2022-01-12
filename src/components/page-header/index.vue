@@ -1,9 +1,10 @@
 <template>
   <div class="body">
     <a-page-header
-      style="border: 1px solid rgb(235, 237, 240);background:#fff;"
+      style="border: 1px solid rgb(235, 237, 240); background: #fff"
       :title="title"
       :breadcrumb="{ routes }"
+      @click="aaa"
     >
       <slot />
       <div class="a-page-header-slot">
@@ -17,21 +18,13 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-const routes = [
-  {
-    path: 'index',
-    breadcrumbName: '首页'
-  },
-  {
-    path: 'first',
-    breadcrumbName: '详情页'
-  },
-  {
-    path: 'second',
-    breadcrumbName: '基础详情页'
-  }
-]
+import { onMounted, defineComponent, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+interface routeType {
+  path:string,
+  breadcrumbName:string
+}
 export default defineComponent({
   name: 'PageHeader',
   props: {
@@ -41,9 +34,25 @@ export default defineComponent({
     }
   },
   setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const aaa = () => {
+      router.push({ path: '/404' })
+    }
+    const routes = ref<routeType[]>([])
+    route?.matched.forEach(item => {
+      routes.value.push(
+        {
+          path: `${item.path}`,
+          breadcrumbName: `${item.meta.title || '首页'}`
+        }
+      )
+    })
+
     onMounted(() => {})
     return {
-      routes
+      routes,
+      aaa
     }
   }
 })

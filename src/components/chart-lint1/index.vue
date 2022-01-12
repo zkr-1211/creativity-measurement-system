@@ -99,16 +99,20 @@ export default defineComponent({
             show: false
           }
         },
+        tooltip: {
+          trigger: 'axis'
+        },
         series: <any>[
           {
             data: [
               210, 222, 532, 641, 220, 232, 421, 610, 222, 232, 641, 220, 232,
               221
             ],
+            name: 'Fake Data',
             type: 'line',
             symbol: 'none',
             itemStyle: {
-              color: 'none'
+              color: '#8543E0'
             },
             areaStyle: {
               color: '#8543E0'

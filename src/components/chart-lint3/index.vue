@@ -86,6 +86,12 @@ export default defineComponent({
       const myChart3 = echarts.init(document.getElementById('myChart3')!)
 
       const option: ECOption = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
         title: {
           text: '测评人数趋势'
         },
@@ -101,6 +107,7 @@ export default defineComponent({
               marginTop: '20px'
             }
           },
+
           data: [
             '1月',
             '2月',
@@ -132,6 +139,7 @@ export default defineComponent({
             data: [
               120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130
             ],
+            name: 'asdasfa',
             type: 'bar',
             barWidth: '32px',
             itemStyle: {

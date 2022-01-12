@@ -206,6 +206,9 @@ export default defineComponent({
    @media screen and (max-width: 1200px) {
     left: 5rem !important;
   }
+   @media screen and (max-width: 800px) {
+    left: 3rem !important;
+  }
   .info-item {
     display: flex;
     align-items: center;

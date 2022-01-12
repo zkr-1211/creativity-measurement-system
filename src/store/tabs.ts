@@ -21,7 +21,7 @@ interface IState {
   tabIndex: number;
 }
 
-const NO_PUSH_ROUTES = ['404']
+const NO_PUSH_ROUTES = ['404', '403', '500']
 
 const HOME_PAGE = {
   name: 'HomePage',
@@ -35,7 +35,7 @@ export const useTabsStore = defineStore({
     tabs:
       JSON.parse(window.sessionStorage.getItem('tabs') as string) ||
       [
-        // HOME_PAGE
+        HOME_PAGE
       ],
     tabIndex: 0
   }),
@@ -48,6 +48,8 @@ export const useTabsStore = defineStore({
     // 增加路由
     handleAddRoute(route: any) {
       if (!route.name) return
+      console.log('route.name', route.name)
+
       // 匹配不到路由
       if (NO_PUSH_ROUTES.includes(route.name)) return
       this.tabs.push({

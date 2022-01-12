@@ -15,7 +15,8 @@ import {
 import * as echarts from 'echarts/core'
 // 引入柱状图图表，图表后缀都为 Chart
 import {
-  BarChart,
+  // BarChart,
+  RadarChart,
   // 系列类型的定义后缀都为 SeriesOption
   BarSeriesOption,
   LineChart
@@ -37,9 +38,9 @@ import {
   TransformComponent
 } from 'echarts/components'
 // 标签自动布局，全局过渡动画等特性
-// import { LabelLayout, UniversalTransition } from "echarts/features";
-// // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
-// import { CanvasRenderer } from "echarts/renderers";
+import { LabelLayout, UniversalTransition } from 'echarts/features'
+// 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
+import { CanvasRenderer } from 'echarts/renderers'
 // 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
 type ECOption = echarts.ComposeOption<
   | BarSeriesOption
@@ -56,11 +57,12 @@ echarts.use([
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  BarChart,
-  LineChart
-  // LabelLayout,
-  // UniversalTransition,
-  // CanvasRenderer,
+  // BarChart,
+  LineChart,
+  RadarChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer
 ])
 export default defineComponent({
   name: 'MyChart',
@@ -85,6 +87,9 @@ export default defineComponent({
 
       // 绘制图表
       myChart.setOption({
+        tooltip: {
+          trigger: 'axis'
+        },
         legend: {
           // data: ['Allocated Budget', 'Actual Spending']
         },
@@ -104,6 +109,10 @@ export default defineComponent({
         },
         series: [
           {
+            tooltip: {
+              trigger: 'item'
+            },
+            name: 'A Software',
             type: 'radar',
             data: props.data
           }

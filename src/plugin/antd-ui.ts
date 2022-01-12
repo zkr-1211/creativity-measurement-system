@@ -29,7 +29,8 @@ import {
   message,
   Dropdown,
   List,
-  Avatar
+  Avatar,
+  Result
 } from 'ant-design-vue'
 
 const plugins = [
@@ -63,7 +64,8 @@ const plugins = [
   message,
   Dropdown,
   List,
-  Avatar
+  Avatar,
+  Result
 ]
 
 export const setupAntd = (app: any, options = {}) => {
