@@ -39,6 +39,8 @@ export default defineComponent({
     const aaa = () => {
       // router.push({ path: '/404' })
     }
+    console.log('routes', route?.matched)
+
     const routes = ref<routeType[]>([])
     route?.matched.forEach(item => {
       routes.value.push(

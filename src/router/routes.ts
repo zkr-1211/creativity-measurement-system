@@ -138,6 +138,51 @@ export const frameIn: Array<RouteRecordRaw> = [
           keepAlive: true,
           title: '工作台'
         }
+      },
+      {
+        path: '/school-administrator',
+        name: 'SchoolAdministrator',
+        component: () => import(/* webpackChunkName: "School" */ '@/views/school/SchoolAdministrator.vue'),
+        meta: {
+          keepAlive: true,
+          title: '校区管理员'
+        }
+      },
+      {
+        path: '/school-manage',
+        name: 'SchoolManage',
+        component: () => import(/* webpackChunkName: "School" */ '@/views/school/SchoolManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '校区管理'
+        }
+      },
+      {
+        path: '/student-manage',
+        name: 'StudentManage',
+        component: () => import(/* webpackChunkName: "StudentManage" */ '@/views/person/student/StudentManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '学生管理'
+        }
+      },
+      {
+        path: '/teacher-manage',
+        name: 'TeacherManage',
+        component: () => import(/* webpackChunkName: "TeacherManage" */ '@/views/person/teacher/TeacherManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '老师管理'
+        }
+      },
+      {
+        path: '/class-manage',
+        name: 'ClassManage',
+        component: () => import(/* webpackChunkName: "ClassManage" */ '@/views/class/ClassManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '班级管理'
+        }
       }
     ]
   }

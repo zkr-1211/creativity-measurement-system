@@ -55,7 +55,7 @@
         </div>
         <div class="table-table">
           <a-table
-            :scroll="{ y: 450 }"
+            :scroll="{ y: 340 }"
             :row-selection="rowSelection"
             :columns="columns"
             :data-source="dataSource"

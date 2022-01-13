@@ -489,7 +489,7 @@ export default defineComponent({
     const tableState = reactive({
       pagination: {
         showTotal: (total: any) => `共 ${total} 条数据`,
-        defaultPageSize: 5,
+        defaultPageSize: 10,
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['2', '10', '15', '20']

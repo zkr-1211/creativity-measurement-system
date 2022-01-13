@@ -80,7 +80,9 @@
                         </a-card-meta>
                         <template #actions>
                           <a>取消开通</a>
-                          <a>查看详情</a>
+                          <router-link to="/instrument-board/workbench">
+                            查看详情
+                          </router-link>
                         </template>
                       </a-card>
                     </a-list-item>
@@ -127,19 +129,20 @@
               :loading="loading"
             >
               <div
-                v-for="(item, index) in 5"
+                v-for="(item, index) in manageList"
                 :key="index"
                 class="item"
+                @click="toManage(index)"
               >
                 <div class="item-left">
                   <div class="img" />
                   <div class="name">
-                    校区管理
+                    {{ item.name }}管理
                   </div>
                 </div>
                 <div class="item-right">
                   <div class="num">
-                    16个
+                    {{ item.num }}
                   </div>
                   <div class="icon">
                     <RightOutlined />
@@ -197,6 +200,7 @@ import { onMounted, ref } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
 // import CardItem from '@/components/card-item/index.vue'
 import RecordList from '@/components/record-list/index.vue'
+import router from '@/router'
 
 const loading = ref<boolean>(true)
 onMounted(() => {
@@ -221,6 +225,47 @@ for (let i = 1; i < 4; i++) {
     name: `类目 ${i}`,
     title: '创造力测评'
   })
+}
+const manageList = ref([
+  {
+    name: '校区',
+    num: '12'
+  },
+  {
+    name: '班级',
+    num: '20'
+  },
+  {
+    name: '学生',
+    num: '6'
+  },
+  {
+    name: '老师',
+    num: '3'
+  },
+  {
+    name: '校区管理员',
+    num: '1'
+  }
+])
+const toManage = index => {
+  switch (index) {
+    case 0:
+      router.push({ path: '/school-manage' })
+      break
+    case 1:
+      router.push({ path: '/class-manage' })
+      break
+    case 2:
+      router.push({ path: '/student-manage' })
+      break
+    case 3:
+      router.push({ path: '/teacher-manage' })
+      break
+    case 4:
+      router.push({ path: '/school-administrator' })
+      break
+  }
 }
 const key = ref('tab1')
 const noTitleKey = ref('article')
@@ -282,6 +327,10 @@ const onTabChange = (value: string, type: string) => {
         cursor: pointer;
         @include faj(center);
         height: 65px;
+        &:hover{
+          opacity: 0.95;
+          color: #1890ff
+        }
         .item-left {
           @include faj(center);
           .img {
