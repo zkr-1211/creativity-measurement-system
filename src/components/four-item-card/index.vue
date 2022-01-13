@@ -12,7 +12,7 @@
         >
           <chart-card
             :loading="loading"
-            title="啊手动阀实打实的"
+            title="c'p"
             :total="15524"
           >
             <template #action>
@@ -144,6 +144,7 @@ import MiniProgress from '@/components/mini-progress/index.vue'
 import ChartCard from '@/components/chart-card/index.vue'
 import Trend from '@/components/trend/index.vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+
 const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {

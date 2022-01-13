@@ -1,7 +1,7 @@
 <template>
   <div class="chart-trend">
     {{ term }}
-    <span>{{ rate }}%</span>
+    <span>{{ rate }}</span>
     <span :class="['trend-icon', trend]">
       <CaretUpOutlined v-if="type" />
       <CaretDownOutlined v-else />
@@ -20,7 +20,7 @@ const props = defineProps({
     required: true
   },
   percentage: {
-    type: Number,
+    type: [Number, String],
     default: null
   },
   type: {

@@ -1,4 +1,3 @@
-<!-- /* eslint-disable vue/v-on-event-hyphenation */
 <template>
   <div id="components-layout-demo-basic">
     <a-layout>
@@ -22,4 +21,4 @@ import Sider from '@/layouts/sider/index.vue'
   @include wh(100vw, 100vh);
   overflow: hidden;
 }
-</style> -->
+</style>

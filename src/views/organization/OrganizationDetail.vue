@@ -27,7 +27,7 @@
             :xs="24"
             :sm="24"
             :md="24"
-            :xl="16"
+            :xl="17"
             :style="{ marginBottom: '24px' }"
           >
             <a-card
@@ -41,7 +41,15 @@
                 class="content"
               >
                 <a-list
-                  :grid="{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 2, sm: 2, xs: 1 }"
+                  :grid="{
+                    gutter: 24,
+                    xxl: 3,
+                    xl: 3,
+                    lg: 3,
+                    md: 2,
+                    sm: 2,
+                    xs: 1,
+                  }"
                   :data-source="data"
                 >
                   <template #renderItem="{ item }">
@@ -53,27 +61,27 @@
                             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                           >
                         </template>
-                        <a-card-meta :title="item.title">
-                          d
+                        <a-card-meta>
+                          <template #title>
+                            测试学生
+                          </template>
+                          <template #description>
+                            <div
+                              class="des"
+                            >
+                              <div class="text">
+                                开通日期：
+                              </div>
+                              <div class="time">
+                                2020.03.03
+                              </div>
+                            </div>
+                          </template>
                         </a-card-meta>
-                        <div class="item-content">
-                          <div class="des">
-                            <div class="">
-                              测评次数：
-                            </div>
-                            <div class="">
-                              1次
-                            </div>
-                          </div>
-                          <div class="info">
-                            <div class="num">
-                              开始时间：
-                            </div>
-                            <div class="imgs">
-                              2022.03.03 16:30
-                            </div>
-                          </div>
-                        </div>
+                        <template #actions>
+                          <a>取消开通</a>
+                          <a>查看详情</a>
+                        </template>
                       </a-card>
                     </a-list-item>
                   </template>
@@ -111,8 +119,8 @@
             :xs="24"
             :sm="24"
             :md="24"
-            :xl="8"
-            :style="{ marginBottom: '24px' }"
+            :xl="7"
+            :style="{ marginBottom: '24px'}"
           >
             <a-card
               title="管理"
@@ -153,7 +161,7 @@
             :xs="24"
             :sm="24"
             :md="24"
-            :xl="16"
+            :xl="17"
             :style="{ marginBottom: '24px' }"
           >
             <a-card
@@ -167,7 +175,7 @@
             :xs="24"
             :sm="24"
             :md="24"
-            :xl="8"
+            :xl="7"
             :style="{ marginBottom: '24px' }"
           >
             <a-card
@@ -254,17 +262,10 @@ const onTabChange = (value: string, type: string) => {
   .main {
     margin: 24px;
     .top {
-      .item-content {
-        padding: 12px 24px 0 24px;
-        .title {
-          font-weight: bold;
-          @include sc(0.17rem, rgba(0, 0, 0, 0.85));
-        }
         .des {
           @include faj();
           @include sc(0.14rem, rgba(0, 0, 0, 0.45));
         }
-      }
       .info {
         cursor: pointer;
         @include faj(center, center);

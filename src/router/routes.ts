@@ -6,7 +6,7 @@ export const frameIn: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     redirect: '/homepage',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '@/layouts/BasicLayout.vue'),
     children: [
       {
         path: '/homepage',

@@ -15,7 +15,11 @@
           今日增测评数
         </div>
         <div class="evaluation-today-num">
-          12321 <span>17.1<CaretUpOutlined /></span>
+          12321 <span><trend
+            flag="up"
+            style="margin-right: 16px"
+            :percentage="17.8"
+          /></span>
         </div>
         <div class="slot">
           <chart-line4 />
@@ -26,7 +30,12 @@
           人均测评项目数
         </div>
         <div class="evaluation-today-num">
-          2.7 <span>26.2<CaretDownOutlined /></span>
+          2.7 <span><trend
+            flag="up"
+            style="margin-right: 16px"
+            :percentage="26.2"
+            :type="false"
+          /></span>
         </div>
         <div class="slot">
           <chart-line5 />
@@ -43,9 +52,13 @@
         <a>{{ text }}</a>
       </template>
       <template #weeklyGains="{ record }">
-        {{ record.weeklyGains }}
-        <CaretDownOutlined v-if="record.increase" />
-        <CaretUpOutlined v-else />
+        <!-- {{ record.weeklyGains }} -->
+        <trend
+          flag="up"
+          style="margin-right: 16px"
+          :percentage="`${record.weeklyGains}%`"
+          :type="record.increase"
+        />
       </template>
     </a-table>
   </a-card>
@@ -56,13 +69,13 @@ import ChartLine4 from '@/components/chart-lint4/index.vue'
 import ChartLine5 from '@/components/chart-lint5/index.vue'
 import { CaretUpOutlined, CaretDownOutlined, EllipsisOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted } from 'vue'
+import Trend from '../../../components/trend/index.vue'
 
 const columns = [
-  // {
-  //   title: '排名',
-  //   dataIndex: 'key',
-  //   sorter: (a: { key: number }, b: { key: number }) => a.key - b.key
-  // },
+  {
+    title: '排名',
+    dataIndex: 'key'
+  },
   {
     title: '测评名称',
     dataIndex: 'evaluationName',
@@ -73,8 +86,9 @@ const columns = [
   {
     title: '用户数',
     dataIndex: 'userNum',
-    defaultSortOrder: 'descend'
-    // sorter: (a: { userNum: number }, b: { userNum: number }) => a.userNum - b.userNum
+    defaultSortOrder: 'descend',
+    sorter: (a: { userNum: number }, b: { userNum: number }) => a.userNum - b.userNum
+
   },
   {
     title: '周涨幅',
@@ -91,36 +105,25 @@ const columns = [
     sortDirections: ['descend', 'ascend']
   }
 ]
-const data = [
-  {
-    key: '1',
-    evaluationName: 'John Brown',
-    userNum: 32,
-    weeklyGains: '120%',
-    increase: true
-  },
-  {
-    key: '2',
-    evaluationName: 'Jim Green',
-    userNum: 42,
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '3',
-    evaluationName: 'Joe Black',
-    userNum: 32,
-    weeklyGains: '120%',
-    increase: true
-  },
-  {
-    key: '4',
-    evaluationName: 'Jim Red',
-    userNum: 32,
-    weeklyGains: '120%',
-    increase: false
-  }
-]
+interface dataType {
+  key: string;
+  evaluationName: string;
+  weeklyGains: string;
+  userNum: string;
+  increase: boolean;
+}
+const data:dataType[] = []
+for (let i = 1; i < 50; i++) {
+  data.push(
+    {
+      key: `${i}`,
+      evaluationName: `John Brown${i}`,
+      userNum: `${i}`,
+      weeklyGains: `${i}`,
+      increase: i % 2 === 0
+    }
+  )
+}
 const onChange = (pagination: any, filters: any, sorter: any) => {
   console.log('params', pagination, filters, sorter)
 }
@@ -133,28 +136,28 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-  .evaluation-row {
-    @include faj();
-    flex-wrap:wrap ;
-    width: 100%;
-    // margin-bottom: 0.24rem;
-    .evaluation-today {
-      overflow: hidden;
-      height: 1.2rem;
-      &-title {
+.evaluation-row {
+  @include faj();
+  flex-wrap: wrap;
+  width: 100%;
+  // margin-bottom: 0.24rem;
+  .evaluation-today {
+    overflow: hidden;
+    height: 1.2rem;
+    &-title {
+      @include sc(0.14rem, rgba(0, 0, 0, 0.45));
+    }
+    &-num {
+      font-weight: bold;
+      @include sc(0.24rem, rgba(0, 0, 0, 0.85));
+      span {
+        margin-left: 0.2rem;
         @include sc(0.14rem, rgba(0, 0, 0, 0.45));
       }
-      &-num {
-        font-weight: bold;
-        @include sc(0.24rem, rgba(0, 0, 0, 0.85));
-        span {
-          margin-left: 0.2rem;
-          @include sc(0.14rem, rgba(0, 0, 0, 0.45));
-        }
-      }
-      .slot {
-        width: 3rem;
-      }
+    }
+    .slot {
+      width: 3rem;
     }
   }
+}
 </style>

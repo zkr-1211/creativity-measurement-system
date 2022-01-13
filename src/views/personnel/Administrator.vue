@@ -21,14 +21,14 @@
           :data-source="dataSource"
           :pagination="pagination"
         >
-          <template #evaluationName="{ text }">
+          <template #name="{ text }">
             <a>{{ text }}</a>
           </template>
-          <template #weeklyGains="{ record }">
-            {{ record.weeklyGains }}
+          <template #ID="{ record }">
+            {{ record.ID }}
           </template>
           <template
-            v-for="col in ['evaluationName', 'userNum', 'weeklyGains']"
+            v-for="col in ['ID']"
             #[col]="{ text, record }"
             :key="col"
           >
@@ -58,7 +58,12 @@
               <span v-else>
                 <a @click="onEdit(record.key)">权限编辑</a>
                 <span class="fengefu">|</span>
-                <a @click="onDelete(record.key)">删除</a>
+                <a-popconfirm
+                  title="确认删除该项吗?"
+                  @confirm="onDelete(record.key)"
+                >
+                  <a>删除</a>
+                </a-popconfirm>
               </span>
             </div>
           </template>
@@ -72,39 +77,73 @@
 import { onMounted, defineComponent, ref, reactive, toRefs } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import PageHeader from '@/components/page-header/index.vue'
+interface dataType {
+  key: string;
+  ID: string;
+  name: string;
+  phone: string;
+  createNum: string;
+  time: string;
+  increase: boolean;
+}
 const columns = [
   {
-    title: '排名',
-    dataIndex: 'key',
-    sorter: (a: { key: number }, b: { key: number }) => a.key - b.key
+    title: '管理员ID',
+    dataIndex: 'key'
+    // sorter: (a: { key: number }, b: { key: number }) => a.key - b.key
   },
   {
-    title: '测评名称',
-    dataIndex: 'evaluationName',
+    title: '姓名',
+    dataIndex: 'name',
     slots: {
-      customRender: 'evaluationName'
+      customRender: 'name'
     }
   },
   {
-    title: '用户数',
-    dataIndex: 'userNum',
+    title: '身份',
+    dataIndex: 'ID',
+    slots: {
+      customRender: 'ID'
+    }
+  },
+  {
+    title: '添加时间',
+    dataIndex: 'time',
     defaultSortOrder: 'descend',
-    sorter: (a: { userNum: number }, b: { userNum: number }) => a.userNum - b.userNum,
+    sorter: (a, b) => {
+      const aTime = new Date(a.time).getTime()
+      const bTime = new Date(b.time).getTime()
+      return aTime - bTime
+    },
     slots: {
-      customRender: 'userNum'
+      customRender: 'time'
     }
   },
   {
-    title: '周涨幅',
-    dataIndex: 'weeklyGains',
-    filterMultiple: false,
+    title: '手机号',
+    dataIndex: 'phone',
     slots: {
-      customRender: 'weeklyGains'
-    },
-    onFilter: (value: any, record: { weeklyGains: string | any[] }) => record.weeklyGains.indexOf(value) === 0,
-    sorter: (a: { weeklyGains: string | any[] }, b: { weeklyGains: string | any[] }) => a.weeklyGains.length - b.weeklyGains.length,
-    sortDirections: ['descend', 'ascend']
+      customRender: 'phone'
+    }
   },
+  {
+    title: '创建测评数',
+    dataIndex: 'createNum',
+    slots: {
+      customRender: 'createNum'
+    }
+  },
+  // {
+  //   title: '周涨幅',
+  //   dataIndex: 'weeklyGains',
+  //   filterMultiple: false,
+  //   slots: {
+  //     customRender: 'weeklyGains'
+  //   },
+  //   onFilter: (value: any, record: { weeklyGains: string | any[] }) => record.weeklyGains.indexOf(value) === 0,
+  //   sorter: (a: { weeklyGains: string | any[] }, b: { weeklyGains: string | any[] }) => a.weeklyGains.length - b.weeklyGains.length,
+  //   sortDirections: ['descend', 'ascend']
+  // },
   {
     title: '操作',
     dataIndex: 'operation',
@@ -113,78 +152,18 @@ const columns = [
     }
   }
 ]
-const data = [
-  {
-    key: '1',
-    evaluationName: 'John Brown',
-    userNum: '32',
-    weeklyGains: '120%',
+const data: dataType[] = []
+for (let i = 1; i < 50; i++) {
+  data.push({
+    key: `1231254543${i}`,
+    ID: `测评师${i}`,
+    name: `John Brown${i}`,
+    phone: `12353434634${i}`,
+    createNum: `${i}`,
+    time: `2017-10-31 23:12:${i}`,
     increase: true
-  },
-  {
-    key: '2',
-    evaluationName: 'Jim Green',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '3',
-    evaluationName: 'Joe Black',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: true
-  },
-  {
-    key: '4',
-    evaluationName: 'Jim Red',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '11',
-    evaluationName: 'Jim Green',
-    userNum: '42',
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '5',
-    evaluationName: 'Joe Black',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: true
-  },
-  {
-    key: '6',
-    evaluationName: 'Jim Red',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '7',
-    evaluationName: 'Jim Green',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: false
-  },
-  {
-    key: '8',
-    evaluationName: 'Joe Black',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: true
-  },
-  {
-    key: '9',
-    evaluationName: 'Jim Red',
-    userNum: '32',
-    weeklyGains: '120%',
-    increase: false
-  }
-]
+  })
+}
 export default defineComponent({
   name: 'IsAdministrator',
   components: {
@@ -222,19 +201,21 @@ export default defineComponent({
       })
     }
     const dataSource = ref(data)
-    const editableData:any = reactive({})
+    const editableData: any = reactive({})
     const onDetail = (key: any) => {
       console.log('onDetail', key)
     }
     const onEdit = (key: string) => {
       editableData[key] = cloneDeep(
-        dataSource.value.filter(item => key === item.key)[0]
+        dataSource.value.filter((item) => key === item.key)[0]
       )
     }
-    const onDelete = (key: any) => {}
+    const onDelete = (key: string) => {
+      dataSource.value = dataSource.value.filter((item) => item.key !== key)
+    }
     const save = (key: string) => {
       Object.assign(
-        dataSource.value.filter(item => key === item.key)[0],
+        dataSource.value.filter((item) => key === item.key)[0],
         editableData[key]
       )
       delete editableData[key]
