@@ -1,11 +1,25 @@
 <template>
   <div class="tabs">
     <div class="content">
+      <!-- <a-tabs
+        type="editable-card"
+      >
+        <a-tab-pane
+          v-for="(item, index) in tabs"
+          :key="item.name"
+          :tab="item.title"
+          closable
+          @click="handleOpenContext($event, item, index)"
+        >
+          {{ item.title }}
+        </a-tab-pane>
+      </a-tabs> -->
       <a-tag
         v-for="(item, index) in tabs"
         :key="item.name"
         :closable="item.name !== 'HomePage'"
         :color="currentRouteName === item.name ? '#108ee9' : ''"
+        style="max-height: 22px;"
         @close="handleClose(tabs[tabIndex], index)"
         @click="(e) => handleOpenContext(e, item, index)"
       >
@@ -126,6 +140,8 @@ export default defineComponent({
       store.handleCloseAll()
     }
     const handleClose = (item: ITabsItem, index: number) => {
+      console.log('12312312312312')
+
       store.handleClose(index)
       // 如果关闭的是当前路由，则跳转到tabs的最后一个路由
       const isCurrentRoute = item.name === currentRouteName.value
@@ -139,6 +155,13 @@ export default defineComponent({
     const contentVisible = ref(false)
     const currentContextIndex = ref(0)
     const handleOpenContext = (e: any, item: ITabsItem, index: number) => {
+      console.log(item)
+
+      router.push({
+        name: item.name,
+        params: item.params,
+        query: item.query
+      })
       store.tabIndex = index
       contentVisible.value = true
     }
@@ -185,7 +208,7 @@ export default defineComponent({
     display: flex;
     flex-wrap: nowrap;
     max-height: 30px;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
   }
   .reload {

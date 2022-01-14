@@ -191,7 +191,7 @@ export default defineComponent({
       theme: 'light',
       selectedKeys: ['1']
     })
-    const colorList = ref(['red', 'blue', 'yellow'])
+    const colorList = ref(['#1890FF', '#2FC25B', '#FACC14'])
     // 个人信息
     const personage = reactive({
       oneAttribute: '张克榕',
