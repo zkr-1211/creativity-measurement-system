@@ -15,7 +15,7 @@ const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 500)
 })
 </script>
 <style lang="scss" scoped>

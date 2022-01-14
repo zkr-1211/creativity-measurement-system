@@ -74,8 +74,8 @@
               管理员
             </router-link>
           </a-menu-item>
-          <a-menu-item key="personagePage">
-            <router-link to="/personage-page">
+          <a-menu-item key="Evaluator">
+            <router-link to="/personnelmanage/evaluator">
               测评师
             </router-link>
           </a-menu-item>

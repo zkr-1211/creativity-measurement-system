@@ -29,6 +29,16 @@ export const frameIn: Array<RouteRecordRaw> = [
         }
       },
       {
+        path: '/evaluation/evaluation-detail',
+        name: 'EvaluationDetail',
+        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDetail.vue'),
+        meta: {
+          keepAlive: true,
+          title: '测评详情',
+          auth: true
+        }
+      },
+      {
         path: '/evaluation/design',
         name: 'EvaluationManage',
         component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDesign.vue'),
@@ -56,15 +66,6 @@ export const frameIn: Array<RouteRecordRaw> = [
           keepAlive: true,
           title: '模型设置'
 
-        }
-      },
-      {
-        path: '/detailpage',
-        name: 'detailPage',
-        component: () => import(/* webpackChunkName: "detailpage" */ '@/views/detail/index.vue'),
-        meta: {
-          keepAlive: true,
-          title: '详情页'
         }
       },
       {
@@ -96,29 +97,21 @@ export const frameIn: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/listpage/searchtable',
-        name: 'SearchTable',
-        component: () => import(/* webpackChunkName: "listpage" */ '@/views/list/SearchTable.vue'),
+        path: '/organization/orgevaluation-detail',
+        name: 'OrgEvaluationDetail',
+        component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/OrgEvaluationDetail.vue'),
         meta: {
-          keepAlive: true
+          keepAlive: true,
+          title: '机构测评详情'
         }
       },
       {
-        path: '/personage-page',
-        name: 'personagePage',
-        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/index.vue'),
+        path: '/personnelmanage/evaluator',
+        name: 'Evaluator',
+        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Evaluator.vue'),
         meta: {
           keepAlive: true,
           title: '测评师'
-        }
-      },
-      {
-        path: '/personage-set',
-        name: 'personageSet',
-        component: () => import(/* webpackChunkName: "personagePage" */ '@/views/personage/personageSet.vue'),
-        meta: {
-          keepAlive: true,
-          title: '个人页设置'
         }
       },
       {
@@ -128,15 +121,6 @@ export const frameIn: Array<RouteRecordRaw> = [
         meta: {
           keepAlive: true,
           title: '管理员'
-        }
-      },
-      {
-        path: '/instrument-board/workbench',
-        name: 'WorkBench',
-        component: () => import(/* webpackChunkName: "instrumentBoard" */ '@/views/instrument/WorkBench.vue'),
-        meta: {
-          keepAlive: true,
-          title: '工作台'
         }
       },
       {
@@ -167,12 +151,48 @@ export const frameIn: Array<RouteRecordRaw> = [
         }
       },
       {
+        path: '/student-record',
+        name: 'StudentRecord',
+        component: () => import(/* webpackChunkName: "StudentRecord" */ '@/views/person/student/StudentRecord.vue'),
+        meta: {
+          keepAlive: true,
+          title: '学生档案'
+        }
+      },
+      {
+        path: '/studentinfo-set',
+        name: 'StudentInfoSet',
+        component: () => import(/* webpackChunkName: "InfoSet" */ '@/views/person/student/StudentInfoSet.vue'),
+        meta: {
+          keepAlive: true,
+          title: '学生信息设置'
+        }
+      },
+      {
+        path: '/teacher-record',
+        name: 'TeacherRecord',
+        component: () => import(/* webpackChunkName: "Record" */ '@/views/person/teacher/TeacherRecord.vue'),
+        meta: {
+          keepAlive: true,
+          title: '教师档案'
+        }
+      },
+      {
+        path: '/teacherinfo-set',
+        name: 'TeacherInfoSet',
+        component: () => import(/* webpackChunkName: "InfoSet" */ '@/views/person/teacher/TeacherInfoSet.vue'),
+        meta: {
+          keepAlive: true,
+          title: '教师信息设置'
+        }
+      },
+      {
         path: '/teacher-manage',
         name: 'TeacherManage',
         component: () => import(/* webpackChunkName: "TeacherManage" */ '@/views/person/teacher/TeacherManage.vue'),
         meta: {
           keepAlive: true,
-          title: '老师管理'
+          title: '教师管理'
         }
       },
       {

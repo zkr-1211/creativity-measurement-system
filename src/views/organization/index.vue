@@ -1,50 +1,6 @@
 <template>
   <div class="body">
     <page-header />
-    <!-- <div class="content-card">
-      <div class="add-org">
-        <router-link to="/organization/addorganization">
-          + 新增机构
-        </router-link>
-      </div>
-      <div
-        v-for="(item, index) in 4"
-        :key="index"
-        class="content-item"
-      >
-        <div class="item-top">
-          <div class="header" />
-          <div class="item-infos">
-            <div class="title">
-              凤蝶
-            </div>
-            <router-link to="/organization/detail">
-              <div class="des">
-                测试学生的创造力水平测力水平测试学生的创造力水平测力水平
-              </div>
-            </router-link>
-          </div>
-        </div>
-        <div class="item-bottom-info">
-          <div class="info">
-            <div class="num">
-              操作一
-            </div>
-            <div class="imgs">
-              |
-            </div>
-            <div class="num">
-              操作二
-            </div>
-          </div>
-        </div>
-      </div>
-      <i />
-      <i />
-      <i />
-      <i />
-    </div> -->
-
     <a-list
       :data-source="data"
       :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
@@ -64,7 +20,7 @@
             </router-link>
           </template>
           <template v-else>
-            <router-link to="/organization/detail">
+            <router-link to="/organization/orgevaluation-detail">
               <a-card :hoverable="true">
                 <a-card-meta>
                   <template #title>

@@ -84,7 +84,7 @@
       >
         <template #renderItem="{ item }">
           <a-list-item>
-            <router-link to="/evaluation/model-dimension-edit">
+            <router-link to="/evaluation/evaluation-detail">
               <a-card>
                 <template #cover>
                   <img
@@ -114,28 +114,6 @@
           </a-list-item>
         </template>
       </a-list>
-      <!-- <CardItem>
-        <div class="item-content">
-          <div class="title">
-            创造力测评
-          </div>
-          <div class="des">
-            测试学生的创造力水平测试学生的创造力水平
-          </div>
-          <div class="info">
-            <div class="num">
-              14679人参与测评
-            </div>
-            <div class="imgs">
-              <div
-                v-for="(item, index) in 4"
-                :key="index"
-                class="img"
-              />
-            </div>
-          </div>
-        </div>
-      </CardItem> -->
     </div>
   </div>
 </template>

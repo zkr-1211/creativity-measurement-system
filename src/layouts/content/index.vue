@@ -5,14 +5,9 @@
     </div>
     <div class="content">
       <router-view v-slot="{ Component }">
-        <transition
-          name="scale"
-          mode="out-in"
-        >
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </transition>
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
       </router-view>
     </div>
   </a-layout-content>
@@ -49,12 +44,12 @@ import Tabs from '@/components/tabs/index.vue'
 }
 .scale-enter-active,
 .scale-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
 }
 
 .scale-enter-from,
 .scale-leave-to {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 </style>

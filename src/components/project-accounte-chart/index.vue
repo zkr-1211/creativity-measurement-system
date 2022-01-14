@@ -204,7 +204,7 @@ export default defineComponent({
     left: 2.7rem !important;
   }
    @media screen and (max-width: 1200px) {
-    left: 5rem !important;
+    left: 4rem !important;
   }
    @media screen and (max-width: 800px) {
     left: 3rem !important;

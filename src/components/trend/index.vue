@@ -16,8 +16,7 @@ import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
 const props = defineProps({
   term: {
     type: String,
-    default: '',
-    required: true
+    default: ''
   },
   percentage: {
     type: [Number, String],

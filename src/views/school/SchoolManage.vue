@@ -1,109 +1,84 @@
 <!--  -->
 <template>
-  <div class="body">
-    <page-header />
-    <div class="card">
-      <div class="top">
-        <div class="top-left">
-          人员列表
+  <page-header title="班级管理" />
+  <a-card
+    title="班级列表"
+    style="margin: 24px"
+  >
+    <template #extra>
+      <a-button type="primary">
+        + 添加
+      </a-button>
+    </template>
+    <Table
+      :columns="columns"
+      :data-source="dataSource"
+    >
+      <template
+        v-for="item in columns"
+        #[item.dataIndex]="{ scope }"
+        :key="item.dataIndex"
+      >
+        <div v-if="!item.isSlot">
+          <a-input
+            v-if="editableData[scope.record.key] && item.isEdit"
+            v-model:value="editableData[scope.record.key][item.dataIndex]"
+            style="margin: -5px 0"
+          />
+          <template v-else>
+            {{ scope.text }}
+          </template>
         </div>
-        <div class="top-right">
-          <a-button type="primary">
-            +添加
-          </a-button>
+        <div v-else>
+          <div class="editable-row-operations">
+            <span v-if="editableData[scope.record.key]">
+              <a @click="save(scope.record.key)">保存</a>
+              <span class="fengefu">|</span>
+              <a-popconfirm
+                title="Sure to cancel?"
+                @confirm="cancel(scope.record.key)"
+              >
+                <a>取消</a>
+              </a-popconfirm>
+            </span>
+            <span v-else>
+              <a @click="onEdit(scope.record.key)">权限编辑</a>
+              <span class="fengefu">|</span>
+              <a-popconfirm
+                title="确认删除该项吗?"
+                @confirm="onDelete(scope.record.key)"
+              >
+                <a>删除</a>
+              </a-popconfirm>
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="table">
-        <a-table
-          :scroll="{ y: 450 }"
-          :row-selection="rowSelection"
-          :columns="columns"
-          :data-source="dataSource"
-          :pagination="pagination"
-        >
-          <template #name="{ text }">
-            <a>{{ text }}</a>
-          </template>
-          <template #ID="{ record }">
-            {{ record.ID }}
-          </template>
-          <template
-            v-for="col in ['ID']"
-            #[col]="{ text, record }"
-            :key="col"
-          >
-            <div>
-              <a-input
-                v-if="editableData[record.key]"
-                v-model:value="editableData[record.key][col]"
-                style="margin: -5px 0"
-              />
-              <template v-else>
-                {{ text }}
-              </template>
-            </div>
-          </template>
-          <template #operation="{ record }">
-            <div class="editable-row-operations">
-              <span v-if="editableData[record.key]">
-                <a @click="save(record.key)">保存</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="Sure to cancel?"
-                  @confirm="cancel(record.key)"
-                >
-                  <a>取消</a>
-                </a-popconfirm>
-              </span>
-              <span v-else>
-                <a @click="onEdit(record.key)">权限编辑</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="确认删除该项吗?"
-                  @confirm="onDelete(record.key)"
-                >
-                  <a>删除</a>
-                </a-popconfirm>
-              </span>
-            </div>
-          </template>
-        </a-table>
-      </div>
-    </div>
-  </div>
+      </template>
+    </Table>
+  </a-card>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, reactive, toRefs } from 'vue'
+import { onMounted, defineComponent, ref, reactive } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import PageHeader from '@/components/page-header/index.vue'
+import Table from '@/components/table/index.vue'
 interface dataType {
   key: string;
-  ID: string;
   name: string;
-  phone: string;
-  createNum: string;
   time: string;
-  increase: boolean;
 }
 const columns = [
   {
-    title: '管理员ID',
+    title: '校区ID',
     dataIndex: 'key'
-    // sorter: (a: { key: number }, b: { key: number }) => a.key - b.key
   },
   {
-    title: '姓名',
+    title: '校区名称',
     dataIndex: 'name',
+    isEdit: true,
     slots: {
       customRender: 'name'
-    }
-  },
-  {
-    title: '身份',
-    dataIndex: 'ID',
-    slots: {
-      customRender: 'ID'
     }
   },
   {
@@ -120,33 +95,9 @@ const columns = [
     }
   },
   {
-    title: '手机号',
-    dataIndex: 'phone',
-    slots: {
-      customRender: 'phone'
-    }
-  },
-  {
-    title: '创建测评数',
-    dataIndex: 'createNum',
-    slots: {
-      customRender: 'createNum'
-    }
-  },
-  // {
-  //   title: '周涨幅',
-  //   dataIndex: 'weeklyGains',
-  //   filterMultiple: false,
-  //   slots: {
-  //     customRender: 'weeklyGains'
-  //   },
-  //   onFilter: (value: any, record: { weeklyGains: string | any[] }) => record.weeklyGains.indexOf(value) === 0,
-  //   sorter: (a: { weeklyGains: string | any[] }, b: { weeklyGains: string | any[] }) => a.weeklyGains.length - b.weeklyGains.length,
-  //   sortDirections: ['descend', 'ascend']
-  // },
-  {
     title: '操作',
     dataIndex: 'operation',
+    isSlot: true,
     slots: {
       customRender: 'operation'
     }
@@ -156,55 +107,19 @@ const data: dataType[] = []
 for (let i = 1; i < 50; i++) {
   data.push({
     key: `1231254543${i}`,
-    ID: `测评师${i}`,
-    name: `John Brown${i}`,
-    phone: `12353434634${i}`,
-    createNum: `${i}`,
-    time: `2017-10-31 23:12:${i}`,
-    increase: true
+    name: `厦门校区${i}`,
+    time: `2017-10-31 23:12:${i}`
   })
 }
 export default defineComponent({
-  name: 'IsAdministrator',
+  name: 'SchoolAdministrator',
   components: {
-    PageHeader
+    PageHeader,
+    Table
   },
   setup() {
-    // 搜素
-    const value = ref('')
-    const onSearch = (searchValue: any) => {
-      console.log('use value', searchValue)
-      console.log('or use this.value', value.value)
-    }
-    // 表格以及分页部分
-    const tableState = reactive({
-      pagination: {
-        showTotal: (total: any) => `共 ${total} 条数据`,
-        defaultPageSize: 10,
-        showSizeChanger: true,
-        showQuickJumper: true,
-        pageSizeOptions: ['2', '10', '15', '20']
-      }
-    })
-    const rowSelection = {
-      onChange: (selectedRowKeys: any, selectedRows: any) => {
-        console.log(
-          `selectedRowKeys: ${selectedRowKeys}`,
-          'selectedRows: ',
-          selectedRows
-        )
-      },
-      getCheckboxProps: (record: { name: string }) => ({
-        disabled: record.name === 'Disabled User',
-        // Column configuration not to be checked
-        name: record.name
-      })
-    }
     const dataSource = ref(data)
     const editableData: any = reactive({})
-    const onDetail = (key: any) => {
-      console.log('onDetail', key)
-    }
     const onEdit = (key: string) => {
       editableData[key] = cloneDeep(
         dataSource.value.filter((item) => key === item.key)[0]
@@ -225,16 +140,10 @@ export default defineComponent({
     }
     onMounted(() => {})
     return {
-      ...toRefs(tableState),
-      value,
       dataSource,
       columns,
-      rowSelection,
-      editingKey: '',
       editableData,
-      onSearch,
       onEdit,
-      onDetail,
       onDelete,
       save,
       cancel
@@ -244,28 +153,13 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-.body {
-  .card {
-    margin: 16px 24px 32px 24px;
-    background: #ffffff;
-    padding: 20px 30px;
-    .top {
-      @include faj();
-      @include sc(16px, #000000);
-      opacity: 0.85;
-    }
-    .table {
-      margin-top: 20px;
-      .editable-row-operations {
-        .fengefu {
-          margin-right: 8px;
-          color: #e8e8e8;
-        }
-      }
-      .editable-row-operations a {
-        margin-right: 8px;
-      }
-    }
+.editable-row-operations {
+  .fengefu {
+    margin-right: 8px;
+    color: #e8e8e8;
   }
+}
+.editable-row-operations a {
+  margin-right: 8px;
 }
 </style>

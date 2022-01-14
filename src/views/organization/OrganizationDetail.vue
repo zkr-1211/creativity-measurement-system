@@ -66,9 +66,7 @@
                             测试学生
                           </template>
                           <template #description>
-                            <div
-                              class="des"
-                            >
+                            <div class="des">
                               <div class="text">
                                 开通日期：
                               </div>
@@ -80,7 +78,7 @@
                         </a-card-meta>
                         <template #actions>
                           <a>取消开通</a>
-                          <router-link to="/instrument-board/workbench">
+                          <router-link to="/organization/orgevaluation-detail">
                             查看详情
                           </router-link>
                         </template>
@@ -88,24 +86,6 @@
                     </a-list-item>
                   </template>
                 </a-list>
-                <!-- <CardItem>
-              <div class="item-content">
-                <div class="title">
-                  创造力测评
-                </div>
-                <div class="des">
-                  <div class="text">
-                    开通日期：
-                  </div>
-                  <div class="time">
-                    2020.03.03
-                  </div>
-                </div>
-              </div>
-              <div class="info">
-                取消开通
-              </div>
-            </CardItem> -->
               </div>
               <p v-else-if="noTitleKey === 'app'">
                 访问量
@@ -122,7 +102,7 @@
             :sm="24"
             :md="24"
             :xl="7"
-            :style="{ marginBottom: '24px'}"
+            :style="{ marginBottom: '24px' }"
           >
             <a-card
               title="管理"
@@ -198,7 +178,6 @@
 import { RightOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
-// import CardItem from '@/components/card-item/index.vue'
 import RecordList from '@/components/record-list/index.vue'
 import router from '@/router'
 
@@ -206,7 +185,7 @@ const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 500)
 })
 const tabListNoTitle = [
   {
@@ -248,7 +227,7 @@ const manageList = ref([
     num: '1'
   }
 ])
-const toManage = index => {
+const toManage = (index) => {
   switch (index) {
     case 0:
       router.push({ path: '/school-manage' })
@@ -307,10 +286,10 @@ const onTabChange = (value: string, type: string) => {
   .main {
     margin: 24px;
     .top {
-        .des {
-          @include faj();
-          @include sc(0.14rem, rgba(0, 0, 0, 0.45));
-        }
+      .des {
+        @include faj();
+        @include sc(0.14rem, rgba(0, 0, 0, 0.45));
+      }
       .info {
         cursor: pointer;
         @include faj(center, center);
@@ -327,9 +306,9 @@ const onTabChange = (value: string, type: string) => {
         cursor: pointer;
         @include faj(center);
         height: 65px;
-        &:hover{
+        &:hover {
           opacity: 0.95;
-          color: #1890ff
+          color: #1890ff;
         }
         .item-left {
           @include faj(center);

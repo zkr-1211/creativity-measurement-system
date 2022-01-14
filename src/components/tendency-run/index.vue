@@ -20,7 +20,7 @@
           :style="{ marginBottom: '24px' }"
         >
           <div class="evaluation-trend-chart">
-            <chart-line3 />
+            <chart-bar />
           </div>
         </a-col>
 
@@ -90,13 +90,13 @@
 
 <script lang="ts">
 import { onMounted, defineComponent, ref, reactive } from 'vue'
-import ChartLine3 from '@/components/chart-lint3/index.vue'
+import ChartBar from '@/components/chart-bar/index.vue'
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import CountTo from '@/components/vue-count-to/index.vue'
 
 export default defineComponent({
   name: 'TendencyRun',
-  components: { ChartLine3, CountTo },
+  components: { ChartBar, CountTo },
   setup() {
     const SkeletonParagraphProps = reactive({
       rows: 10
@@ -105,7 +105,7 @@ export default defineComponent({
     onMounted(() => {
       setTimeout(() => {
         loading.value = false
-      }, 3000)
+      }, 500)
     })
     const tabListNoTitle = [
       {

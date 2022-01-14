@@ -22,7 +22,7 @@
           /></span>
         </div>
         <div class="slot">
-          <chart-line4 />
+          <ChartAreaRank1 />
         </div>
       </div>
       <div class="evaluation-today">
@@ -38,7 +38,7 @@
           /></span>
         </div>
         <div class="slot">
-          <chart-line5 />
+          <ChartAreaRank2 />
         </div>
       </div>
     </div>
@@ -65,8 +65,8 @@
 </template>
 
 <script lang="ts" setup>
-import ChartLine4 from '@/components/chart-lint4/index.vue'
-import ChartLine5 from '@/components/chart-lint5/index.vue'
+import ChartAreaRank1 from '@/components/chart-area-rank1/index.vue'
+import ChartAreaRank2 from '@/components/chart-area-rank2/index.vue'
 import { CaretUpOutlined, CaretDownOutlined, EllipsisOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted } from 'vue'
 import Trend from '../../../components/trend/index.vue'
@@ -131,7 +131,7 @@ const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 500)
 })
 </script>
 <style lang="scss" scoped>

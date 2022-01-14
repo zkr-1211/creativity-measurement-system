@@ -60,7 +60,7 @@
             </template>
 
             <div>
-              <chart-line1 />
+              <chart-area />
             </div>
             <template #footer>
               访问量 <span>60%</span>
@@ -87,7 +87,7 @@
             </template>
 
             <div>
-              <chart-line2 />
+              <chart-mbar />
             </div>
             <template #footer>
               地方萨芬撒旦士大夫
@@ -138,18 +138,17 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import ChartLine1 from '@/components/chart-lint1/index.vue'
-import ChartLine2 from '@/components/chart-lint2/index.vue'
+import ChartArea from '@/components/chart-area/index.vue'
+import ChartMbar from '@/components/chart-mbar/index.vue'
 import MiniProgress from '@/components/mini-progress/index.vue'
 import ChartCard from '@/components/chart-card/index.vue'
 import Trend from '@/components/trend/index.vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
-
 const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 500)
 })
 </script>
 <style lang="scss" scoped>

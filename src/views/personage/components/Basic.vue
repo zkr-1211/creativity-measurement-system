@@ -204,6 +204,36 @@ export default defineComponent({
         message.error('upload error')
       }
     }
+
+    const beforeUpload = (file: { type: string; size: number }) => {
+      const isJpgOrPng =
+        file.type === 'image/jpeg' || file.type === 'image/png'
+
+      if (!isJpgOrPng) {
+        message.error('You can only upload JPG file!')
+      }
+
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isLt2M) {
+        message.error('Image must smaller than 2MB!')
+      }
+
+      return isJpgOrPng && isLt2M
+    }
+    // 上传文件
+    const fileList = ref([])
+    const handleChangeFile = (infoFile: { file: { status: string; name: any }; fileList: any }) => {
+      if (infoFile.file.status !== 'uploading') {
+        console.log(infoFile.file, infoFile.fileList)
+      }
+
+      if (infoFile.file.status === 'done') {
+        message.success(`${infoFile.file.name} file uploaded successfully`)
+      } else if (infoFile.file.status === 'error') {
+        message.error(`${infoFile.file.name} file upload failed.`)
+      }
+    }
     // 更新基本信息
     const updateInfo = () => {
       const params = {
@@ -232,6 +262,8 @@ export default defineComponent({
       evaDes,
       stateValue,
       handleChange,
+      handleChangeFile,
+      beforeUpload,
       updateInfo,
       focus,
       handleChangeState

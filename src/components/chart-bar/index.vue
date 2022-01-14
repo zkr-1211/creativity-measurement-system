@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="myChart2" />
+    <div id="myChart3" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import {
 import * as echarts from 'echarts/core'
 // 引入柱状图图表，图表后缀都为 Chart
 import {
-  // BarChart,
+  BarChart,
   // 系列类型的定义后缀都为 SeriesOption
   BarSeriesOption
   // LineChart,
@@ -39,7 +39,7 @@ import {
 // 标签自动布局，全局过渡动画等特性
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
-import { CanvasRenderer } from 'echarts/renderers'
+// import { CanvasRenderer } from "echarts/renderers";
 // 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
 type ECOption = echarts.ComposeOption<
   | BarSeriesOption
@@ -56,13 +56,13 @@ echarts.use([
   // GridComponent,
   // DatasetComponent,
   // TransformComponent,
-  // BarChart,
+  BarChart
   // LabelLayout,
   // UniversalTransition,
-  CanvasRenderer
+  // CanvasRenderer,
 ])
 export default defineComponent({
-  name: 'MyChart2',
+  name: 'MyChart3',
   props: {
     date: {
       type: Array,
@@ -74,52 +74,91 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
+    // const { appContext: { config: { globalProperties }}} = getCurrentInstance() as ComponentInternalInstance;
+    // const { appContext  } = getCurrentInstance()
+    // console.log("globalProperties.$echarts=====",echarts);
+
     function Init() {
       // 基于准备好的dom，初始化echarts实例
-      // const myChart2 = globalProperties.$echarts.init(
-      //   document.getElementById("myChart2")
+      // const myChart3 = globalProperties.$echarts.init(
+      //   document.getElementById("myChart3")
       // );
-      const myChart2 = echarts.init(document.getElementById('myChart2')!)
+      const myChart3 = echarts.init(document.getElementById('myChart3')!)
+
       const option: ECOption = {
-        // 添加横线滚动条
-        xAxis: {
-          show: false,
-          type: 'category'
-        },
-        yAxis: {
-          show: false,
-          type: 'value'
-        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
           }
         },
+        title: {
+          text: '测评人数趋势'
+        },
+        xAxis: {
+          type: 'category',
+          axisLine: {
+            show: false
+          },
+          axisTick: <object>{
+            alignWithLabel: true,
+            lineStyle: {
+              color: '#E8E8E8',
+              marginTop: '20px'
+            }
+          },
+
+          data: [
+            '1月',
+            '2月',
+            '3月',
+            '4月',
+            '5月',
+            '6月',
+            '7月',
+            '8月',
+            '9月',
+            '10月',
+            '11月',
+            '12月'
+          ]
+        },
+        yAxis: [
+          {
+            type: 'value',
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            }
+          }
+        ],
         series: [
           {
             data: [
-              120, 200, 150, 80, 70, 110, 130, 120, 250, 150, 80, 70, 110, 130,
-              120, 200, 150, 80
+              120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130
             ],
-            name: '士大夫十分',
+            name: 'asdasfa',
             type: 'bar',
+            barWidth: '32px',
             itemStyle: {
               color: '#1890FF'
             }
           }
         ],
-        grid: <any>{
-          x: 0,
-          y: 0,
-          x2: 0,
-          y2: 0
+        grid: <any> {
+          x: 30,
+          // y: 0,
+          x2: 0
+          // y2: 0
         }
       }
+      myChart3.setOption(option)
+
       // 绘制图表
-      myChart2.setOption(option)
       window.addEventListener('resize', () => {
-        myChart2.resize()
+        myChart3.resize()
       })
     }
     onMounted(() => {
@@ -131,9 +170,8 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-#myChart2 {
-  width: 100%;
-  // width: 100%;
-  height: 0.4rem;
+#myChart3 {
+  width: 95%;
+  height: 3.8rem;
 }
 </style>

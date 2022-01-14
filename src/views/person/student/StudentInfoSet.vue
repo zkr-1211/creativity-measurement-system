@@ -264,11 +264,6 @@
 import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
-function getBase64(img: Blob, callback: any) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
 export default defineComponent({
   components: {
     UploadOutlined
@@ -277,7 +272,7 @@ export default defineComponent({
     const stateMenu = reactive({
       mode: 'inline',
       theme: 'light',
-      selectedKeys: ['2']
+      selectedKeys: ['1']
     })
     // 个人信息
     const personage = reactive({
@@ -300,49 +295,12 @@ export default defineComponent({
     // 测评介绍
     const evaDes = ref('')
 
-    // 上传封面
-    const imageList = ref([])
-    const loading = ref(false)
-    const imageUrl = ref('')
-
-    const handleChange = (info: { file: { status: string; originFileObj: any } }) => {
-      if (info.file.status === 'uploading') {
-        loading.value = true
-        return
-      }
-
-      if (info.file.status === 'done') {
-        getBase64(info.file.originFileObj, (base64Url: string) => {
-          imageUrl.value = base64Url
-          loading.value = false
-        })
-      }
-
-      if (info.file.status === 'error') {
-        loading.value = false
-        message.error('upload error')
-      }
-    }
-
-    const beforeUpload = (file: { type: string; size: number }) => {
-      const isJpgOrPng =
-        file.type === 'image/jpeg' || file.type === 'image/png'
-
-      if (!isJpgOrPng) {
-        message.error('You can only upload JPG file!')
-      }
-
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isLt2M) {
-        message.error('Image must smaller than 2MB!')
-      }
-
-      return isJpgOrPng && isLt2M
-    }
     // 上传文件
     const fileList = ref([])
-    const handleChangeFile = (infoFile: { file: { status: string; name: any }; fileList: any }) => {
+    const handleChangeFile = (infoFile: {
+      file: { status: string; name: any };
+      fileList: any;
+    }) => {
       if (infoFile.file.status !== 'uploading') {
         console.log(infoFile.file, infoFile.fileList)
       }
@@ -361,8 +319,6 @@ export default defineComponent({
       }
       console.log(params)
     }
-    // 状态选择框
-    const stateValue = ref('')
     const focus = () => {
       console.log('focus')
     }
@@ -374,16 +330,8 @@ export default defineComponent({
     return {
       ...toRefs(stateMenu),
       ...toRefs(personage),
-      imageList,
       fileList,
-      loading,
-      imageUrl,
-      evaName,
-      evaDes,
-      stateValue,
-      handleChange,
       handleChangeFile,
-      beforeUpload,
       updateInfo,
       focus,
       handleChangeState
@@ -437,7 +385,7 @@ export default defineComponent({
         }
         .r-r {
           margin-top: 20px;
-            display: flex;
+          display: flex;
 
           .header-info {
             display: flex;
