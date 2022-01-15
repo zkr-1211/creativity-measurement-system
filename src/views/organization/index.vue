@@ -20,7 +20,7 @@
             </router-link>
           </template>
           <template v-else>
-            <router-link to="/organization/orgevaluation-detail">
+            <router-link to="/organization/detail">
               <a-card :hoverable="true">
                 <a-card-meta>
                   <template #title>

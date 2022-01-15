@@ -1,11 +1,14 @@
 <template>
   <div class="home">
     <!-- 第一部分 -->
-    <FourItemCard class="animated fadeInUpBig" />
+    <FourItemCard />
+    <!-- <FourItemCard class="animated fadeInUpBig" /> -->
     <!-- 第二部分 -->
-    <tendency-run class="animated fadeInUpBig delay-1s" />
+    <tendency-run :style="{ marginBottom: '24px' }" />
+    <!-- <tendency-run class="animated fadeInUpBig delay-1s" /> -->
     <!-- 第三部分 -->
-    <div class="run-list animated fadeInUpBig delay-2s">
+    <div>
+      <!-- <div class="run-list animated fadeInUpBig delay-2s"> -->
       <a-row :gutter="24">
         <a-col
           :xs="24"
@@ -28,7 +31,8 @@
       </a-row>
     </div>
     <!-- 第四部分 -->
-    <div class="view-list animated fadeInUpBig delay-3s">
+    <div>
+      <!-- <div class="view-list animated fadeInUpBig delay-3s"> -->
       <a-row :gutter="24">
         <a-col
           :xs="24"
@@ -69,7 +73,6 @@ store.$patch((state) => {
   state.token = 'token-asgdfebdvvadfsdfgdfh'
 })
 console.log(router)
-
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
