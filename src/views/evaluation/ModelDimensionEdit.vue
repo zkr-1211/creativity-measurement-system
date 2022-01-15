@@ -31,7 +31,10 @@
                     维度选择
                   </div>
                   <div class="radio-group">
-                    <a-radio-group v-model:value="attribute">
+                    <a-radio-group
+                      v-model:value="attribute"
+                      @change="radioChange"
+                    >
                       <a-radio :value="0">
                         五维
                       </a-radio>
@@ -137,6 +140,7 @@
                     <ModelDimension
                       :color-list="colorList"
                       :data="data"
+                      :indicator="indicator"
                     />
                     <div class="model-data">
                       <div
@@ -202,6 +206,35 @@ export default defineComponent({
       sixAttribute: '123456',
       attribute: 0
     })
+    const indicator = ref<any>([
+      { name: '引用', max: 10000 },
+      { name: '口碑', max: 16000 },
+      { name: '热度', max: 38000 },
+      { name: '贡献', max: 52000 },
+      { name: '产量', max: 58000 }
+    ])
+    const radioChange = () => {
+      if (personage.attribute === 0 && indicator.value.length >= 6) {
+        indicator.value = [
+          { name: '引用', max: 10000 },
+          { name: '口碑', max: 16000 },
+          { name: '热度', max: 38000 },
+          { name: '贡献', max: 52000 },
+          { name: '产量', max: 58000 }
+        ]
+      } else {
+        indicator.value = [
+          { name: '引用', max: 10000 },
+          { name: '口碑', max: 16000 },
+          { name: '热度', max: 38000 },
+          { name: '贡献', max: 52000 },
+          { name: '产量', max: 58000 },
+          { name: '自信', max: 58000 }
+        ]
+      }
+      console.log('123123', indicator.value)
+    }
+
     const data = [
       {
         value: [4200, 3000, 20000, 35000, 50000, 18000],
@@ -321,7 +354,9 @@ export default defineComponent({
       beforeUpload,
       updateInfo,
       focus,
-      handleChangeState
+      handleChangeState,
+      indicator,
+      radioChange
     }
   }
 })

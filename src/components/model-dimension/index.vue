@@ -9,7 +9,8 @@ import {
   defineComponent,
   onMounted,
   getCurrentInstance,
-  ComponentInternalInstance
+  ComponentInternalInstance,
+  watch
 } from 'vue'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -30,6 +31,7 @@ import {
   TooltipComponent,
   TooltipComponentOption,
   GridComponent,
+  LegendComponent,
   GridComponentOption,
   // 数据集组件
   DatasetComponent,
@@ -58,6 +60,7 @@ echarts.use([
   DatasetComponent,
   TransformComponent,
   // BarChart,
+  LegendComponent,
   LineChart,
   RadarChart,
   LabelLayout,
@@ -75,15 +78,27 @@ export default defineComponent({
       type: Array,
       default: () => [23.0, 42.9, 72.0, 77.2, 75.6]
     },
+    indicator: {
+      type: Array,
+      default: () => [
+        { name: '引用', max: 10000 },
+        { name: '口碑', max: 16000 },
+        { name: '热度', max: 38000 },
+        { name: '贡献', max: 52000 },
+        { name: '产量', max: 58000 },
+        { name: '自信', max: 58000 }
+      ]
+    },
     colorList: {
       type: Array,
       default: () => ['red', 'blue', 'yellow']
     }
   },
   setup(props, { emit }) {
+    let myChart
     function Init() {
+      myChart = echarts.init(document.getElementById('myChart')!)
       // 基于准备好的dom，初始化echarts实例
-      const myChart = echarts.init(document.getElementById('myChart')!)
 
       // 绘制图表
       myChart.setOption({
@@ -95,13 +110,7 @@ export default defineComponent({
         },
         radar: {
           // shape: 'circle',
-          indicator: [
-            { name: '引用', max: 10000 },
-            { name: '口碑', max: 16000 },
-            { name: '热度', max: 38000 },
-            { name: '贡献', max: 52000 },
-            { name: '产量', max: 58000 }
-          ],
+          indicator: props.indicator,
           axisName: {
             formatter: '{value}',
             color: '#000000'
@@ -122,6 +131,10 @@ export default defineComponent({
         myChart.resize()
       })
     }
+    watch(() => props.indicator, () => {
+      myChart && myChart.dispose()
+      Init()
+    })
     onMounted(() => {
       setTimeout(() => {
         Init()
