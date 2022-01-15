@@ -6,7 +6,8 @@
   >
     <!-- 树课测评系统 -->
     <template v-if="true">
-      <span> 树课测评系统 </span>
+      <span v-if="!collapsed"> 树课测评系统 </span>
+      <span v-else> Icon </span>
       <a-menu
         v-model:selectedKeys="selectedKeys"
         :open-keys="openKeys"

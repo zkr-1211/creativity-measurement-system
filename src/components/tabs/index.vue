@@ -1,19 +1,6 @@
 <template>
   <div class="tabs">
     <div class="content">
-      <!-- <a-tabs
-        type="editable-card"
-      >
-        <a-tab-pane
-          v-for="(item, index) in tabs"
-          :key="item.name"
-          :tab="item.title"
-          closable
-          @click="handleOpenContext($event, item, index)"
-        >
-          {{ item.title }}
-        </a-tab-pane>
-      </a-tabs> -->
       <a-tag
         v-for="(item, index) in tabs"
         :key="item.name"
@@ -34,6 +21,7 @@
         </router-link>
       </a-tag>
     </div>
+
     <div style="color: rgb(81, 152, 218); font-weight: bold; cursor: pointer">
       <a-dropdown :trigger="['click']">
         <a
@@ -47,11 +35,11 @@
         <template #overlay>
           <a-menu>
             <a-menu-item
-              v-if="tabs[tabIndex].name !== 'HomePage'"
+              v-if="isHome"
               key="0"
             >
               <li @click="handleClose(tabs[tabIndex], tabIndex)">
-                关闭
+                关闭当前
               </li>
             </a-menu-item>
             <a-menu-item key="1">
@@ -59,11 +47,27 @@
                 关闭其他
               </li>
             </a-menu-item>
-            <a-menu-divider />
             <a-menu-item key="3">
               <li @click="handleCloseAll">
                 关闭所有
               </li>
+            </a-menu-item>
+            <a-menu-divider />
+
+            <a-menu-item
+              v-for="item in tabs"
+              :key="item.name"
+              :style="[currentRouteName === item.name ? 'background-color:#f2f2f2;':'']"
+            >
+              <router-link
+                :to="{
+                  name: item.name,
+                  params: item.params,
+                  query: item.query,
+                }"
+              >
+                {{ item.title }}
+              </router-link>
             </a-menu-item>
           </a-menu>
         </template>
@@ -99,6 +103,7 @@ export default defineComponent({
     const reload = () => {
       onRefresh && onRefresh()
     }
+    const isHome = ref<boolean>(false)
     // 监听路由改变 若tabs中不存在当前路由，则增加路由
     watch(
       () => route.name,
@@ -107,8 +112,7 @@ export default defineComponent({
         const index = tabs.value.findIndex((item) => {
           return item.name === route.name
         })
-        console.log(route.name, index)
-
+        isHome.value = route.name !== 'HomePage'
         // 不存在则增加路由到tabs
         index < 0 && store.handleAddRoute(route)
       },
@@ -184,7 +188,8 @@ export default defineComponent({
       handleCloseOther,
       handleCloseAll,
       reload,
-      tabIndex
+      tabIndex,
+      isHome
     }
   }
 })
@@ -199,6 +204,9 @@ export default defineComponent({
 ::-webkit-scrollbar-thumb {
   background-color: rgb(81, 152, 218);
   border-radius: 3px;
+}
+.active {
+  background-color: red !important;
 }
 .tabs {
   display: flex;

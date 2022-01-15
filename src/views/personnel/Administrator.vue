@@ -1,80 +1,119 @@
 <!--  -->
 <template>
-  <div class="body">
-    <page-header />
-    <div class="card">
-      <div class="top">
-        <div class="top-left">
-          人员列表
-        </div>
-        <div class="top-right">
-          <a-button type="primary">
-            +添加
-          </a-button>
-        </div>
+  <page-header title="管理员" />
+  <div class="card">
+    <div class="top">
+      <div class="top-left">
+        人员列表
       </div>
-      <div class="table">
-        <a-table
-          :scroll="{ y: 450 }"
-          :row-selection="rowSelection"
-          :columns="columns"
-          :data-source="dataSource"
-          :pagination="pagination"
+      <div class="top-right">
+        <a-button
+          type="primary"
+          @click="visible = true"
         >
-          <template #name="{ text }">
-            <a>{{ text }}</a>
-          </template>
-          <template #ID="{ record }">
-            {{ record.ID }}
-          </template>
-          <template
-            v-for="col in ['ID']"
-            #[col]="{ text, record }"
-            :key="col"
-          >
-            <div>
-              <a-input
-                v-if="editableData[record.key]"
-                v-model:value="editableData[record.key][col]"
-                style="margin: -5px 0"
-              />
-              <template v-else>
-                {{ text }}
-              </template>
-            </div>
-          </template>
-          <template #operation="{ record }">
-            <div class="editable-row-operations">
-              <span v-if="editableData[record.key]">
-                <a @click="save(record.key)">保存</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="Sure to cancel?"
-                  @confirm="cancel(record.key)"
-                >
-                  <a>取消</a>
-                </a-popconfirm>
-              </span>
-              <span v-else>
-                <a @click="onEdit(record.key)">权限编辑</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="确认删除该项吗?"
-                  @confirm="onDelete(record.key)"
-                >
-                  <a>删除</a>
-                </a-popconfirm>
-              </span>
-            </div>
-          </template>
-        </a-table>
+          +添加
+        </a-button>
       </div>
     </div>
+    <div class="table">
+      <a-table
+        :scroll="{ y: 450 }"
+        :row-selection="rowSelection"
+        :columns="columns"
+        :data-source="dataSource"
+        :pagination="pagination"
+      >
+        <template #name="{ text }">
+          <a>{{ text }}</a>
+        </template>
+        <template #ID="{ record }">
+          {{ record.ID }}
+        </template>
+        <template
+          v-for="col in ['ID']"
+          #[col]="{ text, record }"
+          :key="col"
+        >
+          <div>
+            <a-input
+              v-if="editableData[record.key]"
+              v-model:value="editableData[record.key][col]"
+              style="margin: -5px 0"
+            />
+            <template v-else>
+              {{ text }}
+            </template>
+          </div>
+        </template>
+        <template #operation="{ record }">
+          <div class="editable-row-operations">
+            <span v-if="editableData[record.key]">
+              <a @click="save(record.key)">保存</a>
+              <span class="fengefu">|</span>
+              <a-popconfirm
+                title="Sure to cancel?"
+                @confirm="cancel(record.key)"
+              >
+                <a>取消</a>
+              </a-popconfirm>
+            </span>
+            <span v-else>
+              <a @click="onEdit(record.key)">权限编辑</a>
+              <span class="fengefu">|</span>
+              <a-popconfirm
+                title="确认删除该项吗?"
+                @confirm="onDelete(record.key)"
+              >
+                <a>删除</a>
+              </a-popconfirm>
+            </span>
+          </div>
+        </template>
+      </a-table>
+    </div>
   </div>
+  <a-modal
+    v-model:visible="visible"
+    style="top: 200px"
+    title="添加管理员"
+    :confirm-loading="confirmLoading"
+    @ok="handleOk"
+    @cancel="handleCancel"
+  >
+    <a-form
+      ref="formRef"
+      :model="formState"
+      :rules="rules"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+    >
+      <a-form-item
+        ref="name"
+        label="姓名"
+        name="name"
+      >
+        <a-input v-model:value="formState.name" />
+      </a-form-item>
+      <a-form-item
+        ref="ID"
+        label="身份"
+        name="ID"
+      >
+        <a-input v-model:value="formState.ID" />
+      </a-form-item>
+      <a-form-item
+        ref="phone"
+        label="手机号"
+        name="phone"
+      >
+        <a-input v-model:value="formState.phone" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, reactive, toRefs } from 'vue'
+import { defineComponent, ref, reactive, toRefs, UnwrapRef } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import PageHeader from '@/components/page-header/index.vue'
 interface dataType {
@@ -85,6 +124,11 @@ interface dataType {
   createNum: string;
   time: string;
   increase: boolean;
+}
+interface FormState {
+  name: string;
+  ID: string | undefined;
+  phone: number | undefined;
 }
 const columns = [
   {
@@ -223,7 +267,40 @@ export default defineComponent({
     const cancel = (key: string | number) => {
       delete editableData[key]
     }
-    onMounted(() => {})
+
+    const modalText = ref<string>('Content of the modal')
+    const visible = ref<boolean>(false)
+    const confirmLoading = ref<boolean>(false)
+
+    const showModal = () => {
+      visible.value = true
+    }
+    const handleOk = () => {
+      modalText.value = 'The modal will be closed after two seconds'
+      confirmLoading.value = true
+      setTimeout(() => {
+        visible.value = false
+        confirmLoading.value = false
+        formRef.value.resetFields()
+      }, 2000)
+    }
+    const handleCancel = () => {
+      formRef.value.resetFields()
+    }
+    const formRef = ref()
+    const formState: UnwrapRef<FormState> = reactive({
+      name: '',
+      phone: undefined,
+      ID: ''
+    })
+    const rules = {
+      name: [
+        { required: true, message: '请输入姓名', trigger: 'blur' },
+        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
+      ],
+      ID: [{ required: true, message: '请输入身份', trigger: 'blur' }],
+      phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }]
+    }
     return {
       ...toRefs(tableState),
       value,
@@ -237,34 +314,44 @@ export default defineComponent({
       onDetail,
       onDelete,
       save,
-      cancel
+      cancel,
+      modalText,
+      visible,
+      confirmLoading,
+      showModal,
+      handleOk,
+      handleCancel,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+      other: '',
+      formState,
+      rules,
+      formRef
     }
   }
 })
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-.body {
-  .card {
-    margin: 16px 24px 32px 24px;
-    background: #ffffff;
-    padding: 20px 30px;
-    .top {
-      @include faj();
-      @include sc(16px, #000000);
-      opacity: 0.85;
-    }
-    .table {
-      margin-top: 20px;
-      .editable-row-operations {
-        .fengefu {
-          margin-right: 8px;
-          color: #e8e8e8;
-        }
-      }
-      .editable-row-operations a {
+.card {
+  margin: 16px 24px 32px 24px;
+  background: #ffffff;
+  padding: 20px 30px;
+  .top {
+    @include faj();
+    @include sc(16px, #000000);
+    opacity: 0.85;
+  }
+  .table {
+    margin-top: 20px;
+    .editable-row-operations {
+      .fengefu {
         margin-right: 8px;
+        color: #e8e8e8;
       }
+    }
+    .editable-row-operations a {
+      margin-right: 8px;
     }
   }
 }
