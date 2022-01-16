@@ -1,56 +1,59 @@
 <template>
   <div class="body">
     <page-header />
-    <a-list
-      :data-source="data"
-      :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
-      class="content-card"
-    >
-      <template #renderItem="{ item }">
-        <a-list-item>
-          <template v-if="item.id === 0">
-            <router-link to="/organization/addorganization">
-              <a-button
-                class="new-btn"
-                type="dashed"
-              >
-                <PlusOutlined />
-                新增产品
-              </a-button>
-            </router-link>
-          </template>
-          <template v-else>
-            <router-link to="/organization/detail">
-              <a-card :hoverable="true">
-                <a-card-meta>
-                  <template #title>
-                    测试学生
+    <a-spin :spinning="spinning">
+      <a-list
+        :data-source="data"
+        :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
+        class="content-card"
+      >
+        <template #renderItem="{ item }">
+          <a-list-item>
+            <template v-if="item.id === 0">
+              <router-link to="/organization/addorganization">
+                <a-button
+                  class="new-btn"
+                  type="dashed"
+                >
+                  <PlusOutlined />
+                  新增产品
+                </a-button>
+              </router-link>
+            </template>
+            <template v-else>
+              <router-link to="/organization/detail">
+                <a-card :hoverable="true">
+                  <a-card-meta>
+                    <template #title>
+                      测试学生
+                    </template>
+                    <template #avatar>
+                      <a-avatar
+                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      />
+                    </template>
+                    <template #description>
+                      测试学生的创造力水平测试学生的创造力水平
+                    </template>
+                  </a-card-meta>
+                  <template #actions>
+                    <a>操作一</a>
+                    <a>操作二</a>
                   </template>
-                  <template #avatar>
-                    <a-avatar
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                    />
-                  </template>
-                  <template #description>
-                    测试学生的创造力水平测试学生的创造力水平
-                  </template>
-                </a-card-meta>
-                <template #actions>
-                  <a>操作一</a>
-                  <a>操作二</a>
-                </template>
-              </a-card>
-            </router-link>
-          </template>
-        </a-list-item>
-      </template>
-    </a-list>
+                </a-card>
+              </router-link>
+            </template>
+          </a-list-item>
+        </template>
+      </a-list>
+    </a-spin>
   </div>
 </template>
 
 <script lang="ts" setup>
 import PageHeader from '@/components/page-header/index.vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
+import { onMounted, ref } from 'vue'
 const data: any[] = []
 for (let i = 0; i < 11; i++) {
   data.push({
@@ -60,6 +63,12 @@ for (let i = 0; i < 11; i++) {
       'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png'
   })
 }
+const spinning = ref<boolean>(true)
+onMounted(() => {
+  setTimeout(() => {
+    spinning.value = false
+  }, 500)
+})
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

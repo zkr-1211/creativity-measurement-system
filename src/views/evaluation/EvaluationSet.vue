@@ -202,23 +202,25 @@
             </div>
           </div>
           <div class="table">
-            <a-table
-              :row-selection="{
-                selectedRowKeys: selectedRowKeys,
-                onChange: onSelectChange,
-              }"
-              :columns="columns"
-              :data-source="dataSource"
-              :loading="loading"
-              :page-size="1"
-              :pagination="pagination"
-            >
-              <template #bodyCell="{ column, text }">
-                <template v-if="column.dataIndex === 'key'">
-                  {{ text.first }} {{ text.last }}
+            <a-spin :spinning="spinning">
+              <a-table
+                :row-selection="{
+                  selectedRowKeys: selectedRowKeys,
+                  onChange: onSelectChange,
+                }"
+                :columns="columns"
+                :data-source="dataSource"
+                :loading="loading"
+                :page-size="1"
+                :pagination="pagination"
+              >
+                <template #bodyCell="{ column, text }">
+                  <template v-if="column.dataIndex === 'key'">
+                    {{ text.first }} {{ text.last }}
+                  </template>
                 </template>
-              </template>
-            </a-table>
+              </a-table>
+            </a-spin>
           </div>
           <div class="save">
             <a-button type="primary">
@@ -276,7 +278,8 @@ import {
   toRefs,
   nextTick,
   ref,
-  computed
+  computed,
+  onMounted
 } from 'vue'
 import {
   PlusOutlined,
@@ -516,7 +519,12 @@ export default defineComponent({
     // 开通付费设置
     const isPay = ref(1)
     const money = ref('')
-
+    const spinning = ref<boolean>(true)
+    onMounted(() => {
+      setTimeout(() => {
+        spinning.value = false
+      }, 500)
+    })
     return {
       ...toRefs(state),
       ...toRefs(stateMenu),
@@ -549,7 +557,8 @@ export default defineComponent({
       onSelectChange,
       start,
       isPay,
-      money
+      money,
+      spinning
     }
   }
 })

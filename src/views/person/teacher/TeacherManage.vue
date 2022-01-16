@@ -41,65 +41,67 @@
       show-icon
       @close="clearSelect"
     />
-    <Table
-      :table-height="300"
-      :columns="columns"
-      :data-source="dataSource"
-      @selected-rows="selectedRows"
-    >
-      <template
-        v-for="item in columns"
-        #[item.dataIndex]="{ scope }"
-        :key="item.dataIndex"
+    <a-spin :spinning="spinning">
+      <Table
+        :table-height="300"
+        :columns="columns"
+        :data-source="dataSource"
+        @selected-rows="selectedRows"
       >
-        <div v-if="!item.isSlot">
-          <a-input
-            v-if="editableData[scope.record.key] && item.isEdit"
-            v-model:value="editableData[scope.record.key][item.dataIndex]"
-            style="margin: -5px 0"
-          />
-          <template v-else>
-            {{ scope.text }}
-          </template>
-        </div>
-        <div v-else>
-          <div class="editable-row-operations">
-            <span v-if="editableData[scope.record.key]">
-              <a @click="save(scope.record.key)">保存</a>
-              <span class="fengefu">|</span>
-              <a-popconfirm
-                title="你确定要取消吗?"
-                @confirm="cancel(scope.record.key)"
-              >
-                <a>取消</a>
-              </a-popconfirm>
-            </span>
-            <span v-else>
-              <a @click="onDetail(scope.record.key)">详情</a>
-              <span class="fengefu">|</span>
-              <a @click="onEdit(scope.record.key)">编辑</a>
-              <span class="fengefu">|</span>
-              <a-popconfirm
-                title="确认删除该项吗?"
-                @confirm="onDelete(scope.record.key)"
-              >
-                <a>删除</a>
-              </a-popconfirm>
-            </span>
+        <template
+          v-for="item in columns"
+          #[item.dataIndex]="{ scope }"
+          :key="item.dataIndex"
+        >
+          <div v-if="!item.isSlot">
+            <a-input
+              v-if="editableData[scope.record.key] && item.isEdit"
+              v-model:value="editableData[scope.record.key][item.dataIndex]"
+              style="margin: -5px 0"
+            />
+            <template v-else>
+              {{ scope.text }}
+            </template>
           </div>
-        </div>
-      </template>
-    </Table>
+          <div v-else>
+            <div class="editable-row-operations">
+              <span v-if="editableData[scope.record.key]">
+                <a @click="save(scope.record.key)">保存</a>
+                <span class="fengefu">|</span>
+                <a-popconfirm
+                  title="你确定要取消吗?"
+                  @confirm="cancel(scope.record.key)"
+                >
+                  <a>取消</a>
+                </a-popconfirm>
+              </span>
+              <span v-else>
+                <a @click="onDetail(scope.record.key)">详情</a>
+                <span class="fengefu">|</span>
+                <a @click="onEdit(scope.record.key)">编辑</a>
+                <span class="fengefu">|</span>
+                <a-popconfirm
+                  title="确认删除该项吗?"
+                  @confirm="onDelete(scope.record.key)"
+                >
+                  <a>删除</a>
+                </a-popconfirm>
+              </span>
+            </div>
+          </div>
+        </template>
+      </Table>
+    </a-spin>
   </a-card>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, reactive } from 'vue'
-import { cloneDeep } from 'lodash-es'
+import { onMounted, defineComponent, ref } from 'vue'
+import useTableOperation from '@/hooks/useTableOperation'
+
 import PageHeader from '@/components/page-header/index.vue'
 import Table from '@/components/table/index.vue'
 import { useRouter } from 'vue-router'
-
 interface dataType {
   key: string;
   name: string;
@@ -202,43 +204,43 @@ export default defineComponent({
     Table
   },
   setup() {
+    const spinning = ref<boolean>(true)
+    onMounted(() => {
+      setTimeout(() => {
+        spinning.value = false
+      }, 500)
+    })
     // 搜素
+
     const value = ref('')
     const onSearch = (searchValue: any) => {
       console.log('use value', searchValue)
       console.log('or use this.value', value.value)
     }
-    const dataSource = ref(data)
-    const editableData: any = reactive({})
     const selectedNum = ref<number>(0)
     const selectedRows = (e) => {
       console.log('哈哈哈12313', selectedNum.value)
 
       selectedNum.value = e.length
     }
+    const {
+      dataSource,
+      editableData,
+      onEdit,
+      onDelete,
+      save,
+      cancel
+      // modalText,
+      // visible,
+      // confirmLoading,
+      // handleCancel,
+      // formRef
+    } = useTableOperation(data)
     const router = useRouter()
     const onDetail = (key: any) => {
       router.push({
-        path: '/teacher-record'
+        path: '/student-record'
       })
-    }
-    const onEdit = (key: string) => {
-      editableData[key] = cloneDeep(
-        dataSource.value.filter((item) => key === item.key)[0]
-      )
-    }
-    const onDelete = (key: string) => {
-      dataSource.value = dataSource.value.filter((item) => item.key !== key)
-    }
-    const save = (key: string) => {
-      Object.assign(
-        dataSource.value.filter((item) => key === item.key)[0],
-        editableData[key]
-      )
-      delete editableData[key]
-    }
-    const cancel = (key: string | number) => {
-      delete editableData[key]
     }
     const clearSelect = (e) => {
       console.log(e)
@@ -257,7 +259,8 @@ export default defineComponent({
       cancel,
       selectedRows,
       selectedNum,
-      clearSelect
+      clearSelect,
+      spinning
     }
   }
 })
@@ -268,7 +271,6 @@ export default defineComponent({
   padding: 30px 40px;
   background: #ffffff;
   border-radius: 3px;
-  margin-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

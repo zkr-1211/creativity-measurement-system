@@ -1,77 +1,67 @@
 <!--  -->
 <template>
   <page-header title="管理员" />
-  <div class="card">
-    <div class="top">
-      <div class="top-left">
-        人员列表
-      </div>
-      <div class="top-right">
-        <a-button
-          type="primary"
-          @click="visible = true"
-        >
-          +添加
-        </a-button>
-      </div>
-    </div>
-    <div class="table">
-      <a-table
-        :scroll="{ y: 450 }"
-        :row-selection="rowSelection"
+  <a-card
+    title="人员列表"
+    style="margin: 24px"
+  >
+    <template #extra>
+      <a-button
+        type="primary"
+        @click="visible = true"
+      >
+        + 添加
+      </a-button>
+    </template>
+    <a-spin :spinning="spinning">
+      <Table
         :columns="columns"
         :data-source="dataSource"
-        :pagination="pagination"
       >
-        <template #name="{ text }">
-          <a>{{ text }}</a>
-        </template>
-        <template #ID="{ record }">
-          {{ record.ID }}
-        </template>
         <template
-          v-for="col in ['ID']"
-          #[col]="{ text, record }"
-          :key="col"
+          v-for="item in columns"
+          #[item.dataIndex]="{ scope }"
+          :key="item.dataIndex"
         >
-          <div>
+          <div v-if="!item.isSlot">
             <a-input
-              v-if="editableData[record.key]"
-              v-model:value="editableData[record.key][col]"
+              v-if="editableData[scope.record.key] && item.isEdit"
+              v-model:value="editableData[scope.record.key][item.dataIndex]"
               style="margin: -5px 0"
             />
             <template v-else>
-              {{ text }}
+              {{ scope.text }}
             </template>
           </div>
-        </template>
-        <template #operation="{ record }">
-          <div class="editable-row-operations">
-            <span v-if="editableData[record.key]">
-              <a @click="save(record.key)">保存</a>
-              <span class="fengefu">|</span>
-              <a-popconfirm
-                title="Sure to cancel?"
-                @confirm="cancel(record.key)"
-              >
-                <a>取消</a>
-              </a-popconfirm>
-            </span>
-            <span v-else>
-              <a @click="onEdit(record.key)">权限编辑</a>
-              <span class="fengefu">|</span>
-              <a-popconfirm
-                title="确认删除该项吗?"
-                @confirm="onDelete(record.key)"
-              >
-                <a>删除</a>
-              </a-popconfirm>
-            </span>
+          <div v-else>
+            <div class="editable-row-operations">
+              <span v-if="editableData[scope.record.key]">
+                <a @click="save(scope.record.key)">保存</a>
+                <span class="fengefu">|</span>
+                <a-popconfirm
+                  title="Sure to cancel?"
+                  @confirm="cancel(scope.record.key)"
+                >
+                  <a>取消</a>
+                </a-popconfirm>
+              </span>
+              <span v-else>
+                <a @click="onEdit(scope.record.key)">权限编辑</a>
+                <span class="fengefu">|</span>
+                <a-popconfirm
+                  title="确认删除该项吗?"
+                  @confirm="onDelete(scope.record.key)"
+                >
+                  <a>删除</a>
+                </a-popconfirm>
+              </span>
+            </div>
           </div>
         </template>
-      </a-table>
-    </div>
-  </div>
+      </Table>
+    </a-spin>
+  </a-card>
+
   <a-modal
     v-model:visible="visible"
     style="top: 200px"
@@ -113,9 +103,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, UnwrapRef } from 'vue'
-import { cloneDeep } from 'lodash-es'
+import { defineComponent, reactive, UnwrapRef, toRaw, ref, onMounted } from 'vue'
+import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import PageHeader from '@/components/page-header/index.vue'
+import Table from '@/components/table/index.vue'
+import useTableOperation from '@/hooks/useTableOperation'
 interface dataType {
   key: string;
   ID: string;
@@ -146,6 +138,7 @@ const columns = [
   {
     title: '身份',
     dataIndex: 'ID',
+    isEdit: true,
     slots: {
       customRender: 'ID'
     }
@@ -191,6 +184,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'operation',
+    isSlot: true,
     slots: {
       customRender: 'operation'
     }
@@ -211,83 +205,46 @@ for (let i = 1; i < 50; i++) {
 export default defineComponent({
   name: 'IsAdministrator',
   components: {
-    PageHeader
+    PageHeader,
+    Table
   },
   setup() {
-    // 搜素
-    const value = ref('')
-    const onSearch = (searchValue: any) => {
-      console.log('use value', searchValue)
-      console.log('or use this.value', value.value)
-    }
-    // 表格以及分页部分
-    const tableState = reactive({
-      pagination: {
-        showTotal: (total: any) => `共 ${total} 条数据`,
-        defaultPageSize: 10,
-        showSizeChanger: true,
-        showQuickJumper: true,
-        pageSizeOptions: ['2', '10', '15', '20']
-      }
-    })
-    const rowSelection = {
-      onChange: (selectedRowKeys: any, selectedRows: any) => {
-        console.log(
-          `selectedRowKeys: ${selectedRowKeys}`,
-          'selectedRows: ',
-          selectedRows
-        )
-      },
-      getCheckboxProps: (record: { name: string }) => ({
-        disabled: record.name === 'Disabled User',
-        // Column configuration not to be checked
-        name: record.name
-      })
-    }
-    const dataSource = ref(data)
-    const editableData: any = reactive({})
-    const onDetail = (key: any) => {
-      console.log('onDetail', key)
-    }
-    const onEdit = (key: string) => {
-      editableData[key] = cloneDeep(
-        dataSource.value.filter((item) => key === item.key)[0]
-      )
-    }
-    const onDelete = (key: string) => {
-      dataSource.value = dataSource.value.filter((item) => item.key !== key)
-    }
-    const save = (key: string) => {
-      Object.assign(
-        dataSource.value.filter((item) => key === item.key)[0],
-        editableData[key]
-      )
-      delete editableData[key]
-    }
-    const cancel = (key: string | number) => {
-      delete editableData[key]
-    }
-
-    const modalText = ref<string>('Content of the modal')
-    const visible = ref<boolean>(false)
-    const confirmLoading = ref<boolean>(false)
-
-    const showModal = () => {
-      visible.value = true
-    }
-    const handleOk = () => {
-      modalText.value = 'The modal will be closed after two seconds'
-      confirmLoading.value = true
+    const {
+      dataSource,
+      editableData,
+      onEdit,
+      onDelete,
+      save,
+      cancel,
+      modalText,
+      visible,
+      confirmLoading,
+      handleCancel,
+      formRef
+    } = useTableOperation(data)
+    const spinning = ref<boolean>(true)
+    onMounted(() => {
       setTimeout(() => {
-        visible.value = false
-        confirmLoading.value = false
-        formRef.value.resetFields()
-      }, 2000)
+        spinning.value = false
+      }, 3000)
+    })
+    const handleOk = () => {
+      formRef.value
+        .validate()
+        .then(() => {
+          console.log('values', formState, toRaw(formState))
+          modalText.value = 'The modal will be closed after two seconds'
+          confirmLoading.value = true
+          setTimeout(() => {
+            visible.value = false
+            confirmLoading.value = false
+            formRef.value.resetFields()
+          }, 2000)
+        })
+        .catch((error: ValidateErrorEntity<FormState>) => {
+          console.log('error', error)
+        })
     }
-    const handleCancel = () => {
-      formRef.value.resetFields()
-    }
-    const formRef = ref()
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
       phone: undefined,
@@ -302,57 +259,41 @@ export default defineComponent({
       phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }]
     }
     return {
-      ...toRefs(tableState),
-      value,
       dataSource,
       columns,
-      rowSelection,
-      editingKey: '',
       editableData,
-      onSearch,
       onEdit,
-      onDetail,
       onDelete,
       save,
       cancel,
-      modalText,
       visible,
       confirmLoading,
-      showModal,
       handleOk,
       handleCancel,
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
-      other: '',
       formState,
       rules,
-      formRef
+      formRef,
+      spinning
     }
   }
 })
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-.card {
-  margin: 16px 24px 32px 24px;
-  background: #ffffff;
-  padding: 20px 30px;
-  .top {
-    @include faj();
-    @include sc(16px, #000000);
-    opacity: 0.85;
+.top {
+  @include faj();
+  @include sc(16px, #000000);
+  opacity: 0.85;
+}
+.editable-row-operations {
+  .fengefu {
+    margin-right: 8px;
+    color: #e8e8e8;
   }
-  .table {
-    margin-top: 20px;
-    .editable-row-operations {
-      .fengefu {
-        margin-right: 8px;
-        color: #e8e8e8;
-      }
-    }
-    .editable-row-operations a {
-      margin-right: 8px;
-    }
-  }
+}
+.editable-row-operations a {
+  margin-right: 8px;
 }
 </style>

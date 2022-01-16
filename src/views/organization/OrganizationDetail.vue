@@ -179,7 +179,7 @@ import { RightOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
 import RecordList from '@/components/record-list/index.vue'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 
 const loading = ref<boolean>(true)
 onMounted(() => {
@@ -219,7 +219,7 @@ const manageList = ref([
     num: '6'
   },
   {
-    name: '老师',
+    name: '教师',
     num: '3'
   },
   {
@@ -227,6 +227,7 @@ const manageList = ref([
     num: '1'
   }
 ])
+const router = useRouter()
 const toManage = (index) => {
   switch (index) {
     case 0:

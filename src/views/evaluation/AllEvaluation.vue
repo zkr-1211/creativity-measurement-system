@@ -77,43 +77,45 @@
           </div>
         </div>
       </a-card>
-      <a-list
-        style="margin-top: 24px"
-        :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
-        :data-source="data"
-      >
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <router-link to="/evaluation/evaluation-detail">
-              <a-card>
-                <template #cover>
-                  <img
-                    alt="example"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                  >
-                </template>
-                <a-card-meta :title="item.title">
-                  <template #description>
-                    测试学生的创造力水平测试学生的创造力水平
+      <a-spin :spinning="spinning">
+        <a-list
+          style="margin-top: 24px"
+          :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
+          :data-source="data"
+        >
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <router-link to="/evaluation/evaluation-detail">
+                <a-card>
+                  <template #cover>
+                    <img
+                      alt="example"
+                      src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                    >
                   </template>
-                </a-card-meta>
-                <div class="info">
-                  <div class="num">
-                    14679人参与测评
+                  <a-card-meta :title="item.title">
+                    <template #description>
+                      测试学生的创造力水平测试学生的创造力水平
+                    </template>
+                  </a-card-meta>
+                  <div class="info">
+                    <div class="num">
+                      14679人参与测评
+                    </div>
+                    <div class="imgs">
+                      <div
+                        v-for="(item, index) in 4"
+                        :key="index"
+                        class="img"
+                      />
+                    </div>
                   </div>
-                  <div class="imgs">
-                    <div
-                      v-for="(item, index) in 4"
-                      :key="index"
-                      class="img"
-                    />
-                  </div>
-                </div>
-              </a-card>
-            </router-link>
-          </a-list-item>
-        </template>
-      </a-list>
+                </a-card>
+              </router-link>
+            </a-list-item>
+          </template>
+        </a-list>
+      </a-spin>
     </div>
   </div>
 </template>
@@ -137,6 +139,12 @@ export default defineComponent({
     // CardItem
   },
   setup() {
+    const spinning = ref<boolean>(true)
+    onMounted(() => {
+      setTimeout(() => {
+        spinning.value = false
+      }, 500)
+    })
     const tagList = ref(data)
     const focus = () => {
       console.log('focus')
@@ -167,7 +175,8 @@ export default defineComponent({
       focus,
       handleChange,
       selectTag,
-      data
+      data,
+      spinning
     }
   }
 })
