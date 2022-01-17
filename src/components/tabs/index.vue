@@ -55,9 +55,10 @@
             <a-menu-divider />
 
             <a-menu-item
-              v-for="item in tabs"
+              v-for="(item, index) in tabs"
               :key="item.name"
               :style="[currentRouteName === item.name ? 'background-color:#f2f2f2;':'']"
+              @click="(e) => handleOpenContext(e, item, index)"
             >
               <router-link
                 :to="{
