@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 // 把setup放在 script 标签里面,相当于 setup()语法糖, 具体可以看vue的官网
-import { useSlots, defineProps, ref, defineEmits } from 'vue'
+import { useSlots, ref } from 'vue'
 // 如果要知道使用插槽的实例需要引入 useSlots
 
 defineProps({

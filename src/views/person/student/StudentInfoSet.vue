@@ -108,29 +108,16 @@
                       所在省市
                     </div>
                     <div class="region">
-                      <a-select
-                        ref="select"
-                        v-model:value.trim="province"
-                        style="width: 160px"
-                        @focus="focus"
-                        @change="handleChangeState"
-                      >
-                        <a-select-option value="jack">
-                          Jack
-                        </a-select-option>
-                      </a-select>
-                      <a-select
-                        ref="select"
-                        v-model:value.trim="city"
-                        class="select"
-                        style="width: 160px"
-                        @focus="focus"
-                        @change="handleChangeState"
-                      >
-                        <a-select-option value="jack">
-                          Jack
-                        </a-select-option>
-                      </a-select>
+                      <a-cascader
+                        v-model:value="value"
+                        :field-names="{
+                          label: 'label',
+                          value: 'code',
+                          children: 'children',
+                        }"
+                        :options="options"
+                        placeholder="请选择省市"
+                      />
                     </div>
                   </div>
                   <div
@@ -264,6 +251,17 @@
 import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
+import map from '@/assets/js/map'
+
+interface Option {
+  code: string;
+  value: string;
+  label: string;
+  disabled?: boolean;
+  children?: Option[];
+  [key: string]: any;
+}
+const options: Option[] = map
 export default defineComponent({
   components: {
     UploadOutlined
@@ -282,8 +280,6 @@ export default defineComponent({
       stuId: '123456',
       ID: '123456',
       phoneNum: '123456',
-      province: '福建',
-      city: '福州',
       // 监护人信息
       guardianName: '阿斯顿',
       guardiansex: '女',
@@ -334,7 +330,9 @@ export default defineComponent({
       handleChangeFile,
       updateInfo,
       focus,
-      handleChangeState
+      handleChangeState,
+      value: ref<string[]>([]),
+      options
     }
   }
 })

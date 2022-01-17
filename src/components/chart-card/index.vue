@@ -39,7 +39,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 import CountTo from '@/components/vue-count-to/index.vue'
 defineProps({
   title: {

@@ -9,7 +9,8 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
+    'vue/setup-compiler-macros': true
   },
   //  使用最新的vue-eslint-parser必须使用以下任一设置：(官方说明)
   //  "extends": ["plugin:vue/recommended"]

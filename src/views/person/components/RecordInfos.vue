@@ -34,11 +34,15 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onMounted, ref } from 'vue'
+import { onMounted, ref, PropType } from 'vue'
 import { useRouter } from 'vue-router'
+interface propsType {
+  name: string;
+  avaror: string;
+}
 const props = defineProps({
   person: {
-    type: Object,
+    type: Object as PropType<propsType>,
     default: () => {}
   },
   infoList: {

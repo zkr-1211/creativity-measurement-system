@@ -16,6 +16,7 @@
         >
           <a-input
             v-model:value="formState.schoolName"
+            placeholder="请输入学校名称"
             class="input-width"
           />
         </a-form-item>
@@ -25,36 +26,28 @@
         >
           <a-textarea
             v-model:value="formState.schoolDesc"
+            placeholder="请输入学校简介"
             type="textarea"
             class="input-width"
             :auto-size="{ minRows: 5, maxRows: 10 }"
           />
         </a-form-item>
-        <a-form-item label="所在省市">
-          <a-select
-            v-model:value="formState.province"
-            class="select-width"
-            placeholder="please select your zone"
-          >
-            <a-select-option value="shanghai">
-              Zone one
-            </a-select-option>
-            <a-select-option value="beijing">
-              Zone two
-            </a-select-option>
-          </a-select>
-          <a-select
-            v-model:value="formState.city"
-            class="select-width"
-            placeholder="please select your zone"
-          >
-            <a-select-option value="shanghai">
-              Zone one
-            </a-select-option>
-            <a-select-option value="beijing">
-              Zone two
-            </a-select-option>
-          </a-select>
+
+        <a-form-item
+          label="所在省市"
+          name="area"
+        >
+          <a-cascader
+            v-model:value="formState.area"
+            :field-names="{
+              label: 'label',
+              value: 'code',
+              children: 'children',
+            }"
+            :options="options"
+            placeholder="请选择区域"
+            @change="change"
+          />
         </a-form-item>
         <a-form-item
           label="详细地址"
@@ -62,6 +55,7 @@
         >
           <a-textarea
             v-model:value="formState.address"
+            placeholder="请输入详细地址"
             class="input-width"
             type="textarea"
             :auto-size="{ minRows: 5, maxRows: 10 }"
@@ -73,6 +67,7 @@
         >
           <a-input
             v-model:value="formState.superName"
+            placeholder="请输入超级管理员姓名"
             class="input-width"
           />
         </a-form-item>
@@ -82,6 +77,7 @@
         >
           <a-input
             v-model:value="formState.superPhone"
+            placeholder="请输入超级管理员手机号"
             class="input-width"
           />
         </a-form-item>
@@ -128,18 +124,26 @@
 </template>
 
 <script lang="ts">
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import { reactive, defineComponent, toRaw, UnwrapRef, ref, onActivated } from 'vue'
+import { reactive, defineComponent, UnwrapRef, ref, onActivated } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
+import map from '@/assets/js/map'
 interface FormState {
   schoolName: string;
   schoolDesc: string;
   superName: string;
-  superPhone: number;
-  province: string;
+  superPhone: number | undefined;
   address: string;
-  city: string;
+  area: string[];
 }
+interface Option {
+  code: string;
+  value: string;
+  label: string;
+  disabled?: boolean;
+  children?: Option[];
+  [key: string]: any;
+}
+const options: Option[] = map
 export default defineComponent({
   name: 'AddOrganization',
   components: { PageHeader },
@@ -149,16 +153,15 @@ export default defineComponent({
       schoolName: '',
       schoolDesc: '',
       superName: '',
-      superPhone: 0,
-      province: '',
-      city: '',
-      address: ''
+      superPhone: undefined,
+      address: '',
+      area: []
     })
     const rules = {
       schoolName: [
         {
           required: true,
-          message: 'Please input Activity name',
+          message: '请输入内容,不能为空',
           trigger: 'blur'
         },
         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
@@ -166,7 +169,7 @@ export default defineComponent({
       schoolDesc: [
         {
           required: true,
-          message: 'Please input Activity name',
+          message: '请输入内容,不能为空',
           trigger: 'blur'
         },
         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
@@ -174,7 +177,7 @@ export default defineComponent({
       superName: [
         {
           required: true,
-          message: 'Please input Activity name',
+          message: '请输入内容,不能为空',
           trigger: 'blur'
         },
         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
@@ -182,24 +185,17 @@ export default defineComponent({
       address: [
         {
           required: true,
-          message: 'Please input Activity name',
+          message: '请输入内容,不能为空',
           trigger: 'blur'
         },
         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
-      province: [
+      area: [
         {
+          type: 'array',
           required: true,
-          message: 'Please input Activity name',
+          message: '请选择区域',
           trigger: 'blur'
-        },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
-      ],
-      region: [
-        {
-          required: true,
-          message: 'Please select Activity zone',
-          trigger: 'change'
         }
       ],
       type: [
@@ -227,11 +223,14 @@ export default defineComponent({
     }
     const resetForm = () => {
       // console.log(formRef.value)
-
       formRef.value.resetFields()
     }
+    const change = (e) => {
+      console.log(e, formState.area)
+    }
     const finish = ref(true)
-    onActivated(() => { // 被包裹组件被激活的状态下触发
+    onActivated(() => {
+      // 被包裹组件被激活的状态下触发
       finish.value = true
     })
 
@@ -259,7 +258,9 @@ export default defineComponent({
       rules,
       resetForm,
       formRef,
-      finish
+      finish,
+      options,
+      change
     }
   }
 })

@@ -31,7 +31,8 @@ import {
   List,
   Avatar,
   Result,
-  Spin
+  Spin,
+  Cascader
 } from 'ant-design-vue'
 
 const plugins = [
@@ -67,7 +68,8 @@ const plugins = [
   List,
   Avatar,
   Result,
-  Spin
+  Spin,
+  Cascader
 ]
 
 export const setupAntd = (app: any, options = {}) => {

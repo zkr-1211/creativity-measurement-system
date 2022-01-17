@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
 
 const props = defineProps({
