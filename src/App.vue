@@ -22,9 +22,11 @@ provide('reload', onRefresh)
       v-if="isRouterAlive"
       v-slot="{ Component }"
     >
-      <keep-alive>
-        <component :is="Component" />
-      </keep-alive>
+      <suspense>
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </suspense>
     </router-view>
   </a-config-provider>
 </template>

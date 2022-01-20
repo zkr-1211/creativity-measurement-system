@@ -64,13 +64,28 @@ echarts.use([
 export default defineComponent({
   name: 'MyChart3',
   props: {
-    date: {
+    datax: {
       type: Array,
-      default: () => ['1月', '2月', '3月', '4月']
+      default: () => [
+        '1月',
+        '2月',
+        '3月',
+        '4月',
+        '5月',
+        '6月',
+        '7月',
+        '8月',
+        '9月',
+        '10月',
+        '11月',
+        '12月'
+      ]
     },
-    grade: {
+    datay: {
       type: Array,
-      default: () => [23.0, 42.9, 72.0, 77.2, 75.6]
+      default: () => [
+        120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130
+      ]
     }
   },
   setup(props, { emit }) {
@@ -108,20 +123,7 @@ export default defineComponent({
             }
           },
 
-          data: [
-            '1月',
-            '2月',
-            '3月',
-            '4月',
-            '5月',
-            '6月',
-            '7月',
-            '8月',
-            '9月',
-            '10月',
-            '11月',
-            '12月'
-          ]
+          data: props.datax
         },
         yAxis: [
           {
@@ -136,9 +138,7 @@ export default defineComponent({
         ],
         series: [
           {
-            data: [
-              120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130
-            ],
+            data: props.datay,
             name: 'asdasfa',
             type: 'bar',
             barWidth: '32px',
@@ -147,7 +147,7 @@ export default defineComponent({
             }
           }
         ],
-        grid: <any> {
+        grid: <any>{
           x: 30,
           // y: 0,
           x2: 0

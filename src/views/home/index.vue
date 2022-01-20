@@ -63,16 +63,17 @@ import FourItemCard from '@/components/four-item-card/index.vue'
 import ParticipationRun from './components/ParticipationRun.vue'
 import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
+import { getStat } from '@/api'
 const store = useStore()
-import { useRouter, useRoute } from 'vue-router'
-const router = useRouter()
+import { useRoute } from 'vue-router'
 const route = useRoute()
 console.log(route.matched)
 store.$patch((state) => {
   state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
   state.token = 'token-asgdfebdvvadfsdfgdfh'
 })
-console.log(router)
+const data = await getStat(null)
+console.log('data', data)
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

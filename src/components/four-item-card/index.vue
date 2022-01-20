@@ -12,7 +12,7 @@
         >
           <chart-card
             :loading="loading"
-            title="c'p"
+            :title="infoList[0].title"
             :total="15524"
           >
             <template #action>
@@ -36,7 +36,7 @@
               />
             </div>
             <template #footer>
-              地方萨芬撒旦士大夫
+              {{ infoList[0].footerDes }} 123
             </template>
           </chart-card>
         </a-col>
@@ -50,7 +50,7 @@
           <!--  -->
           <chart-card
             :loading="loading"
-            title="啊手动阀实打实的"
+            :title="infoList[1].title"
             :total="15524"
           >
             <template #action>
@@ -63,7 +63,8 @@
               <chart-area />
             </div>
             <template #footer>
-              访问量 <span>60%</span>
+              {{ infoList[1].footerDes }}
+              <span>60%</span>
             </template>
           </chart-card>
         </a-col>
@@ -77,7 +78,7 @@
         >
           <chart-card
             :loading="loading"
-            title="啊手动阀实打实的"
+            :title="infoList[2].title"
             :total="15524"
           >
             <template #action>
@@ -90,16 +91,10 @@
               <chart-mbar />
             </div>
             <template #footer>
-              地方萨芬撒旦士大夫
+              {{ infoList[2].footerDes }}
             </template>
           </chart-card>
-          <!-- <evaluation-card
-            :loading="loading"
-          >
-            <chart-line2 />
-          </evaluation-card> -->
         </a-col>
-        <!--  -->
         <a-col
           :xs="24"
           :sm="24"
@@ -109,7 +104,7 @@
         >
           <chart-card
             :loading="loading"
-            title="啊手动阀实打实的"
+            :title="infoList[3].title"
             :total="5655"
           >
             <template #action>
@@ -127,7 +122,7 @@
               />
             </div>
             <template #footer>
-              地方萨芬撒旦士大夫
+              {{ infoList[3].footerDes }} 1
             </template>
           </chart-card>
         </a-col>
@@ -144,7 +139,31 @@ import MiniProgress from '@/components/mini-progress/index.vue'
 import ChartCard from '@/components/chart-card/index.vue'
 import Trend from '@/components/trend/index.vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+defineProps({
+  infoList: {
+    type: Array,
+    default: () => [
+      {
+        title: '测评总人数',
+        footerDes: '日均测评数'
+      },
+      {
+        title: '访问量',
+        footerDes: '日访问量'
+      },
+      {
+        title: '参与机构数',
+        footerDes: '机构平均开通测评数'
+      },
+      {
+        title: '测评项目数',
+        footerDes: '今年新增'
+      }
+    ]
+  }
+})
 const loading = ref<boolean>(true)
+
 onMounted(() => {
   setTimeout(() => {
     loading.value = false

@@ -10,5 +10,6 @@ const service = axios.create({
 })
 RequestInterceptors(service)
 ResponseInterceptors(service)
+service.defaults.withCredentials = false
 
 export default service

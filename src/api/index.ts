@@ -1,5 +1,6 @@
 import request from '@/utils/request/v4'
 const Api = {
+  index: '/test'
   // userInfo: '/api/user/info',
   // getSiteInfo: '/api/common/site_info',
   // getPermissions: '/api/user/status',
@@ -35,6 +36,6 @@ function requestPost(url: string, data: any) {
 // export function pushLang(data: any) {
 //   return requestPost(Api.getSiteInfo, data)
 // }
-// export function getStat(params: any) {
-//   return requestGet(Api.getPermissions, params)
-// }
+export function getStat(params: any) {
+  return requestGet(Api.index, params)
+}
