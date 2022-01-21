@@ -5,7 +5,7 @@
     style="width: 100%"
   >
     <div
-      v-for="(item, index) in 10"
+      v-for="(item, index) in list"
       :key="index"
       class="view-list-item"
     >
@@ -22,19 +22,19 @@
           {{ index + 1 }}
         </div>
         <div class="title">
-          心理健康
+          {{ item.title }}
         </div>
       </div>
       <div class="progress">
         <a-progress
-          :percent="50"
+          :percent="item.percent"
           :show-info="false"
           stroke-color="#3BA0FF"
           stroke-linecap="square"
         />
       </div>
       <div class="people">
-        1234人
+        {{ item.num }}
       </div>
     </div>
   </a-card>
@@ -42,12 +42,24 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { getReviewList } from '@/api'
+interface listType {
+  title: string;
+  percent: number;
+  num: number;
+}
 const loading = ref<boolean>(true)
 onMounted(() => {
-  setTimeout(() => {
-    loading.value = false
-  }, 500)
+  __getReviewList()
 })
+const list = ref<listType[]>([])
+async function __getReviewList() {
+  try {
+    const { data } = await getReviewList()
+    list.value = data.list
+    loading.value = false
+  } catch (error) {}
+}
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

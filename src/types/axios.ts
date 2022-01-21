@@ -1,10 +1,9 @@
-export interface MoocResponseConfig<T> {
-  code: number;
-  msg?: string;
-  data: T;
-}
-
-export interface MoocListResponseConfig<T> {
-  list: T[];
-  total: number;
+export interface HttpResponse {
+  status: number
+  statusText: string
+  data: {
+    code: number;
+    desc: string;
+    [key: string]: any;
+  }
 }

@@ -22,6 +22,15 @@ export const useStore = defineStore('store', {
     },
     getUserInfo: (state) => {
       return state.userInfo
+    }
+
+  },
+  actions: {
+    logout() {
+      this.$patch({
+        token: '',
+        userInfo: {}
+      })
     },
     clearToken(state) {
       state.token = ''
@@ -30,15 +39,6 @@ export const useStore = defineStore('store', {
     clearUserInfo(state) {
       state.userInfo = {}
     }
-  },
-  actions: {
-    logout() {
-      this.$patch({
-        token: '',
-        userInfo: {}
-      })
-    }
-
     /**
      * @param {string} user
      * @param {string} password

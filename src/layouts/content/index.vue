@@ -7,9 +7,11 @@
           mode="out-in"
         >
           <div :key="route.name">
-            <keep-alive>
-              <component :is="Component" />
-            </keep-alive>
+            <suspense>
+              <keep-alive>
+                <component :is="Component" />
+              </keep-alive>
+            </suspense>
           </div>
         </transition>
       </router-view>

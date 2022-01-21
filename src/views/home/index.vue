@@ -63,7 +63,6 @@ import FourItemCard from '@/components/four-item-card/index.vue'
 import ParticipationRun from './components/ParticipationRun.vue'
 import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
-import { getStat } from '@/api'
 const store = useStore()
 import { useRoute } from 'vue-router'
 const route = useRoute()
@@ -72,8 +71,6 @@ store.$patch((state) => {
   state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
   state.token = 'token-asgdfebdvvadfsdfgdfh'
 })
-const data = await getStat(null)
-console.log('data', data)
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -81,8 +78,6 @@ console.log('data', data)
   margin: 24px;
   .run-list {
     margin-top: 0.24rem;
-  }
-  .view-list {
   }
 }
 </style>

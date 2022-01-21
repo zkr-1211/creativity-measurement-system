@@ -20,7 +20,7 @@
           :style="{ marginBottom: '24px' }"
         >
           <div class="evaluation-trend-chart">
-            <chart-bar />
+            <chart-bar :data="list[0]?.data" />
           </div>
         </a-col>
 
@@ -36,7 +36,7 @@
               机构测评人数排名
             </div>
             <div
-              v-for="(item, index) in 7"
+              v-for="(item, index) in list[1].list"
               :key="index"
               class="organization-item"
             >
@@ -48,13 +48,13 @@
                   {{ index + 1 }}
                 </div>
                 <div class="organization-name">
-                  工专路三号店
+                  {{ item.title }}
                 </div>
               </div>
               <div class="run-num">
                 <count-to
                   :start-val="0"
-                  :end-val="2017"
+                  :end-val="item.conut"
                   :duration="1000"
                 />
               </div>
@@ -93,6 +93,7 @@ import { onMounted, defineComponent, ref, reactive } from 'vue'
 import ChartBar from '@/components/chart-bar/index.vue'
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import CountTo from '@/components/vue-count-to/index.vue'
+import { getTendencyRun } from '@/api'
 
 export default defineComponent({
   name: 'TendencyRun',
@@ -103,10 +104,18 @@ export default defineComponent({
     })
     const loading = ref<boolean>(true)
     onMounted(() => {
-      setTimeout(() => {
-        loading.value = false
-      }, 500)
+      __getTendencyRun()
     })
+    const list:any = ref([])
+    async function __getTendencyRun() {
+      try {
+        const { data } = await getTendencyRun()
+        list.value = data.list
+        console.log('123123', list.value)
+        loading.value = false
+      } catch (error) {}
+    }
+
     const tabListNoTitle = [
       {
         key: 'article',
@@ -161,7 +170,8 @@ export default defineComponent({
       SkeletonParagraphProps,
       loading,
       tabListNoTitle,
-      onTabChange
+      onTabChange,
+      list
     }
   }
 })

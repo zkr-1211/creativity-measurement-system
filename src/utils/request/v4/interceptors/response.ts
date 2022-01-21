@@ -4,7 +4,7 @@ import {
   SystemException,
   UserException
 } from '@/utils/request/exception'
-
+import { AxiosResponse } from 'axios'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { message } from 'ant-design-vue'
@@ -67,9 +67,9 @@ async function errorHandler(res) {
 
 export default (axios) => {
   axios.interceptors.response.use(
-    async(res) => {
+    async(res:AxiosResponse) => {
       if (res?.status >= 200 && res?.status < 300) {
-        return res.data?.data || {}
+        return res?.data || {}
       } else {
         await errorHandler(res)
       }

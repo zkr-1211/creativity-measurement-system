@@ -64,21 +64,16 @@ echarts.use([
 export default defineComponent({
   name: 'MyChart2',
   props: {
-    date: {
+    data: {
       type: Array,
-      default: () => ['1月', '2月', '3月', '4月']
-    },
-    grade: {
-      type: Array,
-      default: () => [23.0, 42.9, 72.0, 77.2, 75.6]
+      default: () => [
+        120, 200, 150, 80, 70, 110, 130, 120, 250, 150, 80, 70, 110, 130, 120,
+        200, 150, 80
+      ]
     }
   },
   setup(props, { emit }) {
     function Init() {
-      // 基于准备好的dom，初始化echarts实例
-      // const myChart2 = globalProperties.$echarts.init(
-      //   document.getElementById("myChart2")
-      // );
       const myChart2 = echarts.init(document.getElementById('myChart2')!)
       const option: ECOption = {
         // 添加横线滚动条
@@ -96,12 +91,9 @@ export default defineComponent({
             type: 'shadow'
           }
         },
-        series: [
+        series: <any> [
           {
-            data: [
-              120, 200, 150, 80, 70, 110, 130, 120, 250, 150, 80, 70, 110, 130,
-              120, 200, 150, 80
-            ],
+            data: props.data,
             name: '士大夫十分',
             type: 'bar',
             itemStyle: {

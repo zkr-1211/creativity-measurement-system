@@ -64,28 +64,9 @@ echarts.use([
 export default defineComponent({
   name: 'MyChart3',
   props: {
-    datax: {
-      type: Array,
-      default: () => [
-        '1月',
-        '2月',
-        '3月',
-        '4月',
-        '5月',
-        '6月',
-        '7月',
-        '8月',
-        '9月',
-        '10月',
-        '11月',
-        '12月'
-      ]
-    },
-    datay: {
-      type: Array,
-      default: () => [
-        120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130
-      ]
+    data: {
+      type: Object,
+      default: () => {}
     }
   },
   setup(props, { emit }) {
@@ -110,7 +91,7 @@ export default defineComponent({
         title: {
           text: '测评人数趋势'
         },
-        xAxis: {
+        xAxis: <any>{
           type: 'category',
           axisLine: {
             show: false
@@ -122,8 +103,7 @@ export default defineComponent({
               marginTop: '20px'
             }
           },
-
-          data: props.datax
+          data: props.data.datay
         },
         yAxis: [
           {
@@ -136,9 +116,9 @@ export default defineComponent({
             }
           }
         ],
-        series: [
+        series: <any> [
           {
-            data: props.datay,
+            data: props.data.datax,
             name: 'asdasfa',
             type: 'bar',
             barWidth: '32px',

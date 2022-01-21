@@ -12,11 +12,11 @@
         >
           <chart-card
             :loading="loading"
-            :title="infoList[0].title"
-            :total="15524"
+            :title="list[0]?.title"
+            :total="list[0]?.count"
           >
             <template #action>
-              <a-tooltip title="asdasdasd">
+              <a-tooltip title="暂无描述信息">
                 <ExclamationCircleOutlined />
               </a-tooltip>
             </template>
@@ -26,12 +26,12 @@
                 flag="up"
                 style="margin-right: 16px"
                 term="周同比"
-                :percentage="12"
+                :percentage="list[0]?.up"
               />
               <trend
                 flag="down"
                 term="日同比"
-                :percentage="12"
+                :percentage="list[0]?.down"
                 :type="false"
               />
             </div>
@@ -50,17 +50,17 @@
           <!--  -->
           <chart-card
             :loading="loading"
-            :title="infoList[1].title"
-            :total="15524"
+            :title="list[1]?.title"
+            :total="list[1]?.count"
           >
             <template #action>
-              <a-tooltip title="asdasdasd">
+              <a-tooltip title="暂无描述信息">
                 <ExclamationCircleOutlined />
               </a-tooltip>
             </template>
 
             <div>
-              <chart-area />
+              <chart-area :data="list[1]?.data" />
             </div>
             <template #footer>
               {{ infoList[1].footerDes }}
@@ -78,17 +78,17 @@
         >
           <chart-card
             :loading="loading"
-            :title="infoList[2].title"
-            :total="15524"
+            :title="list[2]?.title"
+            :total="list[2]?.count"
           >
             <template #action>
-              <a-tooltip title="asdasdasd">
+              <a-tooltip title="暂无描述信息">
                 <ExclamationCircleOutlined />
               </a-tooltip>
             </template>
 
             <div>
-              <chart-mbar />
+              <chart-mbar :data="list[2]?.data" />
             </div>
             <template #footer>
               {{ infoList[2].footerDes }}
@@ -104,11 +104,11 @@
         >
           <chart-card
             :loading="loading"
-            :title="infoList[3].title"
-            :total="5655"
+            :title="list[3]?.title"
+            :total="list[3]?.count"
           >
             <template #action>
-              <a-tooltip title="asdasdasd">
+              <a-tooltip title="暂无描述信息">
                 <ExclamationCircleOutlined />
               </a-tooltip>
             </template>
@@ -117,7 +117,7 @@
               <mini-progress
                 color="rgb(19, 194, 194)"
                 :target="80"
-                :percentage="78"
+                :percentage="list[3]?.percent"
                 height="8px"
               />
             </div>
@@ -132,43 +132,50 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, PropType } from 'vue'
 import ChartArea from '@/components/chart-area/index.vue'
 import ChartMbar from '@/components/chart-mbar/index.vue'
 import MiniProgress from '@/components/mini-progress/index.vue'
 import ChartCard from '@/components/chart-card/index.vue'
 import Trend from '@/components/trend/index.vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { getFourItem } from '@/api'
+interface listType {
+  title: string;
+  footerDes: string;
+}
 defineProps({
   infoList: {
-    type: Array,
-    default: () => [
-      {
-        title: '测评总人数',
-        footerDes: '日均测评数'
-      },
-      {
-        title: '访问量',
-        footerDes: '日访问量'
-      },
-      {
-        title: '参与机构数',
-        footerDes: '机构平均开通测评数'
-      },
-      {
-        title: '测评项目数',
-        footerDes: '今年新增'
-      }
-    ]
+    type: Array as PropType<listType[]>,
+    default: () => [{
+      title: '测评总人数',
+      footerDes: '日均测评数'
+    },
+    {
+      title: '访问量',
+      footerDes: '日访问量'
+    },
+    {
+      title: '参与机构数',
+      footerDes: '机构平均开通测评数'
+    },
+    {
+      title: '测评项目数',
+      footerDes: '今年新增'
+    }]
   }
 })
 const loading = ref<boolean>(true)
-
 onMounted(() => {
-  setTimeout(() => {
-    loading.value = false
-  }, 500)
+  __getFourItem()
 })
+const list:any = ref([])
+async function __getFourItem() {
+  const { data } = await getFourItem()
+  list.value = data.list
+  console.log(data)
+  loading.value = false
+}
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

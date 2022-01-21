@@ -7,9 +7,7 @@
     <div class="chart-card-header">
       <div class="meta">
         <span class="chart-card-title">
-          <slot name="title">
-            {{ title }}
-          </slot>
+          {{ title }}
         </span>
         <span class="chart-card-action">
           <slot name="action" />
@@ -43,16 +41,15 @@ import CountTo from '@/components/vue-count-to/index.vue'
 defineProps({
   title: {
     type: String,
-    default: ''
+    default: () => ''
   },
   total: {
     type: [Function, Number, String],
-    required: false,
-    default: null
+    default: () => 0
   },
   loading: {
     type: Boolean,
-    default: false
+    default: () => false
   }
 })
 </script>

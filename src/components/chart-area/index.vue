@@ -65,13 +65,9 @@ echarts.use([
 export default defineComponent({
   name: 'MyChart1',
   props: {
-    date: {
+    data: {
       type: Array,
-      default: () => ['1月', '2月', '3月', '4月']
-    },
-    grade: {
-      type: Array,
-      default: () => [23.0, 42.9, 72.0, 77.2, 75.6]
+      default: () => [210, 222, 532, 641, 220, 232, 421, 610, 222, 232, 641, 220, 232]
     }
   },
   setup(props, { emit }) {
@@ -104,10 +100,7 @@ export default defineComponent({
         },
         series: <any>[
           {
-            data: [
-              210, 222, 532, 641, 220, 232, 421, 610, 222, 232, 641, 220, 232,
-              221
-            ],
+            data: props.data,
             name: 'Fake Data',
             type: 'line',
             symbol: 'none',
@@ -132,9 +125,9 @@ export default defineComponent({
       })
     }
     onMounted(() => {
-      setTimeout(() => {
-        Init()
-      })
+      // setTimeout(() => {
+      Init()
+      // })
     })
   }
 })
