@@ -25,6 +25,7 @@
 @import "@/assets/css/mixin";
 .ant-layout-content {
   overflow: overlay;
+  overflow-y: scroll;
   flex: none;
   color: #fff;
   @include wh(100%, 90vh);

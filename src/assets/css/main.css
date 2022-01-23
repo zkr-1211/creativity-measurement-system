@@ -6,8 +6,18 @@
   height: 9px;
 }
 
+::-ms-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
 /* 滚动条的滑块 */
 ::-webkit-scrollbar-thumb {
+  background-color: #a1a3a9;
+  border-radius: 3px;
+}
+
+::-ms-scrollbar-thumb {
   background-color: #a1a3a9;
   border-radius: 3px;
 }
