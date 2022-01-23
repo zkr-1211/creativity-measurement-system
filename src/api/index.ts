@@ -2,7 +2,7 @@ import request from '@/utils/request/v4'
 import { HttpResponse } from '@/types'
 const Api = {
   tendencyRun: 'api/tendency_run',
-  reviewList: 'api/review_list',
+  reviewList: '/api/getList',
   fourItem: 'api/four_item'
 }
 
