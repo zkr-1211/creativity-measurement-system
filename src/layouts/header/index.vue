@@ -1,6 +1,14 @@
 <template>
   <a-layout-header>
     <div class="left">
+      <div
+        style="margin-right: 24px; cursor: pointer;"
+        @click="change"
+      >
+        <MenuFoldOutlined v-if="!collapsed" />
+        <MenuUnfoldOutlined v-else />
+      </div>
+
       <!-- <i
         :class="['vitecaidan', defaultData.iconfont, collapse ? 'collapse' : '']"
         :style="{ color: themeColor }"
@@ -14,40 +22,25 @@
           :to="{ path: item.path }"
         >
           {{ item.meta.title }}
-          <!-- <el-dropdown v-if="item.children && item.children.length">
-            <span class="dropdown-span">
-              {{
-                item.meta.locale ? t(item.meta.locale) : item.meta.title
-              }}
-              <i class="el-icon-arrow-down" />
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="each in item.children"
-                  :key="each.name"
-                  :to="item.redirect || item.path"
-                >
-                  <router-link
-                    :to="each.redirect || each.path"
-                    class="router-link"
-                  >
-                    {{ each.meta.locale ? t(each.meta.locale) : each.meta.title }}
-                  </router-link>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown> -->
-
-          <!-- <router-link
-            v-else
-            :to="item.redirect || item.path"
+          <template
+            v-if="item.children && item.children.length"
+            #overlay
           >
-            {{
-              item.meta.locale ? t(item.meta.locale) : item.meta.title
-            }}
-          </router-link> -->
-          <!-- </transition-group> -->
+            <a-menu>
+              <a-menu-item
+                v-for="each in item.children"
+                :key="each.name"
+                :to="item.redirect || item.path"
+              >
+                <router-link
+                  :to="each.redirect || each.path"
+                  class="router-link"
+                >
+                  {{ each.meta.title }}
+                </router-link>
+              </a-menu-item>
+            </a-menu>
+          </template>
         </a-breadcrumb-item>
       </a-breadcrumb>
     </div>
@@ -121,25 +114,35 @@ import {
   FullscreenExitOutlined,
   BellOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined
 } from '@ant-design/icons-vue'
 import { useFullscreen } from '@vueuse/core'
 import { useRoute } from 'vue-router'
+import { useStore } from '@/store'
 import { computed } from 'vue'
 
 import { ref } from 'vue'
 const { enter, exit } = useFullscreen()
-// const route = useRoute()
-// let matched = []
-// matched = computed(() => {
-//   // let arr = route.matched
-//   // if (arr[0].path !== '/') {
-//   //   arr = route.matched
-//   // }
-//   // return arr.filter(item => item.meta?.title)
-// })
+const route = useRoute()
+let matched:any = []
+matched = computed(() => {
+  let arr = route.matched
+  // if (arr[0].path !== '/') {
+  arr = route.matched
+  // }
+  return arr.filter(item => item.meta?.title)
+})
 // console.log('matched', matched)
 
+const store = useStore()
+const collapsed = computed(() => {
+  return store.getCollapsed
+})
+const change = () => {
+  store.collapsed = !store.collapsed
+}
 const isFullScree = ref(false)
 const FullScree = () => {
   !isFullScree.value && enter()
@@ -171,6 +174,10 @@ const FullScree = () => {
   box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.12);
   @include faj();
   // flex-direction: row-reverse
+}
+.left {
+  display: flex;
+  align-items: center
 }
 .user {
   @include faj;

@@ -2,7 +2,6 @@
   <a-layout-sider
     v-model:collapsed="collapsed"
     width="256px"
-    collapsible
   >
     <!-- 树课测评系统 -->
     <template v-if="true">
@@ -200,7 +199,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, watch } from 'vue'
+import { reactive, toRefs, ref, watch, computed } from 'vue'
 // import SidebarMenu from './SidebarMenuConfig.js'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
@@ -220,7 +219,10 @@ const state = reactive({
 const { mode, theme, openKeys, selectedKeys } = toRefs(state)
 const route = useRoute()
 const store = useStore()
-const collapsed = ref<boolean>(false)
+// const collapsed = ref<boolean>(false)
+const collapsed = computed(() => {
+  return store.getCollapsed
+})
 watch(
   () => route.name,
   () => {

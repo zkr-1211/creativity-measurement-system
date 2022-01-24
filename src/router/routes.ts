@@ -1,126 +1,82 @@
 import { RouteRecordRaw } from 'vue-router'
-
+import BasicLayout from '@/layouts/BasicLayout.vue'
 // 主框架内显示的路由
 export const frameIn: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     redirect: '/homepage',
-    component: () => import(/* webpackChunkName: "home" */ '@/layouts/BasicLayout.vue'),
+    component: () => BasicLayout,
+    meta: {
+      title: '首页'
+    },
     children: [
       {
-        path: '/homepage',
+        path: 'homepage',
         name: 'HomePage',
-        component: () => import(/* webpackChunkName: "homepage" */ '@/views/home/index.vue'),
+        component: () =>
+          import(/* webpackChunkName: "homepage" */ '@/views/home/index.vue'),
         meta: {
           keepAlive: true,
           title: '首页',
           auth: true
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/organization',
+    name: 'Organization',
+    redirect: '/organization',
+    component: () => BasicLayout,
+    meta: {
+      title: '机构'
+    },
+    children: [
       {
-        path: '/evaluation/allevaluation',
-        name: 'AllEvaluation',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/AllEvaluation.vue'),
-        meta: {
-          keepAlive: true,
-          title: '全部测评',
-          auth: true
-        }
-      },
-      {
-        path: '/evaluation/evaluation-detail',
-        name: 'EvaluationDetail',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDetail.vue'),
-        meta: {
-          keepAlive: true,
-          title: '测评详情',
-          auth: true
-        }
-      },
-      {
-        path: '/evaluation/design',
-        name: 'EvaluationManage',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDesign.vue'),
-        meta: {
-          keepAlive: true,
-          isCache: false, // 是否缓存
-          title: '测评设计',
-          auth: true
-        }
-      },
-      {
-        path: '/evaluation/evaluationset',
-        name: 'evaluationset',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationSet.vue'),
-        meta: {
-          keepAlive: true,
-          title: '测评设置'
-        }
-      },
-      {
-        path: '/evaluation/model-dimension-edit',
-        name: 'ModelDimensionEdit',
-        component: () => import(/* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/ModelDimensionEdit.vue'),
-        meta: {
-          keepAlive: true,
-          title: '模型设置'
-
-        }
-      },
-      {
-        path: '/organization',
+        path: '',
         name: 'organization',
         component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/index.vue'),
         meta: {
           keepAlive: true,
-          title: '机构'
-
+          title: '机构',
+          auth: true
         }
       },
       {
-        path: '/organization/addorganization',
+        path: 'addorganization',
         name: 'AddOrganization',
-        component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/AddOrganization.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "organization" */ '@/views/organization/AddOrganization.vue'
+          ),
         meta: {
           keepAlive: true,
           title: '添加机构'
         }
       },
       {
-        path: '/organization/detail',
+        path: 'detail',
         name: 'OrganizationDetail',
-        component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/OrganizationDetail.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "organization" */ '@/views/organization/OrganizationDetail.vue'
+          ),
         meta: {
           keepAlive: true,
           title: '机构详情'
         }
       },
       {
-        path: '/organization/orgevaluation-detail',
+        path: 'orgevaluation-detail',
         name: 'OrgEvaluationDetail',
-        component: () => import(/* webpackChunkName: "organization" */ '@/views/organization/OrgEvaluationDetail.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "organization" */ '@/views/organization/OrgEvaluationDetail.vue'
+          ),
         meta: {
           keepAlive: true,
           title: '机构测评详情'
-        }
-      },
-      {
-        path: '/personnelmanage/evaluator',
-        name: 'Evaluator',
-        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Evaluator.vue'),
-        meta: {
-          keepAlive: true,
-          title: '测评师'
-        }
-      },
-      {
-        path: '/personnelmanage/administrator',
-        name: 'Administrator',
-        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Administrator.vue'),
-        meta: {
-          keepAlive: true,
-          title: '管理员'
         }
       },
       {
@@ -148,6 +104,24 @@ export const frameIn: Array<RouteRecordRaw> = [
         meta: {
           keepAlive: true,
           title: '学生管理'
+        }
+      },
+      {
+        path: '/teacher-manage',
+        name: 'TeacherManage',
+        component: () => import(/* webpackChunkName: "TeacherManage" */ '@/views/person/teacher/TeacherManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '教师管理'
+        }
+      },
+      {
+        path: '/class-manage',
+        name: 'ClassManage',
+        component: () => import(/* webpackChunkName: "ClassManage" */ '@/views/class/ClassManage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '班级管理'
         }
       },
       {
@@ -185,23 +159,113 @@ export const frameIn: Array<RouteRecordRaw> = [
           keepAlive: true,
           title: '教师信息设置'
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/personnelmanage',
+    name: 'personnelmanage',
+    redirect: '/personnelmanage/administrator',
+    component: () => BasicLayout,
+    meta: {
+      keepAlive: true,
+      title: '人员管理',
+      auth: true
+    },
+    children: [
       {
-        path: '/teacher-manage',
-        name: 'TeacherManage',
-        component: () => import(/* webpackChunkName: "TeacherManage" */ '@/views/person/teacher/TeacherManage.vue'),
+        path: 'administrator',
+        name: 'administrator',
+        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Administrator.vue'),
         meta: {
           keepAlive: true,
-          title: '教师管理'
+          title: '管理员',
+          auth: true
         }
       },
       {
-        path: '/class-manage',
-        name: 'ClassManage',
-        component: () => import(/* webpackChunkName: "ClassManage" */ '@/views/class/ClassManage.vue'),
+        path: 'evaluator',
+        name: 'evaluator',
+        component: () => import(/* webpackChunkName: "personageManage" */ '@/views/personnel/Evaluator.vue'),
         meta: {
           keepAlive: true,
-          title: '班级管理'
+          title: '测评师',
+          auth: true
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/evaluation',
+    component: BasicLayout,
+    redirect: '/evaluation/allevaluation',
+    name: 'Evaluation',
+    meta: {
+      title: '测评管理'
+    },
+    children: [
+      {
+        path: 'allevaluation',
+        name: 'allevaluation',
+        component: () =>
+          import(
+            /* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/AllEvaluation.vue'
+          ),
+        meta: {
+          keepAlive: true,
+          title: '全部测评',
+          auth: true
+        }
+      },
+      {
+        path: 'design',
+        name: 'design',
+        component: () =>
+          import(
+            /* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDesign.vue'
+          ),
+        meta: {
+          keepAlive: true,
+          title: '测评设计',
+          auth: true
+        }
+      },
+      {
+        path: 'evaluation-detail',
+        name: 'EvaluationDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationDetail.vue'
+          ),
+        meta: {
+          keepAlive: true,
+          title: '测评详情',
+          auth: true
+        }
+      },
+      {
+        path: 'evaluationset',
+        name: 'evaluationset',
+        component: () =>
+          import(
+            /* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/EvaluationSet.vue'
+          ),
+        meta: {
+          keepAlive: true,
+          title: '测评设置'
+        }
+      },
+      {
+        path: 'model-dimension-edit',
+        name: 'ModelDimensionEdit',
+        component: () =>
+          import(
+            /* webpackChunkName: "evaluationmanage" */ '@/views/evaluation/ModelDimensionEdit.vue'
+          ),
+        meta: {
+          keepAlive: true,
+          title: '模型设置'
         }
       }
     ]
