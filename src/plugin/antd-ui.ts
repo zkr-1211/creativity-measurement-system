@@ -32,7 +32,8 @@ import {
   Avatar,
   Result,
   Spin,
-  Cascader
+  Cascader,
+  Breadcrumb
 } from 'ant-design-vue'
 
 const plugins = [
@@ -69,7 +70,8 @@ const plugins = [
   Avatar,
   Result,
   Spin,
-  Cascader
+  Cascader,
+  Breadcrumb
 ]
 
 export const setupAntd = (app: any, options = {}) => {

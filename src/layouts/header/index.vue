@@ -1,5 +1,56 @@
 <template>
   <a-layout-header>
+    <div class="left">
+      <!-- <i
+        :class="['vitecaidan', defaultData.iconfont, collapse ? 'collapse' : '']"
+        :style="{ color: themeColor }"
+        @click="handleCollapse"
+      /> -->
+      <a-breadcrumb separator="/">
+        <!-- <transition-group name="list"> -->
+        <a-breadcrumb-item
+          v-for="(item, index) in matched"
+          :key="index"
+          :to="{ path: item.path }"
+        >
+          {{ item.meta.title }}
+          <!-- <el-dropdown v-if="item.children && item.children.length">
+            <span class="dropdown-span">
+              {{
+                item.meta.locale ? t(item.meta.locale) : item.meta.title
+              }}
+              <i class="el-icon-arrow-down" />
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="each in item.children"
+                  :key="each.name"
+                  :to="item.redirect || item.path"
+                >
+                  <router-link
+                    :to="each.redirect || each.path"
+                    class="router-link"
+                  >
+                    {{ each.meta.locale ? t(each.meta.locale) : each.meta.title }}
+                  </router-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown> -->
+
+          <!-- <router-link
+            v-else
+            :to="item.redirect || item.path"
+          >
+            {{
+              item.meta.locale ? t(item.meta.locale) : item.meta.title
+            }}
+          </router-link> -->
+          <!-- </transition-group> -->
+        </a-breadcrumb-item>
+      </a-breadcrumb>
+    </div>
     <div class="user">
       <a-tooltip placement="bottom">
         <template #title>
@@ -73,8 +124,22 @@ import {
   LogoutOutlined
 } from '@ant-design/icons-vue'
 import { useFullscreen } from '@vueuse/core'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
 import { ref } from 'vue'
 const { enter, exit } = useFullscreen()
+// const route = useRoute()
+// let matched = []
+// matched = computed(() => {
+//   // let arr = route.matched
+//   // if (arr[0].path !== '/') {
+//   //   arr = route.matched
+//   // }
+//   // return arr.filter(item => item.meta?.title)
+// })
+// console.log('matched', matched)
+
 const isFullScree = ref(false)
 const FullScree = () => {
   !isFullScree.value && enter()
@@ -105,7 +170,7 @@ const FullScree = () => {
   @include wh(100%, 48px);
   box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.12);
   @include faj();
-  flex-direction: row-reverse
+  // flex-direction: row-reverse
 }
 .user {
   @include faj;
