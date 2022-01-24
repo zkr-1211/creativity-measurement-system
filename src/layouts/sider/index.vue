@@ -203,6 +203,8 @@
 import { reactive, toRefs, ref, watch } from 'vue'
 // import SidebarMenu from './SidebarMenuConfig.js'
 import { useRoute } from 'vue-router'
+import { useStore } from '@/store'
+
 import {
   MailOutlined,
   CalendarOutlined,
@@ -217,6 +219,8 @@ const state = reactive({
 })
 const { mode, theme, openKeys, selectedKeys } = toRefs(state)
 const route = useRoute()
+const store = useStore()
+const collapsed = ref<boolean>(false)
 watch(
   () => route.name,
   () => {
@@ -227,7 +231,15 @@ watch(
     immediate: true
   }
 )
-const collapsed = ref<boolean>(false)
+watch(
+  () => collapsed.value,
+  (newVal, oldVal) => {
+    store.setCollapsed(newVal)
+  },
+  {
+    immediate: true
+  }
+)
 window.onresize = () => {
   const ddw = document.documentElement.clientWidth
   collapsed.value = ddw < 1200

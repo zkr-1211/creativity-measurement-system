@@ -1,9 +1,10 @@
 import request from '@/utils/request/v4'
 import { HttpResponse } from '@/types'
 const Api = {
-  tendencyRun: 'api/tendency_run',
-  reviewList: '/api/getList',
-  fourItem: 'api/four_item'
+  tendencyRun: '/api/tendency_run',
+  reviewList: '/api/get_list',
+  fourItem: '/api/four_item',
+  table: '/api/table'
 }
 
 // requestGet
@@ -23,6 +24,17 @@ export function getFourItem() {
 }
 export function getTendencyRun() {
   return requestGet(Api.tendencyRun)
+}
+// 查询列表
+type paramsType = {
+  pageSize: number,
+  pageNum: number,
+  date?: string
+  types?: string
+  name?: string
+}
+export function getTable(params: paramsType) {
+  return requestGet(Api.table, params)
 }
 // requestPost
 // function requestPost(url: string, data: any) {

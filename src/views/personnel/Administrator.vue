@@ -17,16 +17,17 @@
       <Table
         :columns="columns"
         :data-source="dataSource"
+        @change="change"
       >
         <template
           v-for="item in columns"
-          #[item.dataIndex]="{ scope }"
           :key="item.dataIndex"
+          #[item.dataIndex]="{ scope }"
         >
           <div v-if="!item.isSlot">
             <a-input
-              v-if="editableData[scope.record.key] && item.isEdit"
-              v-model:value="editableData[scope.record.key][item.dataIndex]"
+              v-if="editableData[scope.record.id] && item.isEdit"
+              v-model:value="editableData[scope.record.id][item.dataIndex]"
               style="margin: -5px 0"
             />
             <template v-else>
@@ -35,22 +36,22 @@
           </div>
           <div v-else>
             <div class="editable-row-operations">
-              <span v-if="editableData[scope.record.key]">
-                <a @click="save(scope.record.key)">保存</a>
+              <span v-if="editableData[scope.record.id]">
+                <a @click="save(scope.record.id)">保存</a>
                 <span class="fengefu">|</span>
                 <a-popconfirm
                   title="Sure to cancel?"
-                  @confirm="cancel(scope.record.key)"
+                  @confirm="cancel(scope.record.id)"
                 >
                   <a>取消</a>
                 </a-popconfirm>
               </span>
               <span v-else>
-                <a @click="onEdit(scope.record.key)">权限编辑</a>
+                <a @click="onEdit(scope.record.id)">权限编辑</a>
                 <span class="fengefu">|</span>
                 <a-popconfirm
                   title="确认删除该项吗?"
-                  @confirm="onDelete(scope.record.key)"
+                  @confirm="onDelete(scope.record.id)"
                 >
                   <a>删除</a>
                 </a-popconfirm>
@@ -103,13 +104,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, UnwrapRef, toRaw, ref, onMounted } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  UnwrapRef,
+  toRaw,
+  ref,
+  onMounted
+} from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import PageHeader from '@/components/page-header/index.vue'
 import Table from '@/components/table/index.vue'
 import useTableOperation from '@/hooks/useTableOperation'
+import { getTable } from '@/api'
+
 interface dataType {
-  key: string;
+  id: string;
   ID: string;
   name: string;
   phone: string;
@@ -125,8 +135,8 @@ interface FormState {
 const columns = [
   {
     title: '管理员ID',
-    dataIndex: 'key'
-    // sorter: (a: { key: number }, b: { key: number }) => a.key - b.key
+    dataIndex: 'id'
+    // sorter: (a: { id: number }, b: { id: number }) => a.id - b.id
   },
   {
     title: '姓名',
@@ -190,18 +200,18 @@ const columns = [
     }
   }
 ]
-const data: dataType[] = []
-for (let i = 1; i < 50; i++) {
-  data.push({
-    key: `1231254543${i}`,
-    ID: `测评师${i}`,
-    name: `John Brown${i}`,
-    phone: `12353434634${i}`,
-    createNum: `${i}`,
-    time: `2017-10-31 23:12:${i}`,
-    increase: true
-  })
-}
+// const data: dataType[] = []
+// for (let i = 1; i < 50; i++) {
+//   data.push({
+//     id: `1231254543${i}`,
+//     ID: `测评师${i}`,
+//     name: `John Brown${i}`,
+//     phone: `12353434634${i}`,
+//     createNum: `${i}`,
+//     time: `2017-10-31 23:12:${i}`,
+//     increase: true
+//   })
+// }
 export default defineComponent({
   name: 'IsAdministrator',
   components: {
@@ -209,6 +219,7 @@ export default defineComponent({
     Table
   },
   setup() {
+    const dataList: dataType[] = ref([])
     const {
       dataSource,
       editableData,
@@ -221,13 +232,22 @@ export default defineComponent({
       confirmLoading,
       handleCancel,
       formRef
-    } = useTableOperation(data)
+    } = useTableOperation(dataList)
     const spinning = ref<boolean>(true)
     onMounted(() => {
-      setTimeout(() => {
-        spinning.value = false
-      }, 3000)
+      __getTable()
     })
+    const query = reactive({ pageSize: 100, pageNum: 1 })
+    const change = (e) => {
+      query.pageNum = e.current
+      console.log(e)
+    }
+    async function __getTable() {
+      const { data } = await getTable(query)
+      dataList.value = data.list
+      spinning.value = false
+      console.log(data)
+    }
     const handleOk = () => {
       formRef.value
         .validate()
@@ -275,7 +295,8 @@ export default defineComponent({
       formState,
       rules,
       formRef,
-      spinning
+      spinning,
+      change
     }
   }
 })

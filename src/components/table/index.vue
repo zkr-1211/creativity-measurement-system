@@ -6,6 +6,8 @@
     :columns="columns"
     :pagination="pagination"
     :row-selection="isSelect ? rowSelection : null"
+    :row-key="record => record.id"
+    @change="change"
   >
     <template
       v-for="item in renderArr"
@@ -24,7 +26,7 @@
 import { useSlots, ref } from 'vue'
 // 如果要知道使用插槽的实例需要引入 useSlots
 
-defineProps({
+const props = defineProps({
   columns: {
     type: Array,
     default: () => []
@@ -40,11 +42,15 @@ defineProps({
   tableHeight: {
     type: Number,
     default: () => 450
+  },
+  total: {
+    type: Number,
+    default: () => 450
   }
 })
 // defineProps是3.2中新的语法,不需要从 vue里面引入出来
 const pagination = ref({
-  showTotal: (total: any) => `共 ${total} 条数据`,
+  showTotal: (total: any) => `共 ${props.total} 条数据`,
   defaultPageSize: 10,
   showSizeChanger: true,
   showQuickJumper: true,
@@ -56,8 +62,10 @@ const slots = useSlots()
 const renderArr = Object.keys(slots)
 // 渲染的数据
 
-const emit = defineEmits(['selectedRows'])
-
+const emit = defineEmits(['selectedRows', 'change'])
+const change = (e:any) => {
+  emit('change', e)
+}
 // 是否多选
 const rowSelection = {
   onChange: (selectedRowKeys: any, selectedRows: any) => {

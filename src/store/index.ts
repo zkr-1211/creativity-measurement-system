@@ -3,27 +3,35 @@ import { defineStore } from 'pinia'
 
 // const store = createPinia()
 // store.use(piniaPluginPersist)
+interface UserState {
+  userInfo: object;
+  token: string;
+  collapsed: boolean;
+}
 
 export const useStore = defineStore('store', {
-  state: () => ({
+  state: (): UserState => ({
     userInfo: {},
-    token: ''
+    token: '',
+    collapsed: false
   }),
   getters: {
-    getToken: (state) => {
-      if (!state.token) {
+    getToken(): string {
+      if (!this.token) {
         const getCookieToken = window.localStorage.getItem('token')
         if (!getCookieToken) {
-          return null
+          return ''
         }
-        state.token = getCookieToken
+        this.token = getCookieToken
       }
-      return state.token
+      return this.token
     },
-    getUserInfo: (state) => {
-      return state.userInfo
+    getUserInfo(): object {
+      return this.userInfo
+    },
+    getCollapsed(): boolean {
+      return this.collapsed
     }
-
   },
   actions: {
     logout() {
@@ -32,12 +40,20 @@ export const useStore = defineStore('store', {
         userInfo: {}
       })
     },
-    clearToken(state) {
-      state.token = ''
-      // clearToken(state);
+    clearToken() {
+      this.token = ''
     },
-    clearUserInfo(state) {
-      state.userInfo = {}
+    clearUserInfo() {
+      this.userInfo = {}
+    },
+    setToken(token: string | undefined) {
+      this.token = token || ''
+    },
+    setUserInfo(info: object | null) {
+      this.userInfo = info || {}
+    },
+    setCollapsed(collapsed: boolean) {
+      this.collapsed = collapsed || false
     }
     /**
      * @param {string} user
