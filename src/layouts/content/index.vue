@@ -44,7 +44,8 @@ onUnmounted(() => {
   .content {
     overflow: hidden;
     background-color: #f5f5f5;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     // min-width: 1166px;
   }
 }

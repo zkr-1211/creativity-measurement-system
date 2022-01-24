@@ -221,16 +221,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 // /* 滚动条宽度 */
-// ::-webkit-scrollbar {
-//   height: 5px;
-// }
+::-webkit-scrollbar {
+  height: 7px;
+}
 /* 滚动条的滑块 */
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(81, 152, 218);
+  background-color: rgb(114, 131, 148);
   border-radius: 3px;
+  cursor: pointer;
+  opacity: 0.7;
 }
 .active {
-  background-color: red !important;
+  // background-color: red !important;
 }
 .tabs {
   display: flex;
@@ -242,6 +244,9 @@ export default defineComponent({
     max-height: 30px;
     overflow-x: hidden;
     overflow-y: hidden;
+    &:hover {
+      overflow-x: auto;
+    }
   }
   .reload {
     margin-right: 15px;
