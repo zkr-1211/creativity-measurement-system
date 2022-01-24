@@ -122,7 +122,6 @@ import { useFullscreen } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
 import { computed } from 'vue'
-
 import { ref } from 'vue'
 const { enter, exit } = useFullscreen()
 const route = useRoute()

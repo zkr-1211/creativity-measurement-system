@@ -1,6 +1,9 @@
 <template>
   <a-layout-content>
-    <div class="content">
+    <div
+      ref="el"
+      class="content"
+    >
       <router-view v-slot="{ Component, route }">
         <transition
           name="scale"
@@ -20,6 +23,15 @@
 </template>
 
 <script lang="ts" setup>
+import { useFullscreen } from '@vueuse/core'
+import { ref, getCurrentInstance, onUnmounted } from 'vue'
+const el = ref<HTMLElement | null>(null)
+const { toggle } = useFullscreen(el)
+const { proxy }:any = getCurrentInstance()
+proxy.$mybus.on('onFullScree', e => { toggle() })
+onUnmounted(() => {
+  proxy.$mybus.off('onFullScree')
+})
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -31,6 +43,8 @@
   @include wh(100%, 90vh);
   .content {
     overflow: hidden;
+    background-color: #f5f5f5;
+    overflow: auto;
     // min-width: 1166px;
   }
 }

@@ -6,8 +6,8 @@
         :key="item.name"
         :closable="item.name !== 'HomePage'"
         :color="currentRouteName === item.name ? '#108ee9' : ''"
-        style="max-height: 22px;"
-        @close="handleClose(tabs[tabIndex], index)"
+        style="max-height: 22px"
+        @close="handleClose(item, index)"
         @click="(e) => handleOpenContext(e, item, index)"
       >
         <router-link
@@ -57,7 +57,11 @@
             <a-menu-item
               v-for="(item, index) in tabs"
               :key="item.name"
-              :style="[currentRouteName === item.name ? 'background-color:#f2f2f2;':'']"
+              :style="[
+                currentRouteName === item.name
+                  ? 'background-color:#f2f2f2;'
+                  : '',
+              ]"
               @click="(e) => handleOpenContext(e, item, index)"
             >
               <router-link
@@ -77,19 +81,37 @@
         刷新
         <RedoOutlined class="reload" />
       </span>
+      <span @click="FullScree">
+        <ExpandOutlined />
+      </span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, computed, ref, inject } from 'vue'
+import {
+  defineComponent,
+  watch,
+  computed,
+  ref,
+  inject,
+  getCurrentInstance
+} from 'vue'
 import { useTabsStore, ITabsItem } from '@/store/tabs'
 import { useRoute, useRouter } from 'vue-router'
-import { RedoOutlined, DownOutlined } from '@ant-design/icons-vue'
+import {
+  RedoOutlined,
+  DownOutlined,
+  ExpandOutlined
+} from '@ant-design/icons-vue'
 export default defineComponent({
   name: 'MyTabs',
-  components: { RedoOutlined, DownOutlined },
+  components: { RedoOutlined, DownOutlined, ExpandOutlined },
   setup() {
+    const { proxy }: any = getCurrentInstance()
+    const FullScree = () => {
+      proxy.$mybus.emit('onFullScree')
+    }
     const route = useRoute()
     const router = useRouter()
     const store = useTabsStore()
@@ -145,11 +167,11 @@ export default defineComponent({
       store.handleCloseAll()
     }
     const handleClose = (item: ITabsItem, index: number) => {
-      console.log('12312312312312')
-
-      store.handleClose(index)
       // 如果关闭的是当前路由，则跳转到tabs的最后一个路由
+      console.log('12312312312312', item.name, currentRouteName.value)
+      store.handleClose(index)
       const isCurrentRoute = item.name === currentRouteName.value
+      console.log('12312312312312', isCurrentRoute)
       isCurrentRoute &&
         router.push({
           name: tabs.value[tabs.value.length - 1].name,
@@ -190,7 +212,8 @@ export default defineComponent({
       handleCloseAll,
       reload,
       tabIndex,
-      isHome
+      isHome,
+      FullScree
     }
   }
 })
@@ -221,6 +244,7 @@ export default defineComponent({
     overflow-y: hidden;
   }
   .reload {
+    margin-right: 15px;
     // min-width: 200px;
     -webkit-animation: myRotate 1s linear;
     animation: myRotate 1s linear;

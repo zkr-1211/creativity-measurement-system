@@ -4,202 +4,87 @@
     width="256px"
   >
     <!-- 树课测评系统 -->
-    <template v-if="true">
-      <span v-if="!collapsed"> 树课测评系统 </span>
-      <span v-else> Icon </span>
-      <a-menu
-        v-model:selectedKeys="selectedKeys"
-        :open-keys="openKeys"
-        mode="inline"
-        :theme="theme"
-      >
-        <a-menu-item key="HomePage">
-          <template #icon>
-            <MailOutlined />
-          </template>
-          <router-link to="/homepage">
-            首页
-          </router-link>
-        </a-menu-item>
+    <span v-if="!collapsed"> 树课测评系统 </span>
+    <span v-else> Icon </span>
+    <a-menu
+      v-model:selectedKeys="selectedKeys"
+      :open-keys="openKeys"
+      mode="inline"
+      :theme="theme"
+    >
+      <a-menu-item key="HomePage">
+        <template #icon>
+          <MailOutlined />
+        </template>
+        <router-link to="/homepage">
+          首页
+        </router-link>
+      </a-menu-item>
 
-        <a-sub-menu key="sub1">
-          <template #icon>
-            <AppstoreOutlined />
-          </template>
-          <template #title>
-            测评管理
-          </template>
-          <a-menu-item key="AllEvaluation">
-            <router-link to="/evaluation/allevaluation">
-              全部测评
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="EvaluationManage">
-            <router-link to="/evaluation/design">
-              测评设计
-            </router-link>
-          </a-menu-item>
-        </a-sub-menu>
-
-        <a-menu-item key="organization">
-          <template #icon>
-            <CalendarOutlined />
-          </template>
-          <router-link to="/organization">
-            机构/学校
-          </router-link>
-        </a-menu-item>
-
-        <a-sub-menu key="sub2">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            审批管理
-          </template>
-          <a-menu-item key="7">
-            Option 7
-          </a-menu-item>
-        </a-sub-menu>
-
-        <a-sub-menu key="sub4">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            人员管理
-          </template>
-          <a-menu-item key="Administrator">
-            <router-link to="/personnelmanage/administrator">
-              管理员
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="Evaluator">
-            <router-link to="/personnelmanage/evaluator">
-              测评师
-            </router-link>
-          </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </template>
-    <!--  学生/教师管理平台 -->
-    <template v-else>
-      学生/教师管理平台
-      <a-menu
-        v-model:openKeys="openKeys"
-        v-model:selectedKeys="selectedKeys"
-        style="width: 256px"
-        :mode="mode"
-        :theme="theme"
-      >
-        <a-sub-menu key="sub1">
-          <template #icon>
-            <AppstoreOutlined />
-          </template>
-          <template #title>
-            仪表盘
-          </template>
-          <a-menu-item key="1">
+      <a-sub-menu key="evaluation">
+        <template #icon>
+          <AppstoreOutlined />
+        </template>
+        <template #title>
+          测评管理
+        </template>
+        <a-menu-item key="allevaluation">
+          <router-link to="/evaluation/allevaluation">
             全部测评
-          </a-menu-item>
-        </a-sub-menu>
-
-        <a-sub-menu key="sub2">
-          <template #icon>
-            <AppstoreOutlined />
-          </template>
-          <template #title>
-            表单页
-          </template>
-          <a-menu-item key="2">
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="design">
+          <router-link to="/evaluation/design">
             测评设计
-          </a-menu-item>
-        </a-sub-menu>
-        <!-- <a-menu-item key="4">
-              <template #icon>
-                <CalendarOutlined />
-              </template>
-              机构/学校
-            </a-menu-item> -->
-        <a-sub-menu key="sub3">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            列表页
-          </template>
-          <a-sub-menu
-            key="sub1-2"
-            title="搜索列表"
-          >
-            <a-menu-item key="5">
-              Option 5
-            </a-menu-item>
-            <a-menu-item key="6">
-              Option 6
-            </a-menu-item>
-          </a-sub-menu>
-          <a-menu-item key="7">
-            查询表格
-          </a-menu-item>
-          <a-menu-item key="7">
-            标准列表
-          </a-menu-item>
-          <a-menu-item key="7">
-            卡片列表
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub4">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            详情页
-          </template>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub5">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            结果页
-          </template>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub6">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            异常页
-          </template>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub7">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          <template #title>
-            个人页
-          </template>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </template>
+          </router-link>
+        </a-menu-item>
+      </a-sub-menu>
+
+      <a-menu-item key="organization">
+        <template #icon>
+          <CalendarOutlined />
+        </template>
+        <router-link to="/organization">
+          机构/学校
+        </router-link>
+      </a-menu-item>
+
+      <a-sub-menu key="sub2">
+        <template #icon>
+          <SettingOutlined />
+        </template>
+        <template #title>
+          审批管理
+        </template>
+        <a-menu-item key="7">
+          Option 7
+        </a-menu-item>
+      </a-sub-menu>
+
+      <a-sub-menu key="personnel">
+        <template #icon>
+          <SettingOutlined />
+        </template>
+        <template #title>
+          人员管理
+        </template>
+        <a-menu-item key="administrator">
+          <router-link to="/personnelmanage/administrator">
+            管理员
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="evaluator">
+          <router-link to="/personnelmanage/evaluator">
+            测评师
+          </router-link>
+        </a-menu-item>
+      </a-sub-menu>
+    </a-menu>
   </a-layout-sider>
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, watch, computed } from 'vue'
+import { reactive, toRefs, watch, computed } from 'vue'
 // import SidebarMenu from './SidebarMenuConfig.js'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
@@ -213,20 +98,23 @@ import {
 const state = reactive({
   mode: 'inline',
   theme: 'dark',
-  openKeys: ['sub1'],
+  openKeys: [''],
   selectedKeys: ['HomePage']
 })
-const { mode, theme, openKeys, selectedKeys } = toRefs(state)
+const { theme, openKeys, selectedKeys } = toRefs(state)
 const route = useRoute()
 const store = useStore()
-// const collapsed = ref<boolean>(false)
 const collapsed = computed(() => {
   return store.getCollapsed
 })
 watch(
   () => route.name,
   () => {
+    const sub = route.matched[0].meta.id
+    console.log('sub', sub)
+
     const name = route.name
+    state.openKeys = [String(sub)]
     state.selectedKeys = [String(name)]
   },
   {
@@ -244,7 +132,9 @@ watch(
 )
 window.onresize = () => {
   const ddw = document.documentElement.clientWidth
-  collapsed.value = ddw < 1200
+  if (ddw < 1200) {
+    store.setCollapsed(true)
+  }
 }
 // const changeMode = (checked: string) => {
 //   state.mode = checked ? 'vertical' : 'inline'
