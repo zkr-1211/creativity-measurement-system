@@ -1,31 +1,34 @@
 <template>
   <div class="tabs">
     <div class="content">
-      <a-tag
-        v-for="(item, index) in tabs"
-        :key="item.name"
-        :closable="item.name !== 'HomePage'"
-        :color="currentRouteName === item.name ? '#108ee9' : ''"
-        style="max-height: 22px"
-        @close="handleClose(item, index)"
-        @click="(e) => handleOpenContext(e, item, index)"
-      >
-        <router-link
-          :to="{
-            name: item.name,
-            params: item.params,
-            query: item.query,
-          }"
+      <transition-group name="tags">
+        <a-tag
+          v-for="(item, index) in tabs"
+          :key="item.name"
+          :closable="item.name !== 'HomePage'"
+          :color="currentRouteName === item.name ? '#1890FF' : ''"
+          style="max-height: 22px"
+          @close="handleClose(item, index)"
+          @dblclick="handleClose(item, index)"
+          @click="(e) => handleOpenContext(e, item, index)"
         >
-          {{ item.title }}
-        </router-link>
-      </a-tag>
+          <router-link
+            :to="{
+              name: item.name,
+              params: item.params,
+              query: item.query,
+            }"
+          >
+            {{ item.title }}
+          </router-link>
+        </a-tag>
+      </transition-group>
     </div>
 
-    <div style="color: rgb(81, 152, 218); font-weight: bold; cursor: pointer">
+    <div style="color: #1890FF; font-weight: bold; cursor: pointer">
       <a-dropdown :trigger="['click']">
         <a
-          style="margin-right: 10px; color: rgb(81, 152, 218)"
+          style="margin-right: 10px; color: #1890FF"
           class="ant-dropdown-link"
           @click.prevent
         >
@@ -183,7 +186,7 @@ export default defineComponent({
     const currentContextIndex = ref(0)
     const handleOpenContext = (e: any, item: ITabsItem, index: number) => {
       console.log(item)
-
+      // reload()
       router.push({
         name: item.name,
         params: item.params,
@@ -226,17 +229,15 @@ export default defineComponent({
 }
 /* 滚动条的滑块 */
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(114, 131, 148);
+  background-color: #1890FF;
   border-radius: 3px;
   cursor: pointer;
   opacity: 0.7;
 }
-.active {
-  // background-color: red !important;
-}
 .tabs {
   display: flex;
   justify-content: space-between;
+  padding: 10 10px 0 0;
   .content {
     max-width: 90%;
     display: flex;
@@ -249,7 +250,7 @@ export default defineComponent({
     }
   }
   .reload {
-    margin-right: 15px;
+    margin-right: 20px;
     // min-width: 200px;
     -webkit-animation: myRotate 1s linear;
     animation: myRotate 1s linear;

@@ -261,6 +261,7 @@ const onTabChange = (value: string, type: string) => {
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
 .body {
+
   .card-items {
     height: 300px;
     overflow: auto;

@@ -76,7 +76,8 @@ export const frameIn: Array<RouteRecordRaw> = [
             component: () =>
               import(/* webpackChunkName: "organization" */ '@/views/organization/OrganizationDetail.vue'),
             meta: {
-              keepAlive: true
+              keepAlive: true,
+              title: '机构详情页'
             }
           },
           {
@@ -243,7 +244,6 @@ export const frameIn: Array<RouteRecordRaw> = [
       }
     ]
   },
-
   {
     path: '/evaluation',
     component: BasicLayout,

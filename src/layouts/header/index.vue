@@ -8,12 +8,6 @@
         <MenuFoldOutlined v-if="!collapsed" />
         <MenuUnfoldOutlined v-else />
       </div>
-
-      <!-- <i
-        :class="['vitecaidan', defaultData.iconfont, collapse ? 'collapse' : '']"
-        :style="{ color: themeColor }"
-        @click="handleCollapse"
-      /> -->
       <a-breadcrumb separator="/">
         <!-- <transition-group name="list"> -->
         <a-breadcrumb-item
@@ -23,7 +17,7 @@
         >
           {{ item.meta.title }}
           <template
-            v-if="item.children && item.children.length"
+            v-if="item.children && item.children.length > 1"
             #overlay
           >
             <a-menu>
@@ -128,9 +122,9 @@ const route = useRoute()
 let matched:any = []
 matched = computed(() => {
   let arr = route.matched
-  // if (arr[0].path !== '/') {
-  arr = route.matched
-  // }
+  if (arr[0].path !== '/') {
+    arr = route.matched
+  }
   return arr.filter(item => item.meta?.title)
 })
 // console.log('matched', matched)

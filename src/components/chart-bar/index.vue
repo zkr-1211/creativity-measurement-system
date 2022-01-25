@@ -7,7 +7,8 @@
 <script lang="ts">
 import {
   defineComponent,
-  onMounted
+  onMounted,
+  watch
   // getCurrentInstance,
   // ComponentInternalInstance
 } from 'vue'
@@ -36,6 +37,7 @@ import {
   // 内置数据转换器组件 (filter, sort)
   // TransformComponent
 } from 'echarts/components'
+import { useStore } from '@/store'
 // 标签自动布局，全局过渡动画等特性
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
@@ -116,7 +118,7 @@ export default defineComponent({
             }
           }
         ],
-        series: <any> [
+        series: <any>[
           {
             data: props.data.datax,
             name: 'asdasfa',
@@ -140,7 +142,20 @@ export default defineComponent({
       window.addEventListener('resize', () => {
         myChart3.resize()
       })
+      const store = useStore()
+      watch(
+        () => store.collapsed,
+        () => {
+          // myChart3 && myChart3.dispose()
+          // Init()
+          myChart3.resize()
+        },
+        {
+          immediate: true
+        }
+      )
     }
+
     onMounted(() => {
       setTimeout(() => {
         Init()

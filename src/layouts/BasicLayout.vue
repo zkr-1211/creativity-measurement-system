@@ -21,6 +21,5 @@ import Sider from '@/layouts/sider/index.vue'
   @include wh(100vw, 100vh);
   overflow: hidden;
   background: #fff !important;
-
 }
 </style>

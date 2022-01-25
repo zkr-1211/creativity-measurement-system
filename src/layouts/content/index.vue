@@ -37,12 +37,11 @@ onUnmounted(() => {
 @import "@/assets/css/mixin";
 .ant-layout-content {
   overflow: overlay;
-  overflow-y: scroll;
+  -moz-overflow-y: scroll;
   flex: none;
   color: #fff;
   @include wh(100%, 90vh);
   .content {
-    overflow: hidden;
     background-color: #f5f5f5;
     overflow-y: auto;
     overflow-x: hidden;
@@ -50,14 +49,4 @@ onUnmounted(() => {
   }
 }
 
-.scale-enter-active,
-.scale-leave-active {
-  transition: all 0.4s ease;
-}
-
-.scale-enter-from,
-.scale-leave-to {
-  opacity: 0;
-  transform: scale(1.5);
-}
 </style>

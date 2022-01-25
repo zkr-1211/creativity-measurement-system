@@ -4,7 +4,6 @@
       style="border: 1px solid rgb(235, 237, 240); background: #fff"
       :title="title"
       :breadcrumb="{ routes }"
-      @click="aaa"
     >
       <slot />
       <div class="a-page-header-slot">
@@ -35,26 +34,24 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    // const router = useRouter()
-    const aaa = () => {
-      // router.push({ path: '/404' })
-    }
     console.log('routes', route?.matched)
 
     const routes = ref<routeType[]>([])
     route?.matched.forEach(item => {
-      routes.value.push(
-        {
-          path: `${item.path}`,
-          breadcrumbName: `${item.meta.title || '首页'}`
-        }
-      )
+      if (item.meta?.title) {
+        routes.value.push(
+          {
+            path: ``,
+            // path: `${item.path}`,
+            breadcrumbName: `${item.meta.title}`
+          }
+        )
+      }
     })
 
     onMounted(() => {})
     return {
-      routes,
-      aaa
+      routes
     }
   }
 })

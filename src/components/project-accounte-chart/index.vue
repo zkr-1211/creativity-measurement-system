@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, watch } from 'vue'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
 // 引入柱状图图表，图表后缀都为 Chart
@@ -59,6 +59,7 @@ import {
   TransformComponent,
   LegendComponent
 } from 'echarts/components'
+import { useStore } from '@/store'
 // 标签自动布局，全局过渡动画等特性
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
@@ -134,7 +135,7 @@ export default defineComponent({
             type: 'pie',
             radius: ['50%', '70%'],
             // center: ['20%', '70%'],
-            center: [120, 180],
+            center: [280, 170],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 0,
@@ -181,7 +182,12 @@ export default defineComponent({
       window.addEventListener('resize', () => {
         ProjectAccounte.resize()
       })
+      const store = useStore()
+      watch(() => store.collapsed, () => {
+        ProjectAccounte.resize()
+      })
     }
+
     onMounted(() => {
       setTimeout(() => {
         Init()
@@ -198,16 +204,18 @@ export default defineComponent({
 }
 .info {
   position: absolute;
-  left: 3.2rem;
+  left: 4.5rem;
   top: 28%;
   @media screen and (max-width: 1550px) and (min-width: 1200px){
-    left: 2.7rem !important;
+    left: 1.7rem !important;
+  top: 100%;
+
   }
    @media screen and (max-width: 1200px) {
-    left: 4rem !important;
+    left: 6rem !important;
   }
    @media screen and (max-width: 800px) {
-    left: 3rem !important;
+    left: 0rem !important;
   }
   .info-item {
     display: flex;

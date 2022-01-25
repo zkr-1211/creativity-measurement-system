@@ -63,8 +63,8 @@ import FourItemCard from '@/components/four-item-card/index.vue'
 import ParticipationRun from './components/ParticipationRun.vue'
 import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
-const store = useStore()
 import { useRoute } from 'vue-router'
+const store = useStore()
 const route = useRoute()
 console.log(route.matched)
 store.$patch((state) => {
