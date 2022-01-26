@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts" setup>
-// import ProjectAccounteChart from '@/components/project-accounte-chart/index.vue'
+import ProjectAccounteChart from '@/components/project-accounte-chart/index.vue'
 import { ref, onMounted, defineAsyncComponent } from 'vue'
-const ProjectAccounteChart = defineAsyncComponent(() => import('@/components/project-accounte-chart/index.vue'))
+// const ProjectAccounteChart = defineAsyncComponent(() => import('@/components/project-accounte-chart/index.vue'))
 const loading = ref<boolean>(true)
 onMounted(() => {
   setTimeout(() => {

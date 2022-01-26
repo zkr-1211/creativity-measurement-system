@@ -8,7 +8,6 @@ import { AxiosResponse } from 'axios'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { message } from 'ant-design-vue'
-const router = useRouter()
 const store = useStore()
 
 async function errorHandler(res) {
@@ -27,7 +26,11 @@ async function errorHandler(res) {
         throw new AuthException('登录过期，请重新登录', res)
       }
       store.logout()
+      const router = useRouter()
+
       // 当前路由不在主页时, 弹出过期提示框
+      // console.log(router)
+
       if (router.currentRoute?.value?.name !== 'HomePage') {
         await message.error('登录过期，请重新登录')
         router
