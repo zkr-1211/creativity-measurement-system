@@ -246,8 +246,8 @@ export const frameIn: Array<RouteRecordRaw> = [
   },
   {
     path: '/evaluation',
-    component: import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     redirect: '/evaluation/allevaluation',
+    component: () => import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     name: 'Evaluation',
     meta: {
       title: '测评管理',
