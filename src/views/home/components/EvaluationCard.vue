@@ -34,10 +34,11 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, onMounted, defineComponent } from 'vue'
+import { reactive, toRefs, onMounted, defineComponent, defineAsyncComponent } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+const CountTo = defineAsyncComponent(() => import('@/components/vue-count-to/index.vue'))
 
-import CountTo from '@/components/vue-count-to/index.vue'
+// import CountTo from '@/components/vue-count-to/index.vue'
 export default defineComponent({
   name: 'EvaluationCard',
   components: {

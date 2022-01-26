@@ -89,8 +89,10 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, reactive } from 'vue'
-import ChartBar from '@/components/chart-bar/index.vue'
+import { onMounted, defineComponent, ref, reactive, defineAsyncComponent } from 'vue'
+const ChartBar = defineAsyncComponent(() => import('@/components/chart-bar/index.vue'))
+
+// import ChartBar from '@/components/chart-bar/index.vue'
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import CountTo from '@/components/vue-count-to/index.vue'
 import { getTendencyRun } from '@/api'

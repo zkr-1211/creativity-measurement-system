@@ -1,13 +1,13 @@
 import { RouteRecordRaw } from 'vue-router'
-import BasicLayout from '@/layouts/BasicLayout.vue'
-import ChildrenLayout from '@/layouts/ChildrenLayout.vue'
+// import BasicLayout from '@/layouts/BasicLayout.vue'
+// import ChildrenLayout from '@/layouts/ChildrenLayout.vue'
 // 主框架内显示的路由
 export const frameIn: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     redirect: '/homepage',
-    component: () => BasicLayout,
+    component: () => import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     meta: {
       title: '首页'
     },
@@ -29,7 +29,7 @@ export const frameIn: Array<RouteRecordRaw> = [
     path: '/organization',
     name: 'Organization',
     redirect: '/organization',
-    component: () => BasicLayout,
+    component: () => import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     meta: {
       title: '机构'
     },
@@ -64,7 +64,7 @@ export const frameIn: Array<RouteRecordRaw> = [
         name: 'OrganizationDetail',
         redirect: '/organization/detail',
         component: () =>
-          ChildrenLayout,
+          import(/* webpackChunkName: "ChildrenLayout" */ '@/layouts/ChildrenLayout.vue'),
         meta: {
           keepAlive: true,
           title: '机构详情'
@@ -208,7 +208,7 @@ export const frameIn: Array<RouteRecordRaw> = [
     path: '/personnelmanage',
     name: 'personnelmanage',
     redirect: '/personnelmanage/administrator',
-    component: () => BasicLayout,
+    component: () => import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     meta: {
       keepAlive: true,
       title: '人员管理',
@@ -246,7 +246,7 @@ export const frameIn: Array<RouteRecordRaw> = [
   },
   {
     path: '/evaluation',
-    component: BasicLayout,
+    component: import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout.vue'),
     redirect: '/evaluation/allevaluation',
     name: 'Evaluation',
     meta: {

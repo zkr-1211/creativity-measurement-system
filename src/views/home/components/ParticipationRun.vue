@@ -65,11 +65,14 @@
 </template>
 
 <script lang="ts" setup>
-import ChartAreaRank1 from '@/components/chart-area-rank1/index.vue'
-import ChartAreaRank2 from '@/components/chart-area-rank2/index.vue'
+// import ChartAreaRank1 from '@/components/chart-area-rank1/index.vue'
+// import ChartAreaRank2 from '@/components/chart-area-rank2/index.vue'
 import { CaretUpOutlined, CaretDownOutlined, EllipsisOutlined } from '@ant-design/icons-vue'
-import { ref, onMounted } from 'vue'
-import Trend from '../../../components/trend/index.vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
+import Trend from '@/components/trend/index.vue'
+const ChartAreaRank1 = defineAsyncComponent(() => import('@/components/chart-area-rank1/index.vue'))
+const ChartAreaRank2 = defineAsyncComponent(() => import('@/components/chart-area-rank2/index.vue'))
+// const Trend = defineAsyncComponent(() => import('@/components/trend/index.vue'))
 
 const columns = [
   {
