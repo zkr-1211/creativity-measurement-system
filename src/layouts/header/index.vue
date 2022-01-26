@@ -8,8 +8,8 @@
         <MenuFoldOutlined v-if="!collapsed" />
         <MenuUnfoldOutlined v-else />
       </div>
+
       <a-breadcrumb separator="/">
-        <!-- <transition-group name="list"> -->
         <a-breadcrumb-item
           v-for="(item, index) in matched"
           :key="index"

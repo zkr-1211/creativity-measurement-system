@@ -22,7 +22,7 @@
           {{ index + 1 }}
         </div>
         <div class="title">
-          <span> {{ item.title }}</span>
+          {{ item.title }}
         </div>
       </div>
       <div class="progress">
@@ -89,16 +89,14 @@ async function __getReviewList() {
     }
     .title {
       margin-left: 0.1rem;
-      max-width: 1rem;
+      width: 120px;
       color: rgba(0, 0, 0, 0.65);
-      span{
-        @include tb(0.8rem);
-
-      }
+      @include tb(120px);
     }
   }
   .progress {
-    min-width: 5rem;
+    margin: 0 30px;
+   flex: 1;
   }
   .people {
     max-width: 0.8rem;

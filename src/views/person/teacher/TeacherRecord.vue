@@ -33,7 +33,8 @@ import RecordInfos from '../components/RecordInfos.vue'
 import RecordCard from '../components/RecordCard.vue'
 const loading = ref<boolean>(true)
 const person = {
-  name: '我是老师'
+  name: '我是老师',
+  avatar: ''
 }
 
 const infoList: any[] = []

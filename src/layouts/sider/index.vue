@@ -98,7 +98,7 @@ import {
 const state = reactive({
   mode: 'inline',
   theme: 'dark',
-  openKeys: [''],
+  openKeys: <string[]>[],
   selectedKeys: ['HomePage']
 })
 const { theme, openKeys, selectedKeys } = toRefs(state)
@@ -111,9 +111,11 @@ watch(
   () => route.name,
   () => {
     const sub = route.matched[0].meta.id
-    console.log('sub', sub)
-
     const name = route.name
+    // const isPush = state.openKeys.every((item) => {
+    //   return item !== sub
+    // })
+    // sub && isPush && state.openKeys.push(String(sub))
     state.openKeys = [String(sub)]
     state.selectedKeys = [String(name)]
   },

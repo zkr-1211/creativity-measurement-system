@@ -9,7 +9,7 @@ import 'normalize.css'
 import './styles/index.scss'
 const pinia = createPinia()
 const app = createApp(App)
-app.config.globalProperties.$mybus = mitt()
+app.config.globalProperties.$emitter = mitt()
 setupAntd(app)
 app.use(router)
 app.use(pinia)

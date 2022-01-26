@@ -113,7 +113,7 @@ export default defineComponent({
   setup() {
     const { proxy }: any = getCurrentInstance()
     const FullScree = () => {
-      proxy.$mybus.emit('onFullScree')
+      proxy.$emitter.emit('onFullScree')
     }
     const route = useRoute()
     const router = useRouter()

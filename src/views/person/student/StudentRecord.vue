@@ -32,7 +32,8 @@ import { onMounted, ref } from 'vue'
 import RecordInfos from '../components/RecordInfos.vue'
 import RecordCard from '../components/RecordCard.vue'
 const person = {
-  name: '我是学生'
+  name: '我是学生',
+  avatar: ''
 }
 
 const infoList: any[] = []

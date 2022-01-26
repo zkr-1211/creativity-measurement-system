@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from 'axios'
 const store = useStore()
 export default (axios) => {
   axios.interceptors.request.use(
-    (config:AxiosRequestConfig) => {
+    (config) => {
       const token = store.getToken
       const appSource = import.meta.env.VITE_APP_SOURCE || 'shu.ke'
       if (appSource) {

@@ -30,9 +30,10 @@ async function errorHandler(res) {
       // 当前路由不在主页时, 弹出过期提示框
       if (router.currentRoute?.value?.name !== 'HomePage') {
         await message.error('登录过期，请重新登录')
-        router.replace({
-          name: 'HomePage'
-        })
+        router
+          .replace({
+            name: 'HomePage'
+          })
           .catch((e) => e)
       }
       throw new AuthException('登录过期，请重新登录', res)
@@ -67,7 +68,7 @@ async function errorHandler(res) {
 
 export default (axios) => {
   axios.interceptors.response.use(
-    async(res:AxiosResponse) => {
+    async(res: AxiosResponse) => {
       if (res?.status >= 200 && res?.status < 300) {
         return res?.data || {}
       } else {

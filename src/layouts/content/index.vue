@@ -6,7 +6,7 @@
     >
       <router-view v-slot="{ Component, route }">
         <transition
-          name="scale"
+          name="fadeRouter"
           mode="out-in"
         >
           <div :key="route.name">
@@ -28,9 +28,9 @@ import { ref, getCurrentInstance, onUnmounted } from 'vue'
 const el = ref<HTMLElement | null>(null)
 const { toggle } = useFullscreen(el)
 const { proxy }:any = getCurrentInstance()
-proxy.$mybus.on('onFullScree', e => { toggle() })
+proxy.$emitter.on('onFullScree', e => { toggle() })
 onUnmounted(() => {
-  proxy.$mybus.off('onFullScree')
+  proxy.$emitter.off('onFullScree')
 })
 </script>
 <style lang="scss" scoped>

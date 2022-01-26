@@ -38,7 +38,7 @@ import { onMounted, ref, PropType } from 'vue'
 import { useRouter } from 'vue-router'
 interface propsType {
   name: string;
-  avaror: string;
+  avatar: string;
 }
 const props = defineProps({
   person: {
@@ -46,7 +46,7 @@ const props = defineProps({
     default: () => {}
   },
   infoList: {
-    type: Array,
+    type: Array as any,
     default: () => []
   },
   isStu: {

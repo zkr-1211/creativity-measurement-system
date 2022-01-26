@@ -219,7 +219,7 @@ export default defineComponent({
     Table
   },
   setup() {
-    const dataList: dataType[] = ref([])
+    const dataList = ref<dataType[]>([])
     const {
       dataSource,
       editableData,

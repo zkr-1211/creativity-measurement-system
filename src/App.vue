@@ -26,8 +26,4 @@ const { isRouterAlive } = useRouterReload()
 
 <style>
 @import "assets/css/main.css";
-body,
-html {
-  background-color: #f5f5f5 !important;
-}
 </style>

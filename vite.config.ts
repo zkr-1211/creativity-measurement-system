@@ -7,9 +7,10 @@ import viteCompression from 'vite-plugin-compression' // gzip必备插件
 import { viteMockServe } from 'vite-plugin-mock'
 // 1. defineConfig: 不用 jsdoc 注解也可以获取类型提示
 // 2. 找不到模块“path”或其相应的类型声明 或者 找不到名称“__dirname 安装 @types/node
-const PUBLIC_PATH = 'xxx'
+// const PUBLIC_PATH = '/'
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? PUBLIC_PATH : './',
+  // base: process.env.NODE_ENV === 'production' ? PUBLIC_PATH : './',
+  base: './',
   publicDir: 'public', // 公共文件路径,会被复制到outDir 根目录
   // 路径相关规则
   resolve: {
