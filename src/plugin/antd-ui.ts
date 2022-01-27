@@ -1,3 +1,4 @@
+import type { App } from 'vue'
 import {
   ConfigProvider,
   Layout,
@@ -74,9 +75,9 @@ const plugins = [
   Breadcrumb
 ]
 
-export const setupAntd = (app: any, options = {}) => {
+export function setupAntd(app: App<Element>): void {
   app.config.globalProperties.$message = message
-  plugins.forEach((plugin) => {
+  plugins.forEach((plugin: any) => {
     app.use(plugin)
   })
 }
