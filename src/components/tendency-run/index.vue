@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, reactive, defineAsyncComponent } from 'vue'
+import { onMounted, defineComponent, ref, reactive } from 'vue'
 // const ChartBar = defineAsyncComponent(() => import('@/components/chart-bar/index.vue'))
 
 import ChartBar from '@/components/chart-bar/index.vue'

@@ -6,7 +6,7 @@
     :columns="columns"
     :pagination="pagination"
     :row-selection="isSelect ? rowSelection : null"
-    :row-key="record => record.id"
+    :row-key="(record,index)=> index"
     @change="change"
   >
     <template

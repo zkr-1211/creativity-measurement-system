@@ -147,7 +147,7 @@ const FullScree = () => {
 @import "@/assets/css/mixin";
 .ant-layout-header {
   height: 64px;
-  padding: 0 50px 0 20px;
+  padding: 0 30px 0 20px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 64px;
   background: #001529;

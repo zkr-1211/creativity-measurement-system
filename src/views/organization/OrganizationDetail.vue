@@ -63,7 +63,9 @@
                         </template>
                         <a-card-meta>
                           <template #title>
-                            测试学生
+                            <span style="font-weight: bold">
+                              {{ item.title }}
+                            </span>
                           </template>
                           <template #description>
                             <div class="des">

@@ -1406,6 +1406,11 @@
   "resolved" "https://registry.npmmirror.com/deepmerge/download/deepmerge-4.2.2.tgz"
   "version" "4.2.2"
 
+"default-passive-events@^2.0.0":
+  "integrity" "sha1-ebGqZ77LqrOLcYRptUgP75Ltpkk="
+  "resolved" "https://registry.npm.taobao.org/default-passive-events/download/default-passive-events-2.0.0.tgz"
+  "version" "2.0.0"
+
 "define-property@^0.2.5":
   "integrity" "sha1-w1se+RjsPJkPmlvFe+BKrOxcgRY="
   "resolved" "https://registry.npm.taobao.org/define-property/download/define-property-0.2.5.tgz"

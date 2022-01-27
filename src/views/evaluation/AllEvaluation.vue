@@ -1,7 +1,8 @@
 <!--  -->
 <template>
   <div class="body">
-    <page-header />
+    <page-header title="全部测评" />
+
     <div class="main-content">
       <a-card>
         <div class="search-info">
@@ -11,13 +12,14 @@
             </div>
             <div class="tags-content">
               <div
-                v-for="item in tagList"
+                v-for="(item, index) in tagList"
                 :key="item.id"
                 class="tags-item"
                 :class="selectTagId === item.id ? 'tags-active' : ''"
                 @click="selectTag(item.id)"
               >
-                {{ item.name }}
+                <span v-if="index === 0">全部</span>
+                <span v-else>{{ item.name }}</span>
               </div>
             </div>
           </div>
@@ -93,7 +95,12 @@
                       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                     >
                   </template>
-                  <a-card-meta :title="item.title">
+                  <a-card-meta>
+                    <template #title>
+                      <span style="font-weight: bold">
+                        {{ item.title }}
+                      </span>
+                    </template>
                     <template #description>
                       测试学生的创造力水平测试学生的创造力水平
                     </template>
@@ -205,7 +212,6 @@ export default defineComponent({
         .tags-content {
           display: flex;
           flex-wrap: wrap;
-          width: 1100px;
           min-height: 80px;
           .tags-active {
             color: #fff !important;
@@ -265,7 +271,7 @@ export default defineComponent({
 }
 .info {
   @include faj();
-  margin-top: 5px;
+  margin-top: 20px;
   .num {
     @include sc(0.12rem, rgba(0, 0, 0, 0.45));
   }

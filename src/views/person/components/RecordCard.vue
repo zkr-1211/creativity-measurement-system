@@ -26,8 +26,12 @@
                   src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                 >
               </template>
-              <a-card-meta :title="item.title">
-                d
+              <a-card-meta>
+                <template #title>
+                  <span style="font-weight: bold">
+                    {{ item.title }}
+                  </span>
+                </template>
               </a-card-meta>
               <div class="item-content">
                 <div class="des">

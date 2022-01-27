@@ -7,10 +7,7 @@
     >
       <slot />
       <div class="a-page-header-slot">
-        <router-link to="/evaluation/evaluationset">
-          <slot name="right" />
-          <!-- <a-button type="primary">新建测评</a-button> -->
-        </router-link>
+        <slot name="right" />
       </div>
     </a-page-header>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <page-header />
+    <page-header title="机构/学校" />
     <a-spin :spinning="spinning">
       <a-list
         :data-source="data"
@@ -16,32 +16,34 @@
                   type="dashed"
                 >
                   <PlusOutlined />
-                  新增产品
+                  新增机构/学校
                 </a-button>
               </router-link>
             </template>
             <template v-else>
-              <router-link to="/organization/detail">
-                <a-card :hoverable="true">
-                  <a-card-meta>
-                    <template #title>
-                      测试学生
-                    </template>
-                    <template #avatar>
-                      <a-avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      />
-                    </template>
-                    <template #description>
-                      测试学生的创造力水平测试学生的创造力水平
-                    </template>
-                  </a-card-meta>
-                  <template #actions>
-                    <a>操作一</a>
-                    <a>操作二</a>
+              <a-card :hoverable="true">
+                <a-card-meta>
+                  <template #title>
+                    <span style="font-weight: bold">
+                      {{ item.title }}
+                    </span>
                   </template>
-                </a-card>
-              </router-link>
+                  <template #avatar>
+                    <a-avatar
+                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    />
+                  </template>
+                  <template #description>
+                    测试学生的创造力水平测试学生的创造力水平
+                  </template>
+                </a-card-meta>
+                <template #actions>
+                  <router-link to="/organization/detail">
+                    <a>详情与管理</a>
+                  </router-link>
+                  <a>删除机构</a>
+                </template>
+              </a-card>
             </template>
           </a-list-item>
         </template>

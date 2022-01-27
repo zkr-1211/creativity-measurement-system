@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <page-header />
+    <page-header title="新建机构/学校" />
     <a-card class="card">
       <a-form
         v-if="finish"

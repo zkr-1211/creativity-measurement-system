@@ -34,7 +34,8 @@ import {
   Result,
   Spin,
   Cascader,
-  Breadcrumb
+  Breadcrumb,
+  InputNumber
 } from 'ant-design-vue'
 
 const plugins = [
@@ -72,7 +73,8 @@ const plugins = [
   Result,
   Spin,
   Cascader,
-  Breadcrumb
+  Breadcrumb,
+  InputNumber
 ]
 
 export function setupAntd(app: App<Element>): void {

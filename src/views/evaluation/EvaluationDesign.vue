@@ -3,7 +3,11 @@
   <div class="body">
     <page-header title="设计测评题目与阶段">
       <template #right>
-        <a-button type="primary">
+        <a-button
+          type="primary"
+          :loading="saveLoading"
+          @click="onSave"
+        >
           保存
         </a-button>
         <a-button style="margin-left: 10px">
@@ -11,7 +15,10 @@
         </a-button>
       </template>
     </page-header>
-    <div class="content">
+    <div
+      ref="el"
+      class="content"
+    >
       <a-row :gutter="24">
         <a-col
           :xs="24"
@@ -132,7 +139,11 @@
               <div class="se-edit">
                 选项编辑
               </div>
-              <div class="item">
+              <div
+                v-for="(optItem, optIndex) in options"
+                :key="optIndex"
+                class="item"
+              >
                 <a-row :gutter="24">
                   <a-col
                     :xs="24"
@@ -147,7 +158,7 @@
                         </div>
                         <div class="txarea">
                           <a-textarea
-                            v-model:value="selectContent"
+                            v-model:value="optItem.des"
                             placeholder="请输入题目内容"
                             :rows="4"
                           />
@@ -155,7 +166,7 @@
                       </div>
                       <div class="upload">
                         <a-upload
-                          v-model:file-list="fileList"
+                          v-model:file-list="optItem.imgList"
                           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                           list-type="picture-card"
                           @preview="handlePreview"
@@ -163,7 +174,7 @@
                           <div v-if="fileList.length < 8">
                             <plus-outlined />
                             <div class="ant-upload-text">
-                              Upload
+                              上传图片
                             </div>
                           </div>
                         </a-upload>
@@ -188,38 +199,52 @@
                     :md="10"
                     :xl="11"
                   >
-                    <div style="display: flex">
-                      <div class="text">
-                        对应得分维度：
-                      </div>
-                      <div class="score">
+                    <div style="display: flex;justify-content: space-between;">
+                      <div style="display: flex;">
                         <div
-                          v-for="(item, index) in 6"
-                          :key="index"
-                          class="select-item"
+                          class="text"
+                          style="margin-right: 20px;"
                         >
-                          创造力：
-                          <a-select style="width: 160px">
-                            <a-select-option value="jack">
-                              Jack
-                            </a-select-option>
-                            <a-select-option value="lucy">
-                              Lucy
-                            </a-select-option>
-                            <a-select-option value="Yiminghe">
-                              yiminghe
-                            </a-select-option>
-                          </a-select>
+                          对应得分维度：
+                        </div>
+                        <div class="score">
+                          <div
+                            v-for="(item, index) in optItem.score"
+                            :key="index"
+                            class="select-item"
+                          >
+                            {{ item.title }} :
+                            <a-input-number
+                              id="inputNumber"
+                              v-model:value="item.value"
+                              style="width: 160px"
+                              :min="1"
+                              :max="100"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div class="delete">
-                        删除
-                      </div>
+
+                      <a-popconfirm
+                        title="确定删除该选项吗？"
+                        ok-text="删除"
+                        cancel-text="取消"
+                        @confirm="delOption(optIndex)"
+                      >
+                        <div
+                          class="delete"
+                        >
+                          删除
+                        </div>
+                      </a-popconfirm>
                     </div>
                   </a-col>
                 </a-row>
               </div>
-              <div class="add-s">
+              <div
+                class="add-s"
+                @click="addOption"
+              >
                 + 新增选项
               </div>
             </div>
@@ -231,7 +256,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref } from 'vue'
+import { onMounted, defineComponent, ref, getCurrentInstance } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import PageHeader from '@/components/page-header/index.vue'
 import Dot from '@/components/dot/index.vue'
@@ -245,6 +270,7 @@ function getBase64(file: Blob) {
     reader.onerror = (error) => reject(error)
   })
 }
+const key = 'save'
 export default defineComponent({
   name: 'EvaluationDesign',
   components: { PageHeader, Dot, PlusOutlined },
@@ -283,6 +309,47 @@ export default defineComponent({
     const handleChange = ({ fileList: newFileList }) => {
       fileList.value = newFileList
     }
+    const options = ref<any>([])
+    const addOption = () => {
+      options.value.push({
+        des: '',
+        imgList: [],
+        score: [
+          {
+            title: '创造力',
+            value: ''
+          },
+          {
+            title: '自制力',
+            value: ''
+          },
+          {
+            title: '行动力',
+            value: ''
+          },
+          {
+            title: '领导力',
+            value: ''
+          },
+          {
+            title: '决策力',
+            value: ''
+          }
+        ]
+      })
+    }
+    const delOption = (index) => {
+      options.value.splice(index, 1)
+    }
+    const saveLoading = ref(false)
+    const { proxy }: any = getCurrentInstance()
+    const onSave = (index) => {
+      saveLoading.value = true
+      setTimeout(() => {
+        proxy.$message.success('保存成功')
+        saveLoading.value = false
+      }, 1000)
+    }
     return {
       activeKey,
       previewVisible,
@@ -294,7 +361,12 @@ export default defineComponent({
       handleCancel,
       handlePreview,
       handleChange,
-      loading
+      loading,
+      options,
+      addOption,
+      delOption,
+      onSave,
+      saveLoading
     }
   }
 })
@@ -339,7 +411,6 @@ export default defineComponent({
   .bottom-content-right {
     padding: 20px;
     .eva-des {
-      margin-left: 30px;
       display: flex;
       .des {
         @include sc(0.14rem, rgba(0, 0, 0, 0.85));
@@ -350,7 +421,7 @@ export default defineComponent({
       }
     }
     .upload {
-      margin: 30px 0px 0px 30px;
+      margin-top: 30px;
     }
     .pay-radio-group {
       margin-left: 30px;
@@ -371,25 +442,30 @@ export default defineComponent({
       padding-left: 30px;
     }
     .item {
+      padding: 30px;
+      margin: 20px 0;
+      background-color: #fafafc;
       position: relative;
-      margin-top: 30px;
-      // display: flex;
       color: #333333;
+
       .text {
         margin-top: 5px;
       }
       .score {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         .select-item {
           margin-bottom: 20px;
         }
       }
 
       .delete {
+        white-space: nowrap;
         cursor: pointer;
         margin-top: 5px;
         margin-left: 15px;
+        height: 100%;
         @include sc(14px, #1890ff);
       }
     }
