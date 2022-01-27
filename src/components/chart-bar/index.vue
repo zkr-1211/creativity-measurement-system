@@ -146,20 +146,12 @@ export default defineComponent({
       watch(
         () => store.collapsed,
         () => {
-          // myChart3 && myChart3.dispose()
-          // Init()
-          myChart3.resize()
-        },
-        {
-          immediate: true
         }
       )
     }
 
     onMounted(() => {
-      setTimeout(() => {
-        Init()
-      })
+      Init()
     })
   }
 })

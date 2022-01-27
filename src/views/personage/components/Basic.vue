@@ -1,147 +1,149 @@
 <template>
-  <div class="title">
-    基本设置
-  </div>
-  <div class="infos">
-    <div class="center">
-      <div class="eva-name">
-        <div class="name">
-          姓名
+  <div class="body">
+    <div class="title">
+      基本设置
+    </div>
+    <div class="infos">
+      <div class="center">
+        <div class="eva-name">
+          <div class="name">
+            姓名
+          </div>
+          <div class="input">
+            <a-input
+              v-model:value.trim="userName"
+              placeholder="请输入姓名"
+            />
+          </div>
         </div>
-        <div class="input">
-          <a-input
-            v-model:value.trim="userName"
-            placeholder="请输入姓名"
-          />
-        </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          性别
+        <div class="eva-name">
+          <div class="name">
+            性别
+          </div>
+          <div class="input">
+            <a-select
+              ref="select"
+              v-model:value.trim="sex"
+              @focus="focus"
+              @change="handleChangeState"
+            >
+              <a-select-option value="jack">
+                Jack
+              </a-select-option>
+            </a-select>
+          </div>
         </div>
-        <div class="input">
-          <a-select
-            ref="select"
-            v-model:value.trim="sex"
-            @focus="focus"
-            @change="handleChangeState"
-          >
-            <a-select-option value="jack">
-              Jack
-            </a-select-option>
-          </a-select>
-        </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          班级
+        <div class="eva-name">
+          <div class="name">
+            班级
+          </div>
+          <div class="input">
+            <a-input
+              v-model:value.trim="sclass"
+              placeholder="请输入班级"
+            />
+          </div>
         </div>
-        <div class="input">
-          <a-input
-            v-model:value.trim="sclass"
-            placeholder="请输入班级"
-          />
-        </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          学号
+        <div class="eva-name">
+          <div class="name">
+            学号
+          </div>
+          <div class="input">
+            <a-input
+              v-model:value.trim="stuId"
+              placeholder="请输入学号"
+            />
+          </div>
         </div>
-        <div class="input">
-          <a-input
-            v-model:value.trim="stuId"
-            placeholder="请输入学号"
-          />
-        </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          身份证
+        <div class="eva-name">
+          <div class="name">
+            身份证
+          </div>
+          <div class="input">
+            <a-input
+              v-model:value.trim="ID"
+              placeholder="请输入身份证"
+            />
+          </div>
         </div>
-        <div class="input">
-          <a-input
-            v-model:value.trim="ID"
-            placeholder="请输入身份证"
-          />
-        </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          手机号
+        <div class="eva-name">
+          <div class="name">
+            手机号
+          </div>
+          <div class="input">
+            <a-input
+              v-model:value.trim="phoneNum"
+              placeholder="请输入手机号"
+            />
+          </div>
         </div>
-        <div class="input">
-          <a-input
-            v-model:value.trim="phoneNum"
-            placeholder="请输入手机号"
-          />
+
+        <div class="eva-name">
+          <div class="name">
+            所在省市
+          </div>
+          <div class="region">
+            <a-select
+              ref="select"
+              v-model:value.trim="province"
+
+              @focus="focus"
+              @change="handleChangeState"
+            >
+              <a-select-option value="jack">
+                Jack
+              </a-select-option>
+            </a-select>
+            <a-select
+              ref="select"
+              v-model:value.trim="city"
+              class="select"
+
+              @focus="focus"
+              @change="handleChangeState"
+            >
+              <a-select-option value="jack">
+                Jack
+              </a-select-option>
+            </a-select>
+          </div>
         </div>
-      </div>
 
-      <div class="eva-name">
-        <div class="name">
-          所在省市
+        <div
+          class="button"
+          @click="updateInfo"
+        >
+          <a-button type="primary">
+            更新基本信息
+          </a-button>
         </div>
-        <div class="region">
-          <a-select
-            ref="select"
-            v-model:value.trim="province"
-
-            @focus="focus"
-            @change="handleChangeState"
-          >
-            <a-select-option value="jack">
-              Jack
-            </a-select-option>
-          </a-select>
-          <a-select
-            ref="select"
-            v-model:value.trim="city"
-            class="select"
-
-            @focus="focus"
-            @change="handleChangeState"
-          >
-            <a-select-option value="jack">
-              Jack
-            </a-select-option>
-          </a-select>
-        </div>
-      </div>
-
-      <div
-        class="button"
-        @click="updateInfo"
-      >
-        <a-button type="primary">
-          更新基本信息
-        </a-button>
       </div>
     </div>
-  </div>
-  <div class="r-r">
-    <div class="header-info">
-      <div class="name">
-        头像
+    <div class="r-r">
+      <div class="header-info">
+        <div class="name">
+          头像
+        </div>
+        <div class="header" />
+        <a-upload
+          v-model:file-list="fileList"
+          class="upload"
+          name="file"
+          :multiple="true"
+          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          @change="handleChangeFile"
+        >
+          <a-button>
+            <upload-outlined />
+            上传文件
+          </a-button>
+        </a-upload>
       </div>
-      <div class="header" />
-      <a-upload
-        v-model:file-list="fileList"
-        class="upload"
-        name="file"
-        :multiple="true"
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        @change="handleChangeFile"
-      >
-        <a-button>
-          <upload-outlined />
-          上传文件
-        </a-button>
-      </a-upload>
     </div>
   </div>
 </template>

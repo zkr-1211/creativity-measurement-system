@@ -1,63 +1,65 @@
 <!--  -->
 <template>
-  <page-header title="校区管理" />
-  <a-card
-    title="校区列表"
-    style="margin: 24px"
-  >
-    <template #extra>
-      <a-button type="primary">
-        + 添加
-      </a-button>
-    </template>
-    <a-spin :spinning="spinning">
-      <Table
-        :columns="columns"
-        :data-source="dataSource"
-      >
-        <template
-          v-for="item in columns"
-          #[item.dataIndex]="{ scope }"
-          :key="item.dataIndex"
+  <div class="body">
+    <page-header title="校区管理" />
+    <a-card
+      title="校区列表"
+      style="margin: 24px"
+    >
+      <template #extra>
+        <a-button type="primary">
+          + 添加
+        </a-button>
+      </template>
+      <a-spin :spinning="spinning">
+        <Table
+          :columns="columns"
+          :data-source="dataSource"
         >
-          <div v-if="!item.isSlot">
-            <a-input
-              v-if="editableData[scope.record.key] && item.isEdit"
-              v-model:value="editableData[scope.record.key][item.dataIndex]"
-              style="margin: -5px 0"
-            />
-            <template v-else>
-              {{ scope.text }}
-            </template>
-          </div>
-          <div v-else>
-            <div class="editable-row-operations">
-              <span v-if="editableData[scope.record.key]">
-                <a @click="save(scope.record.key)">保存</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="Sure to cancel?"
-                  @confirm="cancel(scope.record.key)"
-                >
-                  <a>取消</a>
-                </a-popconfirm>
-              </span>
-              <span v-else>
-                <a @click="onEdit(scope.record.key)">权限编辑</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="确认删除该项吗?"
-                  @confirm="onDelete(scope.record.key)"
-                >
-                  <a>删除</a>
-                </a-popconfirm>
-              </span>
+          <template
+            v-for="item in columns"
+            #[item.dataIndex]="{ scope }"
+            :key="item.dataIndex"
+          >
+            <div v-if="!item.isSlot">
+              <a-input
+                v-if="editableData[scope.record.key] && item.isEdit"
+                v-model:value="editableData[scope.record.key][item.dataIndex]"
+                style="margin: -5px 0"
+              />
+              <template v-else>
+                {{ scope.text }}
+              </template>
             </div>
-          </div>
-        </template>
-      </Table>
-    </a-spin>
-  </a-card>
+            <div v-else>
+              <div class="editable-row-operations">
+                <span v-if="editableData[scope.record.key]">
+                  <a @click="save(scope.record.key)">保存</a>
+                  <span class="fengefu">|</span>
+                  <a-popconfirm
+                    title="Sure to cancel?"
+                    @confirm="cancel(scope.record.key)"
+                  >
+                    <a>取消</a>
+                  </a-popconfirm>
+                </span>
+                <span v-else>
+                  <a @click="onEdit(scope.record.key)">权限编辑</a>
+                  <span class="fengefu">|</span>
+                  <a-popconfirm
+                    title="确认删除该项吗?"
+                    @confirm="onDelete(scope.record.key)"
+                  >
+                    <a>删除</a>
+                  </a-popconfirm>
+                </span>
+              </div>
+            </div>
+          </template>
+        </Table>
+      </a-spin>
+    </a-card>
+  </div>
 </template>
 
 <script lang="ts">

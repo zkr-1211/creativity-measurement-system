@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, watch } from 'vue'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
 // 引入柱状图图表，图表后缀都为 Chart
@@ -100,12 +100,12 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
+    // 基于准备好的dom，初始化echarts实例
+    let ProjectAccounte
     function Init() {
-      // 基于准备好的dom，初始化echarts实例
-      const ProjectAccounte = echarts.init(
+      ProjectAccounte = echarts.init(
         document.getElementById('ProjectAccounte')!
       )
-
       // 绘制图表
       ProjectAccounte.setOption({
         color: [
@@ -179,19 +179,23 @@ export default defineComponent({
           y2: 0
         }
       })
-      window.addEventListener('resize', () => {
-        ProjectAccounte.resize()
-      })
-      const store = useStore()
-      watch(() => store.collapsed, () => {
-        ProjectAccounte.resize()
-      })
     }
+    window.addEventListener('resize', () => {
+      console.log('更新了', ProjectAccounte)
 
+      ProjectAccounte.resize()
+    })
+    const store = useStore()
+    watch(() => store.collapsed, () => {
+      // ProjectAccounte.resize()
+      ProjectAccounte.dispose()
+      Init()
+    })
+    onBeforeUnmount(() => {
+      ProjectAccounte.dispose()
+    })
     onMounted(() => {
-      setTimeout(() => {
-        Init()
-      })
+      Init()
     })
   }
 })

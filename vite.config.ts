@@ -20,6 +20,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        charset: false,
         additionalData: `$injectedColor: orange;`
       },
       less: {

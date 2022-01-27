@@ -1,230 +1,232 @@
 <!--  -->
 <template>
-  <page-header title="设计测评题目与阶段">
-    <template #right>
-      <a-button type="primary">
-        保存
-      </a-button>
-      <a-button style="margin-left: 10px">
-        取消
-      </a-button>
-    </template>
-  </page-header>
-  <div class="content">
-    <a-row :gutter="24">
-      <a-col
-        :xs="24"
-        :sm="24"
-        :md="24"
-        :xl="6"
-      >
-        <a-card
-          :loading="loading"
-          title="题目与阶段"
+  <div class="body">
+    <page-header title="设计测评题目与阶段">
+      <template #right>
+        <a-button type="primary">
+          保存
+        </a-button>
+        <a-button style="margin-left: 10px">
+          取消
+        </a-button>
+      </template>
+    </page-header>
+    <div class="content">
+      <a-row :gutter="24">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="6"
         >
-          <template #extra>
-            <a-button type="primary">
-              + 新建测评
-            </a-button>
-          </template>
+          <a-card
+            :loading="loading"
+            title="题目与阶段"
+          >
+            <template #extra>
+              <a-button type="primary">
+                + 新建测评
+              </a-button>
+            </template>
 
-          <div class="bottom-content">
-            <a-collapse
-              v-model:activeKey="activeKey"
-              :bordered="false"
-            >
-              <a-collapse-panel
-                v-for="(item, index) in 3"
-                :key="index"
-                :header="`阶段${index + 1}`"
+            <div class="bottom-content">
+              <a-collapse
+                v-model:activeKey="activeKey"
+                :bordered="false"
               >
-                <div
-                  v-for="(item, index1) in 3"
-                  :key="index1"
-                  class="item"
+                <a-collapse-panel
+                  v-for="(item, index) in 3"
+                  :key="index"
+                  :header="`阶段${index + 1}`"
                 >
-                  <div class="item-left">
-                    <div class="index">
-                      0{{ index + 1 }}：
+                  <div
+                    v-for="(item, index1) in 3"
+                    :key="index1"
+                    class="item"
+                  >
+                    <div class="item-left">
+                      <div class="index">
+                        0{{ index + 1 }}：
+                      </div>
+                      <div class="title">
+                        第一题
+                      </div>
                     </div>
-                    <div class="title">
-                      第一题
+                    <div class="item-right">
+                      <Dot />
                     </div>
                   </div>
-                  <div class="item-right">
+                  <template #extra>
                     <Dot />
-                  </div>
-                </div>
-                <template #extra>
-                  <Dot />
-                </template>
-              </a-collapse-panel>
-            </a-collapse>
-            <div class="add-p">
-              + 新增题目
+                  </template>
+                </a-collapse-panel>
+              </a-collapse>
+              <div class="add-p">
+                + 新增题目
+              </div>
             </div>
-          </div>
-        </a-card>
-      </a-col>
-      <a-col
-        :xs="24"
-        :sm="24"
-        :md="24"
-        :xl="18"
-      >
-        <a-card
-          :loading="loading"
-          title="编辑区（第一阶段第一题）"
+          </a-card>
+        </a-col>
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :xl="18"
         >
-          <div class="bottom-content-right">
-            <div class="eva-des">
-              <div class="des">
-                题目内容:
-              </div>
-              <div class="txarea">
-                <a-textarea
-                  v-model:value="proContent"
-                  placeholder="请输入题目内容"
-                  :rows="4"
-                />
-              </div>
-            </div>
-            <div class="upload">
-              <a-upload
-                v-model:file-list="fileList"
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                list-type="picture-card"
-                @preview="handlePreview"
-              >
-                <div v-if="fileList.length < 8">
-                  <plus-outlined />
-                  <div class="ant-upload-text">
-                    Upload
-                  </div>
+          <a-card
+            :loading="loading"
+            title="编辑区（第一阶段第一题）"
+          >
+            <div class="bottom-content-right">
+              <div class="eva-des">
+                <div class="des">
+                  题目内容:
                 </div>
-              </a-upload>
-              <a-modal
-                :visible="previewVisible"
-                :footer="null"
-                @cancel="handleCancel"
-              >
-                <img
-                  alt="example"
-                  style="width: 100%"
-                  :src="previewImage"
-                >
-              </a-modal>
-            </div>
-            <div class="pay-radio-group">
-              <div class="name">
-                题型选择:
+                <div class="txarea">
+                  <a-textarea
+                    v-model:value="proContent"
+                    placeholder="请输入题目内容"
+                    :rows="4"
+                  />
+                </div>
               </div>
-              <a-radio-group v-model:value="isSelect">
-                <a-radio :value="1">
-                  选择
-                </a-radio>
-                <a-radio :value="2">
-                  填空
-                </a-radio>
-              </a-radio-group>
-            </div>
-            <div class="se-edit">
-              选项编辑
-            </div>
-            <div class="item">
-              <a-row :gutter="24">
-                <a-col
-                  :xs="24"
-                  :sm="24"
-                  :md="14"
-                  :xl="13"
+              <div class="upload">
+                <a-upload
+                  v-model:file-list="fileList"
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  list-type="picture-card"
+                  @preview="handlePreview"
                 >
-                  <div class="left-content">
-                    <div class="eva-des">
-                      <div class="des">
-                        选项1:
-                      </div>
-                      <div class="txarea">
-                        <a-textarea
-                          v-model:value="selectContent"
-                          placeholder="请输入题目内容"
-                          :rows="4"
-                        />
-                      </div>
+                  <div v-if="fileList.length < 8">
+                    <plus-outlined />
+                    <div class="ant-upload-text">
+                      Upload
                     </div>
-                    <div class="upload">
-                      <a-upload
-                        v-model:file-list="fileList"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        list-type="picture-card"
-                        @preview="handlePreview"
-                      >
-                        <div v-if="fileList.length < 8">
-                          <plus-outlined />
-                          <div class="ant-upload-text">
-                            Upload
-                          </div>
+                  </div>
+                </a-upload>
+                <a-modal
+                  :visible="previewVisible"
+                  :footer="null"
+                  @cancel="handleCancel"
+                >
+                  <img
+                    alt="example"
+                    style="width: 100%"
+                    :src="previewImage"
+                  >
+                </a-modal>
+              </div>
+              <div class="pay-radio-group">
+                <div class="name">
+                  题型选择:
+                </div>
+                <a-radio-group v-model:value="isSelect">
+                  <a-radio :value="1">
+                    选择
+                  </a-radio>
+                  <a-radio :value="2">
+                    填空
+                  </a-radio>
+                </a-radio-group>
+              </div>
+              <div class="se-edit">
+                选项编辑
+              </div>
+              <div class="item">
+                <a-row :gutter="24">
+                  <a-col
+                    :xs="24"
+                    :sm="24"
+                    :md="14"
+                    :xl="13"
+                  >
+                    <div class="left-content">
+                      <div class="eva-des">
+                        <div class="des">
+                          选项1:
                         </div>
-                      </a-upload>
-                      <a-modal
-                        :visible="previewVisible"
-                        :footer="null"
-                        @cancel="handleCancel"
-                      >
-                        <img
-                          alt="example"
-                          style="width: 100%"
-                          :src="previewImage"
+                        <div class="txarea">
+                          <a-textarea
+                            v-model:value="selectContent"
+                            placeholder="请输入题目内容"
+                            :rows="4"
+                          />
+                        </div>
+                      </div>
+                      <div class="upload">
+                        <a-upload
+                          v-model:file-list="fileList"
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          list-type="picture-card"
+                          @preview="handlePreview"
                         >
-                      </a-modal>
-                    </div>
-                  </div>
-                </a-col>
-
-                <a-col
-                  :xs="24"
-                  :sm="24"
-                  :md="10"
-                  :xl="11"
-                >
-                  <div style="display: flex">
-                    <div class="text">
-                      对应得分维度：
-                    </div>
-                    <div class="score">
-                      <div
-                        v-for="(item, index) in 6"
-                        :key="index"
-                        class="select-item"
-                      >
-                        创造力：
-                        <a-select style="width: 160px">
-                          <a-select-option value="jack">
-                            Jack
-                          </a-select-option>
-                          <a-select-option value="lucy">
-                            Lucy
-                          </a-select-option>
-                          <a-select-option value="Yiminghe">
-                            yiminghe
-                          </a-select-option>
-                        </a-select>
+                          <div v-if="fileList.length < 8">
+                            <plus-outlined />
+                            <div class="ant-upload-text">
+                              Upload
+                            </div>
+                          </div>
+                        </a-upload>
+                        <a-modal
+                          :visible="previewVisible"
+                          :footer="null"
+                          @cancel="handleCancel"
+                        >
+                          <img
+                            alt="example"
+                            style="width: 100%"
+                            :src="previewImage"
+                          >
+                        </a-modal>
                       </div>
                     </div>
-                    <div class="delete">
-                      删除
+                  </a-col>
+
+                  <a-col
+                    :xs="24"
+                    :sm="24"
+                    :md="10"
+                    :xl="11"
+                  >
+                    <div style="display: flex">
+                      <div class="text">
+                        对应得分维度：
+                      </div>
+                      <div class="score">
+                        <div
+                          v-for="(item, index) in 6"
+                          :key="index"
+                          class="select-item"
+                        >
+                          创造力：
+                          <a-select style="width: 160px">
+                            <a-select-option value="jack">
+                              Jack
+                            </a-select-option>
+                            <a-select-option value="lucy">
+                              Lucy
+                            </a-select-option>
+                            <a-select-option value="Yiminghe">
+                              yiminghe
+                            </a-select-option>
+                          </a-select>
+                        </div>
+                      </div>
+                      <div class="delete">
+                        删除
+                      </div>
                     </div>
-                  </div>
-                </a-col>
-              </a-row>
+                  </a-col>
+                </a-row>
+              </div>
+              <div class="add-s">
+                + 新增选项
+              </div>
             </div>
-            <div class="add-s">
-              + 新增选项
-            </div>
-          </div>
-        </a-card>
-      </a-col>
-    </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
+    </div>
   </div>
 </template>
 

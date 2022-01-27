@@ -4,18 +4,14 @@
       ref="el"
       class="content"
     >
-      <router-view v-slot="{ Component, route }">
+      <router-view v-slot="{ Component }">
         <transition
           name="fadeRouter"
           mode="out-in"
         >
-          <div :key="route.name">
-            <suspense>
-              <keep-alive>
-                <component :is="Component" />
-              </keep-alive>
-            </suspense>
-          </div>
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
         </transition>
       </router-view>
     </div>

@@ -25,7 +25,7 @@
       </transition-group>
     </div>
 
-    <div style="color: #1890FF; font-weight: bold; cursor: pointer">
+    <div class="right">
       <a-dropdown :trigger="['click']">
         <a
           style="margin-right: 10px; color: #1890FF"
@@ -225,14 +225,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 // /* 滚动条宽度 */
 ::-webkit-scrollbar {
-  height: 7px;
+  height: 6px;
 }
 /* 滚动条的滑块 */
 ::-webkit-scrollbar-thumb {
-  background-color: #1890FF;
+  background-color: #8897a56e;
   border-radius: 3px;
   cursor: pointer;
-  opacity: 0.7;
 }
 .tabs {
   display: flex;
@@ -255,6 +254,13 @@ export default defineComponent({
     -webkit-animation: myRotate 1s linear;
     animation: myRotate 1s linear;
   }
+}
+.right {
+  padding-left: 15px;
+  color: #1890FF;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
 }
 @-webkit-keyframes myRotate {
   0% {

@@ -1,106 +1,108 @@
 <!--  -->
 <template>
-  <page-header title="管理员" />
-  <a-card
-    title="人员列表"
-    style="margin: 24px"
-  >
-    <template #extra>
-      <a-button
-        type="primary"
-        @click="visible = true"
-      >
-        + 添加
-      </a-button>
-    </template>
-    <a-spin :spinning="spinning">
-      <Table
-        :columns="columns"
-        :data-source="dataSource"
-        @change="change"
-      >
-        <template
-          v-for="item in columns"
-          :key="item.dataIndex"
-          #[item.dataIndex]="{ scope }"
-        >
-          <div v-if="!item.isSlot">
-            <a-input
-              v-if="editableData[scope.record.id] && item.isEdit"
-              v-model:value="editableData[scope.record.id][item.dataIndex]"
-              style="margin: -5px 0"
-            />
-            <template v-else>
-              {{ scope.text }}
-            </template>
-          </div>
-          <div v-else>
-            <div class="editable-row-operations">
-              <span v-if="editableData[scope.record.id]">
-                <a @click="save(scope.record.id)">保存</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="Sure to cancel?"
-                  @confirm="cancel(scope.record.id)"
-                >
-                  <a>取消</a>
-                </a-popconfirm>
-              </span>
-              <span v-else>
-                <a @click="onEdit(scope.record.id)">权限编辑</a>
-                <span class="fengefu">|</span>
-                <a-popconfirm
-                  title="确认删除该项吗?"
-                  @confirm="onDelete(scope.record.id)"
-                >
-                  <a>删除</a>
-                </a-popconfirm>
-              </span>
-            </div>
-          </div>
-        </template>
-      </Table>
-    </a-spin>
-  </a-card>
-
-  <a-modal
-    v-model:visible="visible"
-    style="top: 200px"
-    title="添加管理员"
-    :confirm-loading="confirmLoading"
-    @ok="handleOk"
-    @cancel="handleCancel"
-  >
-    <a-form
-      ref="formRef"
-      :model="formState"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
+  <div class="body">
+    <page-header title="管理员" />
+    <a-card
+      title="人员列表"
+      style="margin: 24px"
     >
-      <a-form-item
-        ref="name"
-        label="姓名"
-        name="name"
+      <template #extra>
+        <a-button
+          type="primary"
+          @click="visible = true"
+        >
+          + 添加
+        </a-button>
+      </template>
+      <a-spin :spinning="spinning">
+        <Table
+          :columns="columns"
+          :data-source="dataSource"
+          @change="change"
+        >
+          <template
+            v-for="item in columns"
+            :key="item.dataIndex"
+            #[item.dataIndex]="{ scope }"
+          >
+            <div v-if="!item.isSlot">
+              <a-input
+                v-if="editableData[scope.record.id] && item.isEdit"
+                v-model:value="editableData[scope.record.id][item.dataIndex]"
+                style="margin: -5px 0"
+              />
+              <template v-else>
+                {{ scope.text }}
+              </template>
+            </div>
+            <div v-else>
+              <div class="editable-row-operations">
+                <span v-if="editableData[scope.record.id]">
+                  <a @click="save(scope.record.id)">保存</a>
+                  <span class="fengefu">|</span>
+                  <a-popconfirm
+                    title="Sure to cancel?"
+                    @confirm="cancel(scope.record.id)"
+                  >
+                    <a>取消</a>
+                  </a-popconfirm>
+                </span>
+                <span v-else>
+                  <a @click="onEdit(scope.record.id)">权限编辑</a>
+                  <span class="fengefu">|</span>
+                  <a-popconfirm
+                    title="确认删除该项吗?"
+                    @confirm="onDelete(scope.record.id)"
+                  >
+                    <a>删除</a>
+                  </a-popconfirm>
+                </span>
+              </div>
+            </div>
+          </template>
+        </Table>
+      </a-spin>
+    </a-card>
+
+    <a-modal
+      v-model:visible="visible"
+      style="top: 200px"
+      title="添加管理员"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model:value="formState.name" />
-      </a-form-item>
-      <a-form-item
-        ref="ID"
-        label="身份"
-        name="ID"
-      >
-        <a-input v-model:value="formState.ID" />
-      </a-form-item>
-      <a-form-item
-        ref="phone"
-        label="手机号"
-        name="phone"
-      >
-        <a-input v-model:value="formState.phone" />
-      </a-form-item>
-    </a-form>
-  </a-modal>
+        <a-form-item
+          ref="name"
+          label="姓名"
+          name="name"
+        >
+          <a-input v-model:value="formState.name" />
+        </a-form-item>
+        <a-form-item
+          ref="ID"
+          label="身份"
+          name="ID"
+        >
+          <a-input v-model:value="formState.ID" />
+        </a-form-item>
+        <a-form-item
+          ref="phone"
+          label="手机号"
+          name="phone"
+        >
+          <a-input v-model:value="formState.phone" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+  </div>
 </template>
 
 <script lang="ts">
