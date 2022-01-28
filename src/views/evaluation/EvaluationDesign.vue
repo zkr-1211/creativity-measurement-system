@@ -270,7 +270,6 @@ function getBase64(file: Blob) {
     reader.onerror = (error) => reject(error)
   })
 }
-const key = 'save'
 export default defineComponent({
   name: 'EvaluationDesign',
   components: { PageHeader, Dot, PlusOutlined },
