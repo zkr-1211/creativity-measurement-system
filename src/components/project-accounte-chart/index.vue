@@ -185,10 +185,8 @@ export default defineComponent({
     })
     const store = useStore()
     watch(() => store.collapsed, () => {
-      // ProjectAccounte.resize()
       setTimeout(() => {
-        ProjectAccounte.dispose()
-        Init()
+        ProjectAccounte.resize()
       }, 150)
     })
     onBeforeUnmount(() => {

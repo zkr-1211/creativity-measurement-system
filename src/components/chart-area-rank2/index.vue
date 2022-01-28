@@ -137,8 +137,7 @@ export default defineComponent({
     watch(() => store.collapsed, () => {
       // myChart4.resize()
       setTimeout(() => {
-        myChart5.dispose()
-        Init()
+        myChart5.resize()
       }, 150)
     })
     onBeforeUnmount(() => {
