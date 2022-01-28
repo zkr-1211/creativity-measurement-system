@@ -181,15 +181,15 @@ export default defineComponent({
       })
     }
     window.addEventListener('resize', () => {
-      console.log('更新了', ProjectAccounte)
-
       ProjectAccounte.resize()
     })
     const store = useStore()
     watch(() => store.collapsed, () => {
       // ProjectAccounte.resize()
-      ProjectAccounte.dispose()
-      Init()
+      setTimeout(() => {
+        ProjectAccounte.dispose()
+        Init()
+      }, 150)
     })
     onBeforeUnmount(() => {
       ProjectAccounte.dispose()

@@ -7,7 +7,9 @@
 <script lang="ts">
 import {
   defineComponent,
-  onMounted
+  onBeforeUnmount,
+  onMounted,
+  watch
   // getCurrentInstance,
   // ComponentInternalInstance
 } from 'vue'
@@ -36,6 +38,7 @@ import {
   // 内置数据转换器组件 (filter, sort)
   // TransformComponent
 } from 'echarts/components'
+import { useStore } from '@/store'
 // 标签自动布局，全局过渡动画等特性
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
@@ -78,9 +81,10 @@ export default defineComponent({
     // } = getCurrentInstance() as ComponentInternalInstance;
     // const { appContext  } = getCurrentInstance()
     // console.log('globalProperties.$echarts=====',appContext)
+    let myChart1
     function Init() {
       // 基于准备好的dom，初始化echarts实例
-      const myChart1 = echarts.init(document.getElementById('myChart1')!)
+      myChart1 = echarts.init(document.getElementById('myChart1')!)
 
       const option: ECOption = {
         xAxis: {
@@ -124,10 +128,18 @@ export default defineComponent({
         myChart1.resize()
       })
     }
+    const store = useStore()
+    watch(() => store.collapsed, () => {
+      setTimeout(() => {
+        myChart1.dispose()
+        Init()
+      }, 150)
+    })
+    onBeforeUnmount(() => {
+      myChart1.dispose()
+    })
     onMounted(() => {
-      // setTimeout(() => {
       Init()
-      // })
     })
   }
 })

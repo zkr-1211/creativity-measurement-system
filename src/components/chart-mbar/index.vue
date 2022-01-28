@@ -7,7 +7,9 @@
 <script lang="ts">
 import {
   defineComponent,
-  onMounted
+  onBeforeUnmount,
+  onMounted,
+  watch
   // getCurrentInstance,
   // ComponentInternalInstance
 } from 'vue'
@@ -40,6 +42,7 @@ import {
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers'
+import { useStore } from '@/store'
 // 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
 type ECOption = echarts.ComposeOption<
   | BarSeriesOption
@@ -73,8 +76,9 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
+    let myChart2
     function Init() {
-      const myChart2 = echarts.init(document.getElementById('myChart2')!)
+      myChart2 = echarts.init(document.getElementById('myChart2')!)
       const option: ECOption = {
         // 添加横线滚动条
         xAxis: {
@@ -114,6 +118,17 @@ export default defineComponent({
         myChart2.resize()
       })
     }
+    const store = useStore()
+    watch(() => store.collapsed, () => {
+      // myChart4.resize()
+      setTimeout(() => {
+        myChart2.dispose()
+        Init()
+      }, 150)
+    })
+    onBeforeUnmount(() => {
+      myChart2.dispose()
+    })
     onMounted(() => {
       setTimeout(() => {
         Init()

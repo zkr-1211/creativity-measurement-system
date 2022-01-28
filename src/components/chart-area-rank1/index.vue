@@ -8,8 +8,8 @@
 import {
   defineComponent,
   onMounted,
-  getCurrentInstance,
-  ComponentInternalInstance
+  watch,
+  onBeforeUnmount
 } from 'vue'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -36,6 +36,7 @@ import {
   // 内置数据转换器组件 (filter, sort)
   TransformComponent
 } from 'echarts/components'
+import { useStore } from '@/store'
 // 标签自动布局，全局过渡动画等特性
 // import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
@@ -82,9 +83,10 @@ export default defineComponent({
     // } = getCurrentInstance() as ComponentInternalInstance;
     // const { appContext  } = getCurrentInstance()
     // console.log('globalProperties.$echarts=====',appContext)
+    let myChart4
     function Init() {
       // 基于准备好的dom，初始化echarts实例
-      const myChart4 = echarts.init(document.getElementById('myChart4')!)
+      myChart4 = echarts.init(document.getElementById('myChart4')!)
 
       // 绘制图表
       myChart4.setOption({
@@ -131,6 +133,17 @@ export default defineComponent({
         myChart4.resize()
       })
     }
+    const store = useStore()
+    watch(() => store.collapsed, () => {
+      // myChart4.resize()
+      setTimeout(() => {
+        myChart4.dispose()
+        Init()
+      }, 150)
+    })
+    onBeforeUnmount(() => {
+      myChart4.dispose()
+    })
     onMounted(() => {
       setTimeout(() => {
         Init()

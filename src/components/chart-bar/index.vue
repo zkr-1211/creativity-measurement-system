@@ -8,7 +8,8 @@
 import {
   defineComponent,
   onMounted,
-  watch
+  watch,
+  onBeforeUnmount
   // getCurrentInstance,
   // ComponentInternalInstance
 } from 'vue'
@@ -75,14 +76,14 @@ export default defineComponent({
     // const { appContext: { config: { globalProperties }}} = getCurrentInstance() as ComponentInternalInstance;
     // const { appContext  } = getCurrentInstance()
     // console.log("globalProperties.$echarts=====",echarts);
+    let myChart3
 
     function Init() {
       // 基于准备好的dom，初始化echarts实例
       // const myChart3 = globalProperties.$echarts.init(
       //   document.getElementById("myChart3")
       // );
-      const myChart3 = echarts.init(document.getElementById('myChart3')!)
-
+      myChart3 = echarts.init(document.getElementById('myChart3')!)
       const option: ECOption = {
         tooltip: {
           trigger: 'axis',
@@ -143,11 +144,15 @@ export default defineComponent({
         myChart3.resize()
       })
       const store = useStore()
-      watch(
-        () => store.collapsed,
-        () => {
-        }
-      )
+      watch(() => store.collapsed, () => {
+        setTimeout(() => {
+          myChart3.dispose()
+          Init()
+        }, 150)
+      })
+      onBeforeUnmount(() => {
+        myChart3.dispose()
+      })
     }
 
     onMounted(() => {
@@ -158,7 +163,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 #myChart3 {
-  width: 95%;
+  width: 98%;
   height: 3.8rem;
 }
 </style>
