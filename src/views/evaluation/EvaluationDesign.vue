@@ -42,21 +42,22 @@
                 :bordered="false"
               >
                 <a-collapse-panel
-                  v-for="(item, index) in 3"
+                  v-for="(item, index) in questions"
                   :key="index"
                   :header="`阶段${index + 1}`"
                 >
                   <div
-                    v-for="(item, index1) in 3"
+                    v-for="(q, index1) in item.list"
                     :key="index1"
                     class="item"
+                    @click="selectQuestions(q)"
                   >
                     <div class="item-left">
                       <div class="index">
-                        0{{ index + 1 }}：
+                        0{{ index1 + 1 }}：
                       </div>
                       <div class="title">
-                        第一题
+                        第{{ index1 + 1 }}题
                       </div>
                     </div>
                     <div class="item-right">
@@ -82,7 +83,7 @@
         >
           <a-card
             :loading="loading"
-            title="编辑区（第一阶段第一题）"
+            :title="`编辑区（${editAreaTitle || '暂未选择'}）`"
           >
             <div class="bottom-content-right">
               <div class="eva-des">
@@ -199,11 +200,11 @@
                     :md="10"
                     :xl="11"
                   >
-                    <div style="display: flex;justify-content: space-between;">
-                      <div style="display: flex;">
+                    <div style="display: flex; justify-content: space-between">
+                      <div style="display: flex">
                         <div
                           class="text"
-                          style="margin-right: 20px;"
+                          style="margin-right: 20px"
                         >
                           对应得分维度：
                         </div>
@@ -231,9 +232,7 @@
                         cancel-text="取消"
                         @confirm="delOption(optIndex)"
                       >
-                        <div
-                          class="delete"
-                        >
+                        <div class="delete">
                           删除
                         </div>
                       </a-popconfirm>
@@ -308,6 +307,81 @@ export default defineComponent({
     const handleChange = ({ fileList: newFileList }) => {
       fileList.value = newFileList
     }
+    const questions = ref<any>([
+      {
+        title: '哈哈哈',
+        list: [
+          {
+            title: '第一阶段第一题',
+            des: '123',
+            imgList: [],
+            queType: 1,
+            questionsItem: [
+              {
+                des: '',
+                imgList: [],
+                score: [
+                  {
+                    title: '创造力',
+                    value: '12'
+                  },
+                  {
+                    title: '自制力',
+                    value: '3'
+                  },
+                  {
+                    title: '行动力',
+                    value: '4'
+                  },
+                  {
+                    title: '领导力',
+                    value: '5'
+                  },
+                  {
+                    title: '决策力',
+                    value: '6'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: '第一阶段第二题',
+            des: '123',
+            imgList: [],
+            queType: 2,
+            questionsItem: [
+              {
+                des: '',
+                imgList: [],
+                score: [
+                  {
+                    title: '创造力',
+                    value: '23'
+                  },
+                  {
+                    title: '自制力',
+                    value: '11'
+                  },
+                  {
+                    title: '行动力',
+                    value: '3'
+                  },
+                  {
+                    title: '领导力',
+                    value: '4'
+                  },
+                  {
+                    title: '决策力',
+                    value: '5'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ])
     const options = ref<any>([])
     const addOption = () => {
       options.value.push({
@@ -349,6 +423,15 @@ export default defineComponent({
         saveLoading.value = false
       }, 1000)
     }
+    const editAreaTitle = ref('')
+    // 选择题目
+    function selectQuestions(item) {
+      console.log(item)
+      proContent.value = item.des
+      isSelect.value = item.queType
+      options.value = item.questionsItem
+      editAreaTitle.value = item.title
+    }
     return {
       activeKey,
       previewVisible,
@@ -365,7 +448,10 @@ export default defineComponent({
       addOption,
       delOption,
       onSave,
-      saveLoading
+      saveLoading,
+      selectQuestions,
+      questions,
+      editAreaTitle
     }
   }
 })
@@ -387,6 +473,8 @@ export default defineComponent({
     .item {
       @include faj();
       height: 48px;
+      cursor: pointer;
+
       .item-left {
         @include faj();
         .index {
@@ -446,7 +534,6 @@ export default defineComponent({
       background-color: #fafafc;
       position: relative;
       color: #333333;
-
       .text {
         margin-top: 5px;
       }

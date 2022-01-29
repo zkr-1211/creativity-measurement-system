@@ -174,7 +174,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onMounted } from 'vue'
 // import { UploadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import ModelDimension from '@/components/model-dimension/index.vue'
@@ -198,42 +198,14 @@ export default defineComponent({
     const colorList = ref(['#1890FF', '#2FC25B', '#FACC14'])
     // 个人信息
     const personage = reactive({
-      oneAttribute: '张克榕',
-      twoAttribute: '男',
-      threeAttribute: '1',
-      fourAttribute: '123456',
-      fiveAttribute: '123456',
-      sixAttribute: '123456',
+      oneAttribute: '创造力',
+      twoAttribute: '情商',
+      threeAttribute: '智商',
+      fourAttribute: '领导力',
+      fiveAttribute: '观察力',
+      sixAttribute: '人格',
       attribute: 0
     })
-    const indicator = ref<any>([
-      { name: '引用', max: 10000 },
-      { name: '口碑', max: 16000 },
-      { name: '热度', max: 38000 },
-      { name: '贡献', max: 52000 },
-      { name: '产量', max: 58000 }
-    ])
-    const radioChange = () => {
-      if (personage.attribute === 0 && indicator.value.length >= 6) {
-        indicator.value = [
-          { name: '引用', max: 10000 },
-          { name: '口碑', max: 16000 },
-          { name: '热度', max: 38000 },
-          { name: '贡献', max: 52000 },
-          { name: '产量', max: 58000 }
-        ]
-      } else {
-        indicator.value = [
-          { name: '引用', max: 10000 },
-          { name: '口碑', max: 16000 },
-          { name: '热度', max: 38000 },
-          { name: '贡献', max: 52000 },
-          { name: '产量', max: 58000 },
-          { name: '自信', max: 58000 }
-        ]
-      }
-      console.log('123123', indicator.value)
-    }
 
     const data = [
       {
@@ -255,11 +227,6 @@ export default defineComponent({
         }
       }
     ]
-    // 测评名称
-    const evaName = ref('')
-
-    // 测评介绍
-    const evaDes = ref('')
 
     // 上传封面
     const imageList = ref([])
@@ -319,13 +286,36 @@ export default defineComponent({
         message.error(`${infoFile.file.name} file upload failed.`)
       }
     }
+    function indicatorList() {
+      if (personage.attribute === 0) {
+        indicator.value = [
+          { name: personage.oneAttribute, max: 10000 },
+          { name: personage.twoAttribute, max: 16000 },
+          { name: personage.threeAttribute, max: 38000 },
+          { name: personage.fourAttribute, max: 52000 },
+          { name: personage.fiveAttribute, max: 58000 }
+        ]
+      } else {
+        indicator.value = [
+          { name: personage.oneAttribute, max: 10000 },
+          { name: personage.twoAttribute, max: 16000 },
+          { name: personage.threeAttribute, max: 38000 },
+          { name: personage.fourAttribute, max: 52000 },
+          { name: personage.fiveAttribute, max: 58000 },
+          { name: personage.sixAttribute, max: 58000 }
+        ]
+      }
+    }
+    const indicator = ref<any>([])
+    const radioChange = () => {
+      indicatorList()
+    }
+    onMounted(() => {
+      updateInfo()
+    })
     // 更新基本信息
     const updateInfo = () => {
-      const params = {
-        evaName: evaName.value,
-        evaDes: evaDes.value
-      }
-      console.log(params)
+      indicatorList()
     }
     // 状态选择框
     const stateValue = ref('')
@@ -344,8 +334,6 @@ export default defineComponent({
       fileList,
       loading,
       imageUrl,
-      evaName,
-      evaDes,
       stateValue,
       colorList,
       data,

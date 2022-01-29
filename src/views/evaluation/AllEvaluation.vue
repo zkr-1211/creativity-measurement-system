@@ -132,7 +132,7 @@ import { onMounted, defineComponent, ref } from 'vue'
 import PageHeader from '@/components/page-header/index.vue'
 // import CardItem from '@/components/card-item/index.vue'
 const data: any[] = []
-for (let i = 1; i < 21; i++) {
+for (let i = 1; i < 3; i++) {
   data.push({
     id: i.toString(),
     name: `类目 ${i}`,

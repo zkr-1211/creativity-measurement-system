@@ -38,7 +38,7 @@ onUnmounted(() => {
   color: #fff;
   @include wh(100%, 90vh);
   .content {
-    background-color: #f5f5f5;
+    background-color: #F0F2F5;
     overflow-y: auto;
     overflow-x: hidden;
     // min-width: 1166px;

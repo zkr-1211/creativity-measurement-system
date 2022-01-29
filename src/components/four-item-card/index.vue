@@ -21,7 +21,7 @@
               </a-tooltip>
             </template>
 
-            <div>
+            <div style="display: flex;justify-content: space-between;">
               <trend
                 flag="up"
                 style="margin-right: 16px"

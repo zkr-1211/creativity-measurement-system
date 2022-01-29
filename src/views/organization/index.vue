@@ -41,7 +41,7 @@
                   <router-link to="/organization/detail">
                     <a>详情与管理</a>
                   </router-link>
-                  <a>删除机构</a>
+                  <a @click="delOrg(item.id)">删除机构</a>
                 </template>
               </a-card>
             </template>
@@ -56,11 +56,11 @@
 import PageHeader from '@/components/page-header/index.vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
-const data: any[] = []
-for (let i = 0; i < 11; i++) {
-  data.push({
+const data = ref<any>([])
+for (let i = 0; i < 5; i++) {
+  data.value.push({
     id: i,
-    title: 'Alipay',
+    title: `Alipay${i}`,
     avatar:
       'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png'
   })
@@ -71,6 +71,15 @@ onMounted(() => {
     spinning.value = false
   }, 500)
 })
+function delOrg(id) {
+  data.value = data.value.filter(t => t.id !== id)
+  // data.value.forEach((item) => {
+  //   if (item.id === id) {
+  //     console.log(id)
+  //     data.value.splice(id, 1)
+  //   }
+  // })
+}
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -83,9 +92,6 @@ onMounted(() => {
 .body {
   .content-card {
     margin: 24px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     .content-card > i {
       width: 3.58rem;
     }
