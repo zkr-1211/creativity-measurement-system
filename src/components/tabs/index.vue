@@ -170,11 +170,12 @@ export default defineComponent({
       store.handleCloseAll()
     }
     const handleClose = (item: ITabsItem, index: number) => {
+      if (item.name === 'HomePage') {
+        return
+      }
       // 如果关闭的是当前路由，则跳转到tabs的最后一个路由
-      console.log('12312312312312', item.name, currentRouteName.value)
       store.handleClose(index)
       const isCurrentRoute = item.name === currentRouteName.value
-      console.log('12312312312312', isCurrentRoute)
       isCurrentRoute &&
         router.push({
           name: tabs.value[tabs.value.length - 1].name,
