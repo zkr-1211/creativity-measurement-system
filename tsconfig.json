@@ -9,14 +9,27 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "noImplicitAny": false,
     "skipLibCheck": true,
     "baseUrl": "./",
-    "paths":{
+    "paths": {
       // "@": ["src"],
-      "@/*": ["src/*"],
+      "@/*": [
+        "src/*"
+      ],
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js", "src/utils/request/v4/interceptors/request.ts"]
+  "include": [
+    "auto-imports.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/router/index.js",
+    "src/utils/request/v4/interceptors/request.ts"
+  ]
 }

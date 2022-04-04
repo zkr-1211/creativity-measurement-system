@@ -53,11 +53,9 @@
 </template>
 
 <script lang="ts" setup>
-import PageHeader from '@/components/page-header/index.vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
-import { onMounted, ref } from 'vue'
 const data = ref<any>([])
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 15; i++) {
   data.value.push({
     id: i,
     title: `Alipay${i}`,
