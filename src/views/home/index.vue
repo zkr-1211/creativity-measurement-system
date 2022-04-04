@@ -58,6 +58,8 @@
 
 <script lang="ts" setup>
 import { useStore } from '@/store'
+import ParticipationRun from './components/ParticipationRun.vue'
+import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
 const store = useStore()
 const route = useRoute()
