@@ -57,15 +57,23 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store'
+// const TendencyRun = defineAsyncComponent(() => import('@/components/tendency-run/index.vue'))
+// const ReviewList = defineAsyncComponent(() => import('./components/ReviewList.vue'))
+// const FourItemCard = defineAsyncComponent(() => import('@/components/four-item-card/index.vue'))
+// const ParticipationRun = defineAsyncComponent(() => import('./components/ParticipationRun.vue'))
+// const InstitutionOpenProject = defineAsyncComponent(() => import('./components/InstitutionOpenProject.vue'))
+import TendencyRun from '@/components/tendency-run/index.vue'
+import FourItemCard from '@/components/four-item-card/index.vue'
+import ParticipationRun from './components/ParticipationRun.vue'
+import ReviewList from './components/ReviewList.vue'
 import InstitutionOpenProject from './components/InstitutionOpenProject.vue'
-const store = useStore()
-const route = useRoute()
-console.log(route.matched)
-store.$patch((state) => {
-  state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
-  state.token = 'token-asgdfebdvvadfsdfgdfh'
-})
+// const store = useStore()
+// const route = useRoute()
+// console.log(route.matched)
+// store.$patch((state) => {
+//   state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
+//   state.token = 'token-asgdfebdvvadfsdfgdfh'
+// })
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
