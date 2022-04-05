@@ -98,7 +98,7 @@ const columns = [
     title: "校区名称",
     dataIndex: "name",
     wareath: 200,
-
+    isEdit: true,
     slots: {
       customRender: "name",
     },
