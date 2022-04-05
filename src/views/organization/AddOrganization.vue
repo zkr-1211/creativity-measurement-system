@@ -10,33 +10,27 @@
         :wrapper-col="wrapperCol"
         :rules="rules"
       >
-        <a-form-item
-          label="学校名称"
-          name="schoolName"
-        >
+        <a-form-item label="学校名称" name="schoolName">
           <a-input
             v-model:value="formState.schoolName"
             placeholder="请输入学校名称"
             class="input-width"
+            :maxlength="20"
           />
         </a-form-item>
-        <a-form-item
-          label="学校简介（选填）"
-          name="schoolDesc"
-        >
+        <a-form-item label="学校简介（选填）" name="schoolDesc">
           <a-textarea
             v-model:value="formState.schoolDesc"
             placeholder="请输入学校简介"
             type="textarea"
             class="input-width"
+            :maxlength="255"
+            showCount
             :auto-size="{ minRows: 5, maxRows: 10 }"
           />
         </a-form-item>
 
-        <a-form-item
-          label="所在省市"
-          name="area"
-        >
+        <a-form-item label="所在省市" name="area">
           <a-cascader
             v-model:value="formState.area"
             :field-names="{
@@ -49,52 +43,35 @@
             @change="change"
           />
         </a-form-item>
-        <a-form-item
-          label="详细地址"
-          name="address"
-        >
+        <a-form-item label="详细地址" name="address">
           <a-textarea
             v-model:value="formState.address"
             placeholder="请输入详细地址"
             class="input-width"
             type="textarea"
+            showCount
+            :maxlength="100"
             :auto-size="{ minRows: 5, maxRows: 10 }"
           />
         </a-form-item>
-        <a-form-item
-          label="校区超级管理员姓名"
-          name="superName"
-        >
+        <a-form-item label="校区超级管理员姓名" name="superName">
           <a-input
             v-model:value="formState.superName"
             placeholder="请输入超级管理员姓名"
+            :maxlength="10"
             class="input-width"
           />
         </a-form-item>
-        <a-form-item
-          label="校区超级管理员手机号"
-          name="superPhone"
-        >
+        <a-form-item label="校区超级管理员手机号" name="superPhone">
           <a-input
             v-model:value="formState.superPhone"
             placeholder="请输入超级管理员手机号"
             class="input-width"
           />
         </a-form-item>
-        <a-form-item
-          :wrapper-col="{ span: 10, offset: 10 }"
-          class="button"
-        >
-          <a-button
-            type="primary"
-            @click="onSubmit"
-          >
-            创建
-          </a-button>
-          <a-button
-            style="margin-left: 10px"
-            @click="resetForm"
-          >
+        <a-form-item :wrapper-col="{ span: 10, offset: 10 }" class="button">
+          <a-button type="primary" @click="onSubmit"> 创建 </a-button>
+          <a-button style="margin-left: 10px" @click="resetForm">
             重置
           </a-button>
         </a-form-item>
@@ -107,16 +84,9 @@
       >
         <template #extra>
           <router-link to="/organization">
-            <a-button
-              key="console"
-              type="primary"
-            >
-              回到起始页
-            </a-button>
+            <a-button key="console" type="primary"> 回到起始页 </a-button>
           </router-link>
-          <a-button key="buy">
-            查看详情
-          </a-button>
+          <a-button key="buy"> 查看详情 </a-button>
         </template>
       </a-result>
     </a-card>
@@ -124,9 +94,10 @@
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, UnwrapRef, ref, onActivated } from 'vue'
-import PageHeader from '@/components/page-header/index.vue'
-import map from '@/assets/js/map'
+import { reactive, defineComponent, UnwrapRef, ref, onActivated } from "vue";
+import PageHeader from "@/components/page-header/index.vue";
+import map from "@/assets/js/map";
+import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 interface FormState {
   schoolName: string;
   schoolDesc: string;
@@ -143,115 +114,112 @@ interface Option {
   children?: Option[];
   [key: string]: any;
 }
-const options: Option[] = map
+const options: Option[] = map;
 export default defineComponent({
-  name: 'AddOrganization',
+  name: "AddOrganization",
   components: { PageHeader },
   setup() {
-    const formRef = ref()
+    const formRef = ref();
     const formState: UnwrapRef<FormState> = reactive({
-      schoolName: '',
-      schoolDesc: '',
-      superName: '',
+      schoolName: "",
+      schoolDesc: "",
+      superName: "",
       superPhone: undefined,
-      address: '',
-      area: []
-    })
+      address: "",
+      area: [],
+    });
     const rules = {
       schoolName: [
         {
           required: true,
-          message: '请输入内容,不能为空',
-          trigger: 'blur'
+          message: "学校名不能为空",
+          trigger: "blur",
         },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
       schoolDesc: [
         {
-          required: true,
-          message: '请输入内容,不能为空',
-          trigger: 'blur'
+          message: "请输入学校简介",
+          trigger: "blur",
         },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
       superName: [
         {
           required: true,
-          message: '请输入内容,不能为空',
-          trigger: 'blur'
+          message: "请输入校区管理员姓名",
+          trigger: "blur",
         },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
       address: [
         {
           required: true,
-          message: '请输入内容,不能为空',
-          trigger: 'blur'
+          message: "地址不能为空",
+          trigger: "blur",
         },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
       area: [
         {
-          type: 'array',
+          type: "array",
           required: true,
-          message: '请选择区域',
-          trigger: 'blur'
-        }
+          message: "请选择所在省市",
+          trigger: "blur",
+        },
       ],
       type: [
         {
-          type: 'array',
+          type: "array",
           required: true,
-          message: 'Please select at least one activity type',
-          trigger: 'change'
-        }
+          message: "Please select at least one activity type",
+          trigger: "change",
+        },
       ],
       resource: [
         {
           required: true,
-          message: 'Please select activity resource',
-          trigger: 'change'
-        }
+          message: "请输入校区管理员姓名",
+          trigger: "change",
+        },
       ],
       superPhone: [
         {
           required: true,
-          message: 'Please input activity form',
-          trigger: 'blur'
-        }
-      ]
-    }
+          message: "请输入正确的校区管理员手机号",
+          trigger: "blur",
+          pattern: "^1[3456789]\\d{9}$",
+        },
+      ],
+    };
     const resetForm = () => {
       // console.log(formRef.value)
-      formRef.value.resetFields()
-    }
+      formRef.value.resetFields();
+    };
     const change = (e) => {
-      console.log(e, formState.area)
-    }
-    const finish = ref(true)
+      console.log(e, formState.area);
+    };
+    const finish = ref(true);
     onActivated(() => {
       // 被包裹组件被激活的状态下触发
-      finish.value = true
-    })
+      finish.value = true;
+    });
 
     const onSubmit = () => {
-      finish.value = false
-      // formRef.value
-      //   .validate()
-      //   .then(() => {
-      //     console.log('values', formState, toRaw(formState))
-      //   })
-      //   .catch((error: ValidateErrorEntity<FormState>) => {
-      //     console.log('error', error)
-      //   })
-    }
+      formRef.value
+        .validate()
+        .then(() => {
+          // 调用创建接口
+          finish.value = false;
+          console.log("values", formState, toRaw(formState));
+        })
+        .catch((error: ValidateErrorEntity<FormState>) => {
+          console.log("error", error);
+        });
+    };
 
     return {
       labelCol: {
-        span: 10
+        span: 10,
       },
       wrapperCol: {
-        span: 7
+        span: 7,
       },
       formState,
       onSubmit,
@@ -260,10 +228,10 @@ export default defineComponent({
       formRef,
       finish,
       options,
-      change
-    }
-  }
-})
+      change,
+    };
+  },
+});
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

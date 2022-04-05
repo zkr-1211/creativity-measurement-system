@@ -54,7 +54,20 @@ export const useStore = defineStore('store', {
     },
     setCollapsed(collapsed: boolean) {
       this.collapsed = collapsed || false
-    }
+    },
+    // 登入
+    // login(user, password) {
+    //   return apiLogin(user, password).then(res => {
+    //     if (res.code === 200) {
+    //       this.$patch({
+    //         userInfo: res.data,
+    //         token: res.token
+    //       })
+    //     }
+    //     return res
+    //   })
+    // },
+
     /**
      * @param {string} user
      * @param {string} password

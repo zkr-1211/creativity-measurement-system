@@ -7,9 +7,7 @@
       <a-card>
         <div class="search-info">
           <div class="tags">
-            <div class="tags-text">
-              标签类目：
-            </div>
+            <div class="tags-text">标签类目：</div>
             <div class="tags-content">
               <div
                 v-for="(item, index) in tagList"
@@ -24,25 +22,20 @@
             </div>
           </div>
           <div class="other-select">
-            <div class="other-text">
-              其他选项：
-            </div>
+            <div class="other-text">其他选项：</div>
             <div class="other-right">
               <div class="select-item">
                 <div class="select-level">
                   学段：
                   <a-select
                     ref="select"
-                    v-model:value="value1"
+                    v-model:value="learningPeriod"
                     @focus="focus"
                     @change="handleChange"
+                    style="width: 220px"
                   >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                    <a-select-option value="lucy">
-                      Lucy
-                    </a-select-option>
+                    <a-select-option value="jack"> Jack </a-select-option>
+                    <a-select-option value="lucy"> Lucy </a-select-option>
                     <a-select-option value="Yiminghe">
                       yiminghe
                     </a-select-option>
@@ -52,16 +45,13 @@
                   参与人数：
                   <a-select
                     ref="select"
-                    v-model:value="value1"
+                    v-model:value="participation"
                     @focus="focus"
                     @change="handleChange"
+                    style="width: 220px"
                   >
-                    <a-select-option value="jack">
-                      Jack
-                    </a-select-option>
-                    <a-select-option value="lucy">
-                      Lucy
-                    </a-select-option>
+                    <a-select-option value="jack"> Jack </a-select-option>
+                    <a-select-option value="lucy"> Lucy </a-select-option>
                     <a-select-option value="Yiminghe">
                       yiminghe
                     </a-select-option>
@@ -93,7 +83,7 @@
                     <img
                       alt="example"
                       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                    >
+                    />
                   </template>
                   <a-card-meta>
                     <template #title>
@@ -106,9 +96,7 @@
                     </template>
                   </a-card-meta>
                   <div class="info">
-                    <div class="num">
-                      14679人参与测评
-                    </div>
+                    <div class="num">14679人参与测评</div>
                     <div class="imgs">
                       <div
                         v-for="(item, index) in 4"
@@ -127,66 +115,45 @@
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent, ref } from 'vue'
-import PageHeader from '@/components/page-header/index.vue'
-// import CardItem from '@/components/card-item/index.vue'
-const data: any[] = []
-for (let i = 1; i < 3; i++) {
-  data.push({
+<script lang="ts" setup name="AllEvaluation">
+const learningPeriod = ref("");
+const participation = ref("");
+const data: any = ref([]);
+for (let i = 1; i < 5; i++) {
+  data.value.push({
     id: i.toString(),
     name: `类目 ${i}`,
-    title: '创造力测评'
-  })
+    title: "创造力测评",
+  });
 }
-export default defineComponent({
-  name: 'AllEvaluation',
-  components: {
-    PageHeader
-    // CardItem
-  },
-  setup() {
-    const spinning = ref<boolean>(true)
-    onMounted(() => {
-      setTimeout(() => {
-        spinning.value = false
-      }, 500)
-    })
-    const tagList = ref(data)
-    const focus = () => {
-      console.log('focus')
-    }
-    // 选择的标签id
-    const selectTagId = ref('1')
-    const selectTag = (id: string) => {
-      selectTagId.value = id
-    }
-    // 搜索
-    const value = ref('')
-    const onSearch = (searchValue: any) => {
-      console.log('use value', searchValue)
-      console.log('or use this.value', value.value)
-    }
-    // 选择框改变时
-    const handleChange = (value: any) => {
-      console.log(`selected ${value}`)
-    }
-
-    onMounted(() => {})
-    return {
-      value1: ref('lucy'),
-      value,
-      tagList,
-      selectTagId,
-      onSearch,
-      focus,
-      handleChange,
-      selectTag,
-      data,
-      spinning
-    }
-  }
-})
+const spinning = ref<boolean>(true);
+onMounted(() => {
+  setTimeout(() => {
+    spinning.value = false;
+  }, 500);
+});
+const tagList = ref(data);
+const focus = () => {
+  console.log("focus");
+};
+// 选择的标签id
+const selectTagId = ref("1");
+const selectTag = (id: string) => {
+  selectTagId.value = id;
+};
+// 搜索
+const value = ref("");
+const onSearch = (searchValue: any) => {
+  // 搜索列表
+  const searchList = data.value.filter((item: any) => {
+    return item.title.indexOf(searchValue) > -1;
+  });
+  data.value = searchList;
+};
+// 选择框改变时
+const handleChange = (value: any) => {
+  console.log(`selected ${value}`);
+};
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

@@ -12,7 +12,7 @@
         >
           <chart-card
             :loading="loading"
-            :title="list[0]?.title"
+            title="测评总人数"
             :total="list[0]?.count"
           >
             <template #action>
@@ -50,7 +50,7 @@
           <!--  -->
           <chart-card
             :loading="loading"
-            :title="list[1]?.title"
+            title="访问量"
             :total="list[1]?.count"
           >
             <template #action>
@@ -78,7 +78,7 @@
         >
           <chart-card
             :loading="loading"
-            :title="list[2]?.title"
+             title="参与机构数"
             :total="list[2]?.count"
           >
             <template #action>
@@ -104,7 +104,7 @@
         >
           <chart-card
             :loading="loading"
-            :title="list[3]?.title"
+            title="测评项目数"
             :total="list[3]?.count"
           >
             <template #action>

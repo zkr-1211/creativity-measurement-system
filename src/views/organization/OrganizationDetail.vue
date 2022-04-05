@@ -5,18 +5,14 @@
       <div class="eva-record-item">
         <div class="header" />
         <div class="item-info">
-          <div class="item-right-top">
-            哈哈哈
-          </div>
+          <div class="item-right-top">哈哈哈</div>
           <div class="item-right-bottom">
             <span>学校简介：位于的一高校</span>
           </div>
         </div>
       </div>
       <template #right>
-        <a-button type="primary">
-          新建测评
-        </a-button>
+        <a-button type="primary"> 新建测评 </a-button>
       </template>
     </page-header>
 
@@ -36,10 +32,7 @@
               :active-tab-key="noTitleKey"
               @tab-change="(key) => onTabChange(key, 'noTitleKey')"
             >
-              <div
-                v-if="noTitleKey === 'article'"
-                class="content"
-              >
+              <div v-if="noTitleKey === 'article'" class="content">
                 <a-list
                   :grid="{
                     gutter: 24,
@@ -59,7 +52,7 @@
                           <img
                             alt="example"
                             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                          >
+                          />
                         </template>
                         <a-card-meta>
                           <template #title>
@@ -69,17 +62,13 @@
                           </template>
                           <template #description>
                             <div class="des">
-                              <div class="text">
-                                开通日期：
-                              </div>
-                              <div class="time">
-                                2020.03.03
-                              </div>
+                              <div class="text">开通日期：</div>
+                              <div class="time">2020.03.03</div>
                             </div>
                           </template>
                         </a-card-meta>
                         <template #actions>
-                          <a>取消开通</a>
+                          <a @click="cancelTheOpening(item)">取消开通</a>
                           <router-link to="/organization/orgevaluation-detail">
                             查看详情
                           </router-link>
@@ -89,13 +78,9 @@
                   </template>
                 </a-list>
               </div>
-              <p v-else-if="noTitleKey === 'app'">
-                访问量
-              </p>
+              <p v-else-if="noTitleKey === 'app'">访问量</p>
               <template #tabBarExtraContent>
-                <div class="tabs-right">
-                  全部项目
-                </div>
+                <div class="tabs-right">全部项目</div>
               </template>
             </a-card>
           </a-col>
@@ -106,10 +91,7 @@
             :xl="7"
             :style="{ marginBottom: '24px' }"
           >
-            <a-card
-              title="管理"
-              :loading="loading"
-            >
+            <a-card title="管理" :loading="loading">
               <div
                 v-for="(item, index) in manageList"
                 :key="index"
@@ -118,9 +100,7 @@
               >
                 <div class="item-left">
                   <div class="img" />
-                  <div class="name">
-                    {{ item.name }}管理
-                  </div>
+                  <div class="name">{{ item.name }}管理</div>
                 </div>
                 <div class="item-right">
                   <div class="num">
@@ -132,9 +112,7 @@
                 </div>
               </div>
               <template #tabBarExtraContent>
-                <div class="tabs-right">
-                  全部项目
-                </div>
+                <div class="tabs-right">全部项目</div>
               </template>
             </a-card>
           </a-col>
@@ -149,10 +127,7 @@
             :xl="17"
             :style="{ marginBottom: '24px' }"
           >
-            <a-card
-              title="动态"
-              :loading="loading"
-            >
+            <a-card title="动态" :loading="loading">
               <RecordList />
             </a-card>
           </a-col>
@@ -163,10 +138,7 @@
             :xl="7"
             :style="{ marginBottom: '24px' }"
           >
-            <a-card
-              title="动态"
-              :loading="loading"
-            >
+            <a-card title="动态" :loading="loading">
               <RecordList />
             </a-card>
           </a-col>
@@ -177,93 +149,114 @@
 </template>
 
 <script lang="ts" setup>
-import { RightOutlined } from '@ant-design/icons-vue'
-import { onMounted, ref } from 'vue'
-import PageHeader from '@/components/page-header/index.vue'
-import RecordList from '@/components/record-list/index.vue'
-import { useRouter } from 'vue-router'
+import {
+  ExclamationCircleOutlined,
+  RightOutlined,
+} from "@ant-design/icons-vue";
+import { createVNode, onMounted, ref } from "vue";
+import PageHeader from "@/components/page-header/index.vue";
+import RecordList from "@/components/record-list/index.vue";
+import { useRouter } from "vue-router";
+import { message, Modal } from "ant-design-vue";
 
-const loading = ref<boolean>(true)
+const loading = ref<boolean>(true);
 onMounted(() => {
   setTimeout(() => {
-    loading.value = false
-  }, 500)
-})
+    loading.value = false;
+  }, 500);
+});
 const tabListNoTitle = [
   {
-    key: 'article',
-    tab: '测评人数'
+    key: "article",
+    tab: "测评人数",
   },
   {
-    key: 'app',
-    tab: '访问量'
-  }
-]
-const data: any[] = []
+    key: "app",
+    tab: "访问量",
+  },
+];
+const data: any[] = [];
 for (let i = 1; i < 4; i++) {
   data.push({
     id: i.toString(),
     name: `类目 ${i}`,
-    title: '创造力测评'
-  })
+    title: "创造力测评",
+  });
 }
 const manageList = ref([
   {
-    name: '校区',
-    num: '12'
+    name: "校区",
+    num: "12",
   },
   {
-    name: '班级',
-    num: '20'
+    name: "班级",
+    num: "20",
   },
   {
-    name: '学生',
-    num: '6'
+    name: "学生",
+    num: "6",
   },
   {
-    name: '教师',
-    num: '3'
+    name: "教师",
+    num: "3",
   },
   {
-    name: '校区管理员',
-    num: '1'
-  }
-])
-const router = useRouter()
+    name: "校区管理员",
+    num: "1",
+  },
+]);
+const router = useRouter();
 const toManage = (index) => {
   switch (index) {
     case 0:
-      router.push({ path: '/school-manage' })
-      break
+      router.push({ path: "/school-manage" });
+      break;
     case 1:
-      router.push({ path: '/class-manage' })
-      break
+      router.push({ path: "/class-manage" });
+      break;
     case 2:
-      router.push({ path: '/student-manage' })
-      break
+      router.push({ path: "/student-manage" });
+      break;
     case 3:
-      router.push({ path: '/teacher-manage' })
-      break
+      router.push({ path: "/teacher-manage" });
+      break;
     case 4:
-      router.push({ path: '/school-administrator' })
-      break
+      router.push({ path: "/school-administrator" });
+      break;
   }
-}
-const key = ref('tab1')
-const noTitleKey = ref('article')
+};
+const key = ref("tab1");
+const noTitleKey = ref("article");
 const onTabChange = (value: string, type: string) => {
-  console.log(value, type)
-  if (type === 'key') {
-    key.value = value
-  } else if (type === 'noTitleKey') {
-    noTitleKey.value = value
+  console.log(value, type);
+  if (type === "key") {
+    key.value = value;
+  } else if (type === "noTitleKey") {
+    noTitleKey.value = value;
   }
+};
+function cancelTheOpening(item) {
+  Modal.confirm({
+    title: () => `你确定取消开通“${item.title}”吗?`,
+    icon: () => createVNode(ExclamationCircleOutlined),
+    content: () => "取消后将无法恢复",
+    centered: true,
+    okText: () => "确定",
+    okType: "danger",
+    cancelText: () => "取消",
+    onOk() {
+      // 调用取消接口
+      message.success("取消成功");
+    },
+    onCancel() {
+      console.log("Cancel");
+    },
+  });
 }
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
 .body {
-
   .card-items {
     height: 300px;
     overflow: auto;

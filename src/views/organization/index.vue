@@ -11,10 +11,7 @@
           <a-list-item>
             <template v-if="item.id === 0">
               <router-link to="/organization/addorganization">
-                <a-button
-                  class="new-btn"
-                  type="dashed"
-                >
+                <a-button class="new-btn" type="dashed">
                   <PlusOutlined />
                   新增机构/学校
                 </a-button>
@@ -41,7 +38,7 @@
                   <router-link to="/organization/detail">
                     <a>详情与管理</a>
                   </router-link>
-                  <a @click="delOrg(item.id)">删除机构</a>
+                  <a @click="delOrg(item)">删除机构</a>
                 </template>
               </a-card>
             </template>
@@ -53,30 +50,42 @@
 </template>
 
 <script lang="ts" setup>
-import { PlusOutlined } from '@ant-design/icons-vue'
-const data = ref<any>([])
+import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons-vue";
+import { createVNode } from "vue";
+import { Modal, message } from "ant-design-vue";
+const data = ref<any>([]);
 for (let i = 0; i < 15; i++) {
   data.value.push({
     id: i,
     title: `Alipay${i}`,
     avatar:
-      'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png'
-  })
+      "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+  });
 }
-const spinning = ref<boolean>(true)
+const spinning = ref<boolean>(true);
 onMounted(() => {
   setTimeout(() => {
-    spinning.value = false
-  }, 500)
-})
-function delOrg(id) {
-  data.value = data.value.filter(t => t.id !== id)
-  // data.value.forEach((item) => {
-  //   if (item.id === id) {
-  //     console.log(id)
-  //     data.value.splice(id, 1)
-  //   }
-  // })
+    spinning.value = false;
+  }, 500);
+});
+function delOrg(item) {
+  Modal.confirm({
+    title: () => `你确定删除“${item.title}”吗?`,
+    icon: () => createVNode(ExclamationCircleOutlined),
+    content: () => "删除后将无法恢复",
+    centered: true,
+    okText: () => "确定",
+    okType: "danger",
+    cancelText: () => "取消",
+    onOk() {
+      // 调用删除接口
+      data.value = data.value.filter((t) => t.id !== item.id);
+      message.success("删除成功");
+    },
+    onCancel() {
+      console.log("Cancel");
+    },
+  });
 }
 </script>
 <style lang="scss" scoped>

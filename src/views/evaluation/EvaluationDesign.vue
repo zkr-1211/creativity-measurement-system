@@ -3,44 +3,24 @@
   <div class="body">
     <page-header title="设计测评题目与阶段">
       <template #right>
-        <a-button
-          type="primary"
-          :loading="saveLoading"
-          @click="onSave"
-        >
+        <a-button type="primary" :loading="saveLoading" @click="onSave">
           保存
         </a-button>
-        <a-button style="margin-left: 10px">
-          取消
-        </a-button>
+        <a-button style="margin-left: 10px"> 取消 </a-button>
       </template>
     </page-header>
-    <div
-      ref="el"
-      class="content"
-    >
+    <div ref="el" class="content">
       <a-row :gutter="24">
-        <a-col
-          :xs="24"
-          :sm="24"
-          :md="24"
-          :xl="6"
-        >
-          <a-card
-            :loading="loading"
-            title="题目与阶段"
-          >
+        <a-col :xs="24" :sm="24" :md="24" :xl="6">
+          <a-card :loading="loading" title="题目与阶段">
             <template #extra>
-              <a-button type="primary">
-                + 新建测评
+              <a-button type="primary" @click="aNewPhase">
+                + 新建阶段
               </a-button>
             </template>
 
             <div class="bottom-content">
-              <a-collapse
-                v-model:activeKey="activeKey"
-                :bordered="false"
-              >
+              <a-collapse v-model:activeKey="activeKey" :bordered="false">
                 <a-collapse-panel
                   v-for="(item, index) in questions"
                   :key="index"
@@ -53,12 +33,8 @@
                     @click="selectQuestions(q)"
                   >
                     <div class="item-left">
-                      <div class="index">
-                        0{{ index1 + 1 }}：
-                      </div>
-                      <div class="title">
-                        第{{ index1 + 1 }}题
-                      </div>
+                      <div class="index">0{{ index1 + 1 }}：</div>
+                      <div class="title">第{{ index1 + 1 }}题</div>
                     </div>
                     <div class="item-right">
                       <Dot />
@@ -69,27 +45,18 @@
                   </template>
                 </a-collapse-panel>
               </a-collapse>
-              <div class="add-p">
-                + 新增题目
-              </div>
+              <div class="add-p" @click="newTopic">+ 新增题目</div>
             </div>
           </a-card>
         </a-col>
-        <a-col
-          :xs="24"
-          :sm="24"
-          :md="24"
-          :xl="18"
-        >
+        <a-col :xs="24" :sm="24" :md="24" :xl="18">
           <a-card
             :loading="loading"
             :title="`编辑区（${editAreaTitle || '暂未选择'}）`"
           >
             <div class="bottom-content-right">
               <div class="eva-des">
-                <div class="des">
-                  题目内容:
-                </div>
+                <div class="des">题目内容:</div>
                 <div class="txarea">
                   <a-textarea
                     v-model:value="proContent"
@@ -107,9 +74,7 @@
                 >
                   <div v-if="fileList.length < 8">
                     <plus-outlined />
-                    <div class="ant-upload-text">
-                      Upload
-                    </div>
+                    <div class="ant-upload-text">Upload</div>
                   </div>
                 </a-upload>
                 <a-modal
@@ -117,46 +82,27 @@
                   :footer="null"
                   @cancel="handleCancel"
                 >
-                  <img
-                    alt="example"
-                    style="width: 100%"
-                    :src="previewImage"
-                  >
+                  <img alt="example" style="width: 100%" :src="previewImage" />
                 </a-modal>
               </div>
               <div class="pay-radio-group">
-                <div class="name">
-                  题型选择:
-                </div>
+                <div class="name">题型选择:</div>
                 <a-radio-group v-model:value="isSelect">
-                  <a-radio :value="1">
-                    选择
-                  </a-radio>
-                  <a-radio :value="2">
-                    填空
-                  </a-radio>
+                  <a-radio :value="1"> 选择 </a-radio>
+                  <a-radio :value="2"> 填空 </a-radio>
                 </a-radio-group>
               </div>
-              <div class="se-edit">
-                选项编辑
-              </div>
+              <div class="se-edit">选项编辑</div>
               <div
                 v-for="(optItem, optIndex) in options"
                 :key="optIndex"
                 class="item"
               >
                 <a-row :gutter="24">
-                  <a-col
-                    :xs="24"
-                    :sm="24"
-                    :md="14"
-                    :xl="13"
-                  >
+                  <a-col :xs="24" :sm="24" :md="14" :xl="13">
                     <div class="left-content">
                       <div class="eva-des">
-                        <div class="des">
-                          选项1:
-                        </div>
+                        <div class="des">选项1:</div>
                         <div class="txarea">
                           <a-textarea
                             v-model:value="optItem.des"
@@ -174,9 +120,7 @@
                         >
                           <div v-if="fileList.length < 8">
                             <plus-outlined />
-                            <div class="ant-upload-text">
-                              上传图片
-                            </div>
+                            <div class="ant-upload-text">上传图片</div>
                           </div>
                         </a-upload>
                         <a-modal
@@ -188,24 +132,16 @@
                             alt="example"
                             style="width: 100%"
                             :src="previewImage"
-                          >
+                          />
                         </a-modal>
                       </div>
                     </div>
                   </a-col>
 
-                  <a-col
-                    :xs="24"
-                    :sm="24"
-                    :md="10"
-                    :xl="11"
-                  >
+                  <a-col :xs="24" :sm="24" :md="10" :xl="11">
                     <div style="display: flex; justify-content: space-between">
                       <div style="display: flex">
-                        <div
-                          class="text"
-                          style="margin-right: 20px"
-                        >
+                        <div class="text" style="margin-right: 20px">
                           对应得分维度：
                         </div>
                         <div class="score">
@@ -232,229 +168,286 @@
                         cancel-text="取消"
                         @confirm="delOption(optIndex)"
                       >
-                        <div class="delete">
-                          删除
-                        </div>
+                        <div class="delete">删除</div>
                       </a-popconfirm>
                     </div>
                   </a-col>
                 </a-row>
               </div>
-              <div
-                class="add-s"
-                @click="addOption"
-              >
-                + 新增选项
-              </div>
+              <div class="add-s" @click="addOption">+ 新增选项</div>
             </div>
           </a-card>
         </a-col>
       </a-row>
     </div>
+    <!--新建阶段 -->
+    <a-modal
+      v-model:visible="visible"
+      style="top: 200px"
+      title="新建阶段"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="{ span: 4 }"
+      >
+        <a-form-item label="阶段名称" name="name">
+          <a-input v-model:value="formState.name" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+    <!--新建题目 -->
+    <a-modal
+      v-model:visible="visibleTitle"
+      style="top: 200px"
+      title="新建题目"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="{ span: 4 }"
+      >
+        <a-form-item label="题目名称" name="name">
+          <a-input v-model:value="formState.titleName" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent, ref, getCurrentInstance } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
-import PageHeader from '@/components/page-header/index.vue'
-import Dot from '@/components/dot/index.vue'
+<script lang="ts" setup name="EvaluationDesign">
+import { PlusOutlined } from "@ant-design/icons-vue";
+import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-
-    reader.onload = () => resolve(reader.result)
-
-    reader.onerror = (error) => reject(error)
-  })
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 }
-export default defineComponent({
-  name: 'EvaluationDesign',
-  components: { PageHeader, Dot, PlusOutlined },
-  setup() {
-    const proContent = ref('')
-    const selectContent = ref('')
-    const isSelect = ref(1)
-
-    const activeKey = ref(['0'])
-    const loading = ref<boolean>(true)
-    onMounted(() => {
+interface FormState {
+  name: string;
+  titleName: string;
+}
+const proContent = ref("");
+const selectContent = ref("");
+const isSelect = ref(1);
+const activeKey = ref(["0"]);
+const loading = ref<boolean>(true);
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
+});
+const formRef = ref();
+const addFlag = ref<boolean>(false);
+const confirmLoading = ref<boolean>(false);
+const visible = ref<boolean>(false);
+const visibleTitle = ref<boolean>(false);
+const formState = reactive<FormState>({
+  name: "",
+  titleName: "",
+});
+const rules = {
+  name: [
+    { required: true, message: "请输入阶段名称", trigger: "blur" },
+    { min: 1, max: 15, message: "长度15个字符以内", trigger: "blur" },
+  ],
+  titleName: [
+    { required: true, message: "请输入题目名称", trigger: "blur" },
+    { min: 1, max: 15, message: "长度15个字符以内", trigger: "blur" },
+  ],
+};
+const handleOk = () => {
+  formRef.value
+    .validate()
+    .then(() => {
+      if (addFlag.value) {
+        // 添加
+      } else {
+        // 编辑
+      }
+      confirmLoading.value = true;
       setTimeout(() => {
-        loading.value = false
-      }, 500)
+        visible.value = false;
+        confirmLoading.value = false;
+        formRef.value.resetFields();
+      }, 2000);
     })
-    const previewVisible = ref(false)
-    const previewImage = ref('')
-    const fileList = ref<string[]>([])
+    .catch((error: ValidateErrorEntity<FormState>) => {
+      console.log("error", error);
+    });
+};
+// 新建阶段
+function aNewPhase() {
+  reset();
+  visible.value = true;
+}
+// 新建题目
+function newTopic() {
+  reset();
+  visibleTitle.value = true;
+}
+function reset() {
+  formState.name = "";
+  formState.titleName = "";
+  formRef.value?.resetFields();
+}
+const previewVisible = ref(false);
+const previewImage = ref("");
+const fileList = ref<string[]>([]);
 
-    const handleCancel = () => {
-      previewVisible.value = false
-    }
+const handleCancel = () => {
+  previewVisible.value = false;
+};
 
-    const handlePreview = async(file: {
-      url: any;
-      preview: unknown;
-      originFileObj: any;
-    }) => {
-      if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj)
-      }
-
-      previewImage.value = file.url || file.preview
-      previewVisible.value = true
-    }
-    const handleChange = ({ fileList: newFileList }) => {
-      fileList.value = newFileList
-    }
-    const questions = ref<any>([
-      {
-        title: '哈哈哈',
-        list: [
-          {
-            title: '第一阶段第一题',
-            des: '123',
-            imgList: [],
-            queType: 1,
-            questionsItem: [
-              {
-                des: '',
-                imgList: [],
-                score: [
-                  {
-                    title: '创造力',
-                    value: '12'
-                  },
-                  {
-                    title: '自制力',
-                    value: '3'
-                  },
-                  {
-                    title: '行动力',
-                    value: '4'
-                  },
-                  {
-                    title: '领导力',
-                    value: '5'
-                  },
-                  {
-                    title: '决策力',
-                    value: '6'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            title: '第一阶段第二题',
-            des: '123',
-            imgList: [],
-            queType: 2,
-            questionsItem: [
-              {
-                des: '',
-                imgList: [],
-                score: [
-                  {
-                    title: '创造力',
-                    value: '23'
-                  },
-                  {
-                    title: '自制力',
-                    value: '11'
-                  },
-                  {
-                    title: '行动力',
-                    value: '3'
-                  },
-                  {
-                    title: '领导力',
-                    value: '4'
-                  },
-                  {
-                    title: '决策力',
-                    value: '5'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ])
-    const options = ref<any>([])
-    const addOption = () => {
-      options.value.push({
-        des: '',
-        imgList: [],
-        score: [
-          {
-            title: '创造力',
-            value: ''
-          },
-          {
-            title: '自制力',
-            value: ''
-          },
-          {
-            title: '行动力',
-            value: ''
-          },
-          {
-            title: '领导力',
-            value: ''
-          },
-          {
-            title: '决策力',
-            value: ''
-          }
-        ]
-      })
-    }
-    const delOption = (index) => {
-      options.value.splice(index, 1)
-    }
-    const saveLoading = ref(false)
-    const { proxy }: any = getCurrentInstance()
-    const onSave = (index) => {
-      saveLoading.value = true
-      setTimeout(() => {
-        proxy.$message.success('保存成功')
-        saveLoading.value = false
-      }, 1000)
-    }
-    const editAreaTitle = ref('')
-    // 选择题目
-    function selectQuestions(item) {
-      console.log(item)
-      proContent.value = item.des
-      isSelect.value = item.queType
-      options.value = item.questionsItem
-      editAreaTitle.value = item.title
-    }
-    return {
-      activeKey,
-      previewVisible,
-      previewImage,
-      fileList,
-      proContent,
-      selectContent,
-      isSelect,
-      handleCancel,
-      handlePreview,
-      handleChange,
-      loading,
-      options,
-      addOption,
-      delOption,
-      onSave,
-      saveLoading,
-      selectQuestions,
-      questions,
-      editAreaTitle
-    }
+const handlePreview = async (file: {
+  url: any;
+  preview: unknown;
+  originFileObj: any;
+}) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
   }
-})
+  previewImage.value = file.url || file.preview;
+  previewVisible.value = true;
+};
+const handleChange = ({ fileList: newFileList }) => {
+  fileList.value = newFileList;
+};
+const questions = ref<any>([
+  {
+    title: "哈哈哈",
+    list: [
+      {
+        title: "第一阶段第一题",
+        des: "123",
+        imgList: [],
+        queType: 1,
+        questionsItem: [
+          {
+            des: "",
+            imgList: [],
+            score: [
+              {
+                title: "创造力",
+                value: "12",
+              },
+              {
+                title: "自制力",
+                value: "3",
+              },
+              {
+                title: "行动力",
+                value: "4",
+              },
+              {
+                title: "领导力",
+                value: "5",
+              },
+              {
+                title: "决策力",
+                value: "6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "第一阶段第二题",
+        des: "123",
+        imgList: [],
+        queType: 2,
+        questionsItem: [
+          {
+            des: "",
+            imgList: [],
+            score: [
+              {
+                title: "创造力",
+                value: "23",
+              },
+              {
+                title: "自制力",
+                value: "11",
+              },
+              {
+                title: "行动力",
+                value: "3",
+              },
+              {
+                title: "领导力",
+                value: "4",
+              },
+              {
+                title: "决策力",
+                value: "5",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
+const options = ref<any>([]);
+const addOption = () => {
+  options.value.push({
+    des: "",
+    imgList: [],
+    score: [
+      {
+        title: "创造力",
+        value: "",
+      },
+      {
+        title: "自制力",
+        value: "",
+      },
+      {
+        title: "行动力",
+        value: "",
+      },
+      {
+        title: "领导力",
+        value: "",
+      },
+      {
+        title: "决策力",
+        value: "",
+      },
+    ],
+  });
+};
+const delOption = (index) => {
+  options.value.splice(index, 1);
+};
+const saveLoading = ref(false);
+const { proxy }: any = getCurrentInstance();
+const onSave = (index) => {
+  saveLoading.value = true;
+  setTimeout(() => {
+    proxy.$message.success("保存成功");
+    saveLoading.value = false;
+  }, 1000);
+};
+const editAreaTitle = ref("");
+// 选择题目
+function selectQuestions(item) {
+  proContent.value = item.des;
+  isSelect.value = item.queType;
+  options.value = item.questionsItem;
+  editAreaTitle.value = item.title;
+}
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
