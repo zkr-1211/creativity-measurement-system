@@ -141,12 +141,14 @@
 
 <script lang="ts" setup name="ModelDimensionEdit">
 import { message } from "ant-design-vue";
+import { getDimensions, updateDimensions } from "@/api/dimensions";
 function getBase64(img: Blob, callback: any) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
-
+const route = useRoute();
+const id = route.query.id;
 const stateMenu = reactive({
   mode: "inline",
   theme: "light",
@@ -161,9 +163,8 @@ const personage = reactive({
   fourAttribute: "领导力",
   fiveAttribute: "观察力",
   sixAttribute: "人格",
-  attribute: 0,
 });
-
+const attribute = ref(0);
 const data = [
   {
     value: [4200, 3000, 20000, 35000, 50000, 18000],
@@ -189,7 +190,24 @@ const data = [
 const imageList = ref([]);
 const loading = ref(false);
 const imageUrl = ref("");
-
+function getList() {
+  getDimensions({
+    course_id: id,
+  })
+    .then((res) => {
+      let data = res.data.list;
+      personage.oneAttribute = data[0].name;
+      personage.twoAttribute = data[1].name;
+      personage.threeAttribute = data[2].name;
+      personage.fourAttribute = data[3].name;
+      personage.fiveAttribute = data[4].name;
+      personage.sixAttribute = data[5].name;
+      attribute.value = data.dimension_num == 5 ? 0 : 1;
+    })
+    .catch((err) => {
+      message.error(err.message);
+    });
+}
 const handleChange = (info: {
   file: { status: string; originFileObj: any };
 }) => {
@@ -243,8 +261,7 @@ const handleChangeFile = (infoFile: {
   }
 };
 function indicatorList() {
-  
-  if (personage.attribute === 0) {
+  if (attribute.value === 0) {
     indicator.value = [
       { name: personage.oneAttribute, max: 10000 },
       { name: personage.twoAttribute, max: 16000 },
@@ -263,7 +280,6 @@ function indicatorList() {
     ];
   }
   console.log(personage);
-
 }
 const indicator = ref<any>([]);
 const radioChange = () => {
@@ -274,6 +290,33 @@ onMounted(() => {
 });
 // 更新基本信息
 const updateInfo = () => {
+  // 循环personage对象并push到testing_dimensions数组中
+  const testing_dimensions: any = [];
+  for (const key in personage) {
+    if (personage.hasOwnProperty(key)) {
+      const element = personage[key];
+      if (element !== "") {
+        testing_dimensions.push(element);
+      }
+    }
+  }
+  let data = {
+    courseId: id,
+    testing_dimensions: testing_dimensions,
+  };
+  updateDimensions({
+    course_id: id,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        message.success("更新成功");
+      } else {
+        message.error(res.message);
+      }
+    })
+    .catch((err) => {
+      message.error(err.message);
+    });
   indicatorList();
 };
 // 状态选择框
@@ -293,8 +336,8 @@ const {
   fourAttribute,
   fiveAttribute,
   sixAttribute,
-  attribute,
 } = toRefs(personage);
+getList();
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

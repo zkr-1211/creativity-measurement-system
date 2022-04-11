@@ -7,7 +7,7 @@
         <a-button type="primary" @click="addPersonnel"> + 添加 </a-button>
       </template>
       <a-spin :spinning="spinning">
-        <Table :columns="columns" :data-source="dataList" @change="change">
+        <Table :columns="columns" :data-source="dataList" @change="change" :total="total">
           <template
             v-for="item in columns"
             :key="item.dataIndex"
@@ -80,7 +80,7 @@ import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import useTableOperation from "@/hooks/useTableOperation";
 import { getTable } from "@/api";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
-import { Modal } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
 import { createVNode } from "vue";
 
 interface dataType {
@@ -202,26 +202,29 @@ const change = (e) => {
   query.pageNum = e.current;
   console.log(e);
 };
+const total = ref<number>(0);
 async function __getTable() {
   const { data } = await getTable(query);
   dataList.value = data.list;
   spinning.value = false;
+  total.value = data.total;
 }
 const visible = ref<boolean>(false);
 const formRef = ref();
-const title = ref<string>('');
+const title = ref<string>("");
+
 
 // 添加
 const addPersonnel = () => {
   reset();
-  title.value = '添加管理员';
+  title.value = "添加管理员";
   addFlag.value = true;
   visible.value = true;
 };
 // 编辑
 const onEdit = (key: any) => {
   reset();
-  title.value = '编辑管理员';
+  title.value = "编辑管理员";
   addFlag.value = false;
   visible.value = true;
   formState.name = key.name;
@@ -250,6 +253,7 @@ const onDelete = (key: any) => {
     onOk() {
       // 调用删除接口
       dataSource.value = dataSource.value.filter((item) => item.id !== key.id);
+      message.success("删除成功");
     },
     onCancel() {
       console.log("Cancel");

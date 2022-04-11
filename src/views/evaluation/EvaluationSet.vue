@@ -274,12 +274,12 @@ const id = route.query.id;
 const stateMenu = reactive({
   mode: "inline",
   theme: "light",
-  selectedKeys: ["2"],
+  selectedKeys: ["1"],
 });
 // 测评名称
-const evaName = ref( "");
+const evaName = ref("");
 // 测评介绍
-const evaDes = ref( "");
+const evaDes = ref("");
 const courseId = ref(id || "");
 // 公开
 const publicValue = ref(1);
@@ -383,11 +383,13 @@ const updateInfo = () => {
     describe: evaDes.value,
     // evaTag: evaTag.value,
   };
-  editCourse(courseId.value, params).then((res: any) => {
-    if (res.status_code === 200) {
+  editCourse(courseId.value, params)
+    .then((res: any) => {
       message.success("更新成功");
-    }
-  });
+    })
+    .catch((err: any) => {
+      message.error(err.message);
+    });
   console.log(params, publicValue.value, isPay.value);
 };
 // 状态选择框

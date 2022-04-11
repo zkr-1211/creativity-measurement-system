@@ -21,11 +21,46 @@
     </page-header>
     <div class="content">
       <FourItemCard />
+      <div class="spet">
+        <a-row :gutter="24">
+          <a-col :xs="24" :sm="24" :md="24" :xl="12">
+            <a-card :loading="loading">
+              <div class="left">
+                <div class="left-content">
+                  <div class="title">第一步</div>
+                  <div class="text">模型维度</div>
+                  <div class="button">
+                    <a-button type="primary" @click="editDimension">
+                      维度编辑
+                    </a-button>
+                  </div>
+                </div>
+                <div class="icon" />
+              </div>
+            </a-card>
+          </a-col>
+          <a-col :xs="24" :sm="24" :md="24" :xl="12">
+            <a-card :loading="loading">
+              <div class="left right">
+                <div class="left-content">
+                  <div class="title">第二步</div>
+                  <div class="text">测评题目与阶段</div>
+                  <div class="button">
+                      <a-button type="primary" @click="editProblem"> 编辑 </a-button>
+                  </div>
+                </div>
+                <div class="icon" />
+              </div>
+            </a-card>
+          </a-col>
+        </a-row>
+      </div>
+
       <TendencyRun>
         <span style="margin-left: 20px">学校：</span>
         <a-select
           ref="select"
-          v-model:value="value"
+          v-model:value="value1"
           style="width: 100px"
           @focus="focus"
           @change="handleChange"
@@ -35,28 +70,83 @@
           <a-select-option value="Yiminghe"> yiminghe </a-select-option>
         </a-select>
       </TendencyRun>
-      <ProblemData />
+      <ProblemData style="margin-top: 20px" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const router = useRouter();
+const handleChange = () => {};
+const value1 = ref(0);
+const loading = ref<boolean>(true);
+function focus() {}
 const route = useRoute();
 const id = route.query.id;
-const handleChange = () => {};
-const value = ref();
-function focus() {}
 function setTheEdit() {
-  router.push({ path: "/evaluation/evaluationset",
+  router.push({
+    path: "/evaluation/evaluationset",
     query: {
-      id: id
-    }
-   });
+      id: id,
+    },
+  });
 }
+function editDimension() {
+  router.push({
+    path: "/evaluation/model-dimension-edit",
+    query: {
+      id: id,
+    },
+  });
+}
+function editProblem() {
+  router.push({
+    path: "/evaluation/design",
+    query: {
+      id: id,
+    },
+  });
+}
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
+});
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
+.body {
+  .content {
+    .spet {
+      margin-bottom: 24px;
+      .left {
+        background: #ffffff;
+        border-radius: 2px;
+        padding: 30px;
+        @include faj();
+        .left-content {
+          margin-left: 30px;
+          .title {
+            font-weight: 600;
+            @include sc(16px, rgba(0, 0, 0, 0.85));
+          }
+          .text {
+            font-weight: 600;
+            @include sc(24px, rgba(0, 0, 0, 0.85));
+          }
+          .button {
+            margin-top: 20px;
+          }
+        }
+        .icon {
+          @include wh(106px, 101px);
+          background: #1e7ffe;
+          margin-right: 30px;
+        }
+      }
+    }
+  }
+}
 .content {
   margin: 24px;
 }
