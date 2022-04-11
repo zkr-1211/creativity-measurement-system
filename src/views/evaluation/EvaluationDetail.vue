@@ -41,12 +41,18 @@
 </template>
 
 <script lang="ts" setup>
-const router = useRouter()
+const router = useRouter();
+const route = useRoute();
+const id = route.query.id;
 const handleChange = () => {};
 const value = ref();
 function focus() {}
 function setTheEdit() {
-  router.push({ path: "/evaluation/evaluationset" });
+  router.push({ path: "/evaluation/evaluationset",
+    query: {
+      id: id
+    }
+   });
 }
 </script>
 <style lang="scss" scoped>

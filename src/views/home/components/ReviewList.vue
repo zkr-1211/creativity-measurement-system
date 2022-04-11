@@ -1,14 +1,6 @@
 <template>
-  <a-card
-    :loading="loading"
-    title="测评访问榜单"
-    style="width: 100%"
-  >
-    <div
-      v-for="(item, index) in list"
-      :key="index"
-      class="view-list-item"
-    >
+  <a-card :loading="loading" :title="props.title" style="width: 100%">
+    <div v-for="(item, index) in list" :key="index" class="view-list-item">
       <div class="name-info">
         <div
           class="index"
@@ -41,23 +33,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { getReviewList } from '@/api'
+import { getReviewList } from "@/api";
+const props = defineProps({
+  title: {
+    type: String,
+    default: "测评访问榜单",
+  },
+});
 interface listType {
   title: string;
   percent: number;
   num: number;
 }
-const loading = ref<boolean>(true)
+const loading = ref<boolean>(true);
 onMounted(() => {
-  __getReviewList()
-})
-const list = ref<listType[]>([])
+  __getReviewList();
+});
+const list = ref<listType[]>([]);
 async function __getReviewList() {
   try {
-    const { data } = await getReviewList()
-    list.value = data.list
-    loading.value = false
+    const { data } = await getReviewList();
+    list.value = data.list;
+    loading.value = false;
   } catch (error) {}
 }
 </script>
@@ -96,7 +93,7 @@ async function __getReviewList() {
   }
   .progress {
     margin: 0 30px;
-   flex: 1;
+    flex: 1;
   }
   .people {
     max-width: 0.8rem;

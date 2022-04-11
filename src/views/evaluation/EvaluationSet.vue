@@ -201,6 +201,7 @@ import {
   UploadOutlined,
   LoadingOutlined,
 } from "@ant-design/icons-vue";
+import { editCourse } from "@/api/course";
 import { message } from "ant-design-vue";
 function getBase64(img: Blob, callback: any) {
   const reader = new FileReader();
@@ -268,16 +269,18 @@ const columns = [
     ],
   },
 ];
-
+const route = useRoute();
+const id = route.query.id;
 const stateMenu = reactive({
   mode: "inline",
   theme: "light",
   selectedKeys: ["2"],
 });
 // 测评名称
-const evaName = ref("");
+const evaName = ref( "");
 // 测评介绍
-const evaDes = ref("");
+const evaDes = ref( "");
+const courseId = ref(id || "");
 // 公开
 const publicValue = ref(1);
 // 标签
@@ -366,7 +369,6 @@ const handleChangeFile = (infoFile: {
   if (infoFile.file.status !== "uploading") {
     console.log(infoFile.file, infoFile.fileList);
   }
-
   if (infoFile.file.status === "done") {
     message.success(`${infoFile.file.name} file uploaded successfully`);
   } else if (infoFile.file.status === "error") {
@@ -376,11 +378,16 @@ const handleChangeFile = (infoFile: {
 // 更新基本信息
 const updateInfo = () => {
   const params = {
-    tags: state.tags,
-    evaName: evaName.value,
-    evaDes: evaDes.value,
-    evaTag: evaTag.value,
+    // tags: state.tags,
+    name: evaName.value,
+    describe: evaDes.value,
+    // evaTag: evaTag.value,
   };
+  editCourse(courseId.value, params).then((res: any) => {
+    if (res.status_code === 200) {
+      message.success("更新成功");
+    }
+  });
   console.log(params, publicValue.value, isPay.value);
 };
 // 状态选择框

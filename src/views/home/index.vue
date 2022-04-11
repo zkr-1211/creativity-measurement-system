@@ -41,7 +41,7 @@
           :xl="12"
           :style="{ marginBottom: '24px' }"
         >
-          <ReviewList />
+          <ReviewList title="测评访问榜单"/>
         </a-col>
         <a-col
           :xs="24"
@@ -49,7 +49,7 @@
           :md="24"
           :xl="12"
         >
-          <ReviewList />
+          <ReviewList title="测评开通榜单"/>
         </a-col>
       </a-row>
     </div>

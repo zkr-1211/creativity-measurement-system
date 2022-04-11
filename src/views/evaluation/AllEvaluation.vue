@@ -1,7 +1,11 @@
 <!--  -->
 <template>
   <div class="body">
-    <page-header title="全部测评" />
+    <page-header title="全部测评">
+      <template #right>
+        <a-button type="primary" @click="add"> 新建测评 </a-button>
+      </template>
+    </page-header>
 
     <div class="main-content">
       <a-card>
@@ -11,13 +15,13 @@
             <div class="tags-content">
               <div
                 v-for="(item, index) in tagList"
-                :key="item.id"
+                :key="item.course_id"
                 class="tags-item"
-                :class="selectTagId === item.id ? 'tags-active' : ''"
-                @click="selectTag(item.id)"
+                :class="selectTagId === item.course_id ? 'tags-active' : ''"
+                @click="selectTag(item.course_id)"
               >
                 <span v-if="index === 0">全部</span>
-                <span v-else>{{ item.name }}</span>
+                <span v-else>类目{{ index }}</span>
               </div>
             </div>
           </div>
@@ -77,8 +81,7 @@
         >
           <template #renderItem="{ item }">
             <a-list-item>
-              <router-link to="/evaluation/evaluation-detail">
-                <a-card>
+                <a-card @click="toDetail(item)">
                   <template #cover>
                     <img
                       alt="example"
@@ -88,11 +91,11 @@
                   <a-card-meta>
                     <template #title>
                       <span style="font-weight: bold">
-                        {{ item.title }}
+                        {{ item.course_name }}
                       </span>
                     </template>
                     <template #description>
-                      测试学生的创造力水平测试学生的创造力水平
+                      {{ item.describe || "暂无描述" }}
                     </template>
                   </a-card-meta>
                   <div class="info">
@@ -106,16 +109,41 @@
                     </div>
                   </div>
                 </a-card>
-              </router-link>
             </a-list-item>
           </template>
         </a-list>
       </a-spin>
     </div>
+    <!--添加测评 -->
+    <a-modal
+      v-model:visible="visible"
+      style="top: 200px"
+      :title="title"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :labelCol="{ span: 4 }"
+      >
+        <a-form-item label="测评名称" name="course_name">
+          <a-input v-model:value="formState.course_name" />
+        </a-form-item>
+        <a-form-item label="测评描述" name="describe">
+          <a-input v-model:value="formState.describe" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script lang="ts" setup name="AllEvaluation">
+import { getCourseList, createCourse } from "@/api/course";
+import router from "@/router";
+
 const learningPeriod = ref("");
 const participation = ref("");
 const data: any = ref([]);
@@ -126,11 +154,75 @@ for (let i = 1; i < 5; i++) {
     title: "创造力测评",
   });
 }
+const visible = ref(false);
+const confirmLoading = ref(false);
+const formRef = ref();
+const title = ref("");
+const addFlag = ref<boolean>(false);
+const handleOk = () => {
+  formRef.value
+    .validate()
+    .then(() => {
+      if (addFlag.value) {
+        let data = {
+          name: formState.course_name,
+          describe: formState.describe,
+          type: "testing",
+        };
+        confirmLoading.value = true;
+        createCourse(data).then((res) => {
+          getList();
+          formRef.value.resetFields();
+          confirmLoading.value = false;
+          visible.value = false;
+        });
+        // 添加
+      } else {
+        // 编辑
+      }
+    })
+    .catch((error) => {
+      console.log("error", error);
+    });
+};
+const formState = reactive({
+  course_name: "",
+  describe: "",
+});
+const rules = {
+  course_name: [
+    { required: true, message: "请输入课程名称", trigger: "blur" },
+    { min: 1, max: 20, message: "长度1到20个字符", trigger: "blur" },
+  ],
+};
+
+const handleCancel = () => {
+  reset();
+};
+function reset() {
+  formState.course_name = "";
+  formState.describe = "";
+  formRef.value?.resetFields();
+}
+
 const spinning = ref<boolean>(true);
-onMounted(() => {
-  setTimeout(() => {
+function add() {
+  visible.value = true;
+  title.value = "新建测评";
+  addFlag.value = true;
+}
+function getList() {
+  let query = {
+    type: "testing",
+  };
+  spinning.value = true;
+  getCourseList(query).then((res) => {
     spinning.value = false;
-  }, 500);
+    data.value = res.data.list;
+  });
+}
+onMounted(() => {
+  spinning.value = false;
 });
 const tagList = ref(data);
 const focus = () => {
@@ -154,6 +246,16 @@ const onSearch = (searchValue: any) => {
 const handleChange = (value: any) => {
   console.log(`selected ${value}`);
 };
+function toDetail(data) {
+  router.push({
+    path: "/evaluation/evaluation-detail",
+    query: {
+      // data: JSON.stringify(data),
+      id: data.course_id,
+    },
+  });
+}
+getList();
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
