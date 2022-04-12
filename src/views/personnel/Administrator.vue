@@ -217,7 +217,7 @@ onMounted(() => {
 });
 const teamId = ref();
 function getList() {
-  getCourseTeam(104).then((res) => {
+  getCourseTeam(105).then((res) => {
     dataList.value = res.data.members;
     dataList.value[0].time = res.data.created_at;
     teamId.value = res.data.team_id;

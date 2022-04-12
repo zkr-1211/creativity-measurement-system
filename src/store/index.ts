@@ -1,19 +1,20 @@
 import { defineStore } from 'pinia'
 // import piniaPluginPersist from 'pinia-plugin-persist'
-
 // const store = createPinia()
 // store.use(piniaPluginPersist)
 interface UserState {
   userInfo: object;
   token: string;
   collapsed: boolean;
+  courseInfo: any;
 }
 
 export const useStore = defineStore('store', {
   state: (): UserState => ({
     userInfo: {},
     token: 'b3fd3f5fcc697eef62e5313bf99c6b88872a5ee09a7824987d07c1577e5d7c40',
-    collapsed: false
+    collapsed: false,
+    courseInfo: {}
   }),
   getters: {
     getToken(): string {
@@ -31,6 +32,9 @@ export const useStore = defineStore('store', {
     },
     getCollapsed(): boolean {
       return this.collapsed
+    },
+    getCourseInfo(): any {
+      return this.courseInfo
     }
   },
   actions: {
@@ -51,6 +55,10 @@ export const useStore = defineStore('store', {
     },
     setUserInfo(info: object | null) {
       this.userInfo = info || {}
+    },
+    setCourseInfo(info: any | null) {
+      this.courseInfo = info || {}
+      console.log('courseInfo', this.courseInfo);
     },
     setCollapsed(collapsed: boolean) {
       this.collapsed = collapsed || false

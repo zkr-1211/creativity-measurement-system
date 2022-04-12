@@ -10,17 +10,17 @@
         :wrapper-col="wrapperCol"
         :rules="rules"
       >
-        <a-form-item label="学校名称" name="schoolName">
+        <a-form-item label="学校名称" name="course_name">
           <a-input
-            v-model:value="formState.schoolName"
+            v-model:value="formState.course_name"
             placeholder="请输入学校名称"
             class="input-width"
             :maxlength="20"
           />
         </a-form-item>
-        <a-form-item label="学校简介（选填）" name="schoolDesc">
+        <a-form-item label="学校简介（选填）" name="describe">
           <a-textarea
-            v-model:value="formState.schoolDesc"
+            v-model:value="formState.describe"
             placeholder="请输入学校简介"
             type="textarea"
             class="input-width"
@@ -80,7 +80,6 @@
         v-if="!finish"
         status="success"
         title="创建成功"
-        sub-title="哈哈哈哈哈哈哈"
       >
         <template #extra>
           <router-link to="/organization">
@@ -96,11 +95,13 @@
 <script lang="ts">
 import { reactive, defineComponent, UnwrapRef, ref, onActivated } from "vue";
 import PageHeader from "@/components/page-header/index.vue";
+import { createCourse } from "@/api/course";
 import map from "@/assets/js/map";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import { message } from "ant-design-vue";
 interface FormState {
-  schoolName: string;
-  schoolDesc: string;
+  course_name: string;
+  describe: string;
   superName: string;
   superPhone: number | undefined;
   address: string;
@@ -121,22 +122,24 @@ export default defineComponent({
   setup() {
     const formRef = ref();
     const formState: UnwrapRef<FormState> = reactive({
-      schoolName: "",
-      schoolDesc: "",
+      // schoolName: "",
+      // schoolDesc: "",
       superName: "",
       superPhone: undefined,
       address: "",
       area: [],
+      course_name: "",
+      describe: "",
     });
     const rules = {
-      schoolName: [
+      course_name: [
         {
           required: true,
           message: "学校名不能为空",
           trigger: "blur",
         },
       ],
-      schoolDesc: [
+      describe: [
         {
           message: "请输入学校简介",
           trigger: "blur",
@@ -193,7 +196,7 @@ export default defineComponent({
       formRef.value.resetFields();
     };
     const change = (e) => {
-      console.log(e, formState.area);
+      // console.log(e, formState.area);
     };
     const finish = ref(true);
     onActivated(() => {
@@ -207,11 +210,18 @@ export default defineComponent({
         .then(() => {
           // 调用创建接口
           finish.value = false;
-          console.log("values", formState, toRaw(formState));
+          let data = {
+            name: formState.course_name,
+            describe: formState.describe,
+            type: "course",
+          };
+          createCourse(data).then((res) => {
+            formRef.value.resetFields();
+            message.success("创建成功");
+          }).catch((err) => {
+            // message.error(err.message);
+          });
         })
-        .catch((error: ValidateErrorEntity<FormState>) => {
-          console.log("error", error);
-        });
     };
 
     return {

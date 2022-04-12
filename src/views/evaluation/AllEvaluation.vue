@@ -20,7 +20,7 @@
                 :class="selectTagId === item.course_id ? 'tags-active' : ''"
                 @click="selectTag(item.course_id)"
               >
-                <span v-if="index === 0">全部</span>
+                <span v-if="index == 0">全部</span>
                 <span v-else>类目{{ index }}</span>
               </div>
             </div>
@@ -142,7 +142,7 @@
 
 <script lang="ts" setup name="AllEvaluation">
 import { getCourseList, createCourse } from "@/api/course";
-import router from "@/router";
+import { useStore } from '@/store'
 
 const learningPeriod = ref("");
 const participation = ref("");
@@ -246,7 +246,10 @@ const onSearch = (searchValue: any) => {
 const handleChange = (value: any) => {
   console.log(`selected ${value}`);
 };
+const store = useStore()
+const router = useRouter()
 function toDetail(data) {
+  store.setCourseInfo(data);
   router.push({
     path: "/evaluation/evaluation-detail",
     query: {

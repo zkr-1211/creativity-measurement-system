@@ -203,6 +203,10 @@ import {
 } from "@ant-design/icons-vue";
 import { editCourse } from "@/api/course";
 import { message } from "ant-design-vue";
+import { useStore } from "@/store";
+const store = useStore();
+console.log(store.getCourseInfo.course_name);
+
 function getBase64(img: Blob, callback: any) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -277,9 +281,9 @@ const stateMenu = reactive({
   selectedKeys: ["1"],
 });
 // 测评名称
-const evaName = ref("");
+const evaName = ref(store.getCourseInfo?.course_name || "");
 // 测评介绍
-const evaDes = ref("");
+const evaDes = ref(store.getCourseInfo?.describe || "");
 const courseId = ref(id || "");
 // 公开
 const publicValue = ref(1);

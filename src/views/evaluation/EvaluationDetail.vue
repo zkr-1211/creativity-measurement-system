@@ -5,12 +5,12 @@
         <div class="header" />
         <div class="item-info">
           <div class="item-right-top">
-            <div class="text">阿萨法术</div>
-            <div class="tag">蚂蚁金服</div>
+            <div class="text">{{courseInfo.course_name}}</div>
+            <div class="tag">{{courseInfo.course_name}}</div>
           </div>
           <div class="item-right-bottom">
             <span
-              >简介：手动阀手动阀豆腐干豆腐干大范甘迪的风格的风格的风格的风格的地方古典风格的风格</span
+              >简介：{{courseInfo.describe}}</span
             >
           </div>
         </div>
@@ -76,6 +76,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useStore } from "@/store";
 const router = useRouter();
 const handleChange = () => {};
 const value1 = ref(0);
@@ -83,7 +84,11 @@ const loading = ref<boolean>(true);
 function focus() {}
 const route = useRoute();
 const id = route.query.id;
-console.log(id,'route.query.id;');
+const store = useStore();
+const courseInfo = computed( () => {
+  return store.getCourseInfo;
+});
+
 
 function setTheEdit() {
   router.push({

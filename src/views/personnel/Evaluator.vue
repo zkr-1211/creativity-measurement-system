@@ -1,13 +1,18 @@
 <!--  -->
 <template>
   <div class="body">
-    <page-header title="测评师1" />
+    <page-header title="测评师" />
     <a-card title="人员列表" style="margin: 24px">
       <template #extra>
         <a-button type="primary" @click="addPersonnel"> + 添加 </a-button>
       </template>
       <a-spin :spinning="spinning">
-        <Table :columns="columns" :data-source="dataList" @change="change">
+        <Table
+          :columns="columns"
+          :data-source="dataList"
+          @change="change"
+          :total="total"
+        >
           <template
             v-for="item in columns"
             :key="item.dataIndex"
@@ -61,28 +66,40 @@
         :rules="rules"
         :labelCol="{ span: 3 }"
       >
-        <a-form-item label="姓名" name="name">
+        <!-- <a-form-item label="姓名" name="name">
           <a-input v-model:value="formState.name" />
         </a-form-item>
         <a-form-item label="身份" name="ID">
           <a-input v-model:value="formState.ID" />
-        </a-form-item>
-        <a-form-item label="手机号" name="phone">
+        </a-form-item> -->
+        <a-form-item label="手机号" name="phone" v-if="addFlag">
           <a-input v-model:value="formState.phone" />
         </a-form-item>
+        <div v-for="item in permissions" v-else :key="item.permission_id" style="margin-top: 10px;"> 
+          <a-checkbox v-model:checked="item.selected">{{
+            item.display_name
+          }}</a-checkbox>
+        </div>
       </a-form>
     </a-modal>
   </div>
 </template>
 
-<script lang="ts" setup name="IsAdministrator">
+<script lang="ts" setup name="Evaluator">
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import useTableOperation from "@/hooks/useTableOperation";
 import { getTable } from "@/api";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
-import { Modal } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
+import {
+  getCourseTeam,
+  addTeamMembers,
+  editCourseTeam,
+  deleteTeamMembers,
+  editTeamMembersPermissions,
+} from "@/api/team";
 import { createVNode } from "vue";
-
+const checked = ref(false);
 interface dataType {
   id: string;
   ID: string;
@@ -91,6 +108,7 @@ interface dataType {
   createNum: string;
   time: string;
   increase: boolean;
+  permissions: string[];
 }
 interface FormState {
   name: string;
@@ -100,44 +118,43 @@ interface FormState {
 const columns = [
   {
     title: "管理员ID",
-    dataIndex: "id",
+    dataIndex: "external_id",
     width: 200,
-
     // sorter: (a: { id: number }, b: { id: number }) => a.id - b.id
   },
   {
     title: "姓名",
-    dataIndex: "name",
+    dataIndex: "realname",
     width: 200,
 
     slots: {
-      customRender: "name",
+      customRender: "realname",
     },
   },
   {
     title: "身份",
-    dataIndex: "ID",
+    dataIndex: "display_identity",
     isEdit: true,
     width: 200,
     slots: {
-      customRender: "ID",
+      customRender: "display_identity",
     },
   },
-  {
-    title: "添加时间",
-    dataIndex: "time",
-    defaultSortOrder: "descend",
-    width: 200,
+  // {
+  //   title: "添加时间",
+  //   dataIndex: "time",
+  //   defaultSortOrder: "descend",
+  //   width: 200,
 
-    sorter: (a, b) => {
-      const aTime = new Date(a.time).getTime();
-      const bTime = new Date(b.time).getTime();
-      return aTime - bTime;
-    },
-    slots: {
-      customRender: "time",
-    },
-  },
+  //   sorter: (a, b) => {
+  //     const aTime = new Date(a.time).getTime();
+  //     const bTime = new Date(b.time).getTime();
+  //     return aTime - bTime;
+  //   },
+  //   slots: {
+  //     customRender: "time",
+  //   },
+  // },
   {
     title: "手机号",
     dataIndex: "phone",
@@ -147,15 +164,15 @@ const columns = [
       customRender: "phone",
     },
   },
-  {
-    title: "创建测评数",
-    width: 200,
+  // {
+  //   title: "创建测评数",
+  //   width: 200,
 
-    dataIndex: "createNum",
-    slots: {
-      customRender: "createNum",
-    },
-  },
+  //   dataIndex: "createNum",
+  //   slots: {
+  //     customRender: "createNum",
+  //   },
+  // },
   // {
   //   title: '周涨幅',
   //   dataIndex: 'weeklyGains',
@@ -190,6 +207,7 @@ const columns = [
 //     increase: true
 //   })
 // }
+const permissions = ref<any>([]);
 const dataList = ref<dataType[]>([]);
 const { dataSource, editableData, save, cancel, confirmLoading } =
   useTableOperation(dataList);
@@ -197,49 +215,62 @@ const spinning = ref<boolean>(true);
 onMounted(() => {
   __getTable();
 });
+const teamId = ref();
+function getList() {
+  getCourseTeam(105).then((res) => {
+    dataList.value = res.data.members;
+    dataList.value[0].time = res.data.created_at;
+    teamId.value = res.data.team_id;
+    spinning.value = false;
+    total.value = res.data.members.length;
+  });
+}
 const query = reactive({ pageSize: 100, pageNum: 1 });
 const change = (e) => {
   query.pageNum = e.current;
   console.log(e);
 };
+const total = ref<number>(0);
 async function __getTable() {
   const { data } = await getTable(query);
-  dataList.value = data.list;
+  // dataList.value = data.list;
   spinning.value = false;
+  // total.value = data.total;
 }
 const visible = ref<boolean>(false);
 const formRef = ref();
-const title = ref<string>('');
+const title = ref<string>("");
+
 // 添加
 const addPersonnel = () => {
   reset();
-  title.value = '添加测评师';
+  title.value = "添加管理员";
   addFlag.value = true;
   visible.value = true;
 };
 // 编辑
+const uid = ref();
 const onEdit = (key: any) => {
   reset();
-  title.value = '编辑测评师';
+  title.value = "编辑管理员";
   addFlag.value = false;
   visible.value = true;
-  formState.name = key.name;
-  formState.ID = `${key.ID}`;
   formState.phone = `${key.phone}`;
+  permissions.value = key.permissions;
+  uid.value = key.uid;
+  console.log(key, "key");
 };
 const handleCancel = () => {
   reset();
 };
 function reset() {
-  formState.name = "";
-  formState.ID = "";
   formState.phone = "";
   formRef.value?.resetFields();
 }
 // 删除
 const onDelete = (key: any) => {
   Modal.confirm({
-    title: () => `你确定删除“${key.name}”吗?`,
+    title: () => `你确定删除“${key.realname}”吗?`,
     icon: () => createVNode(ExclamationCircleOutlined),
     content: () => "删除后将无法恢复",
     centered: true,
@@ -248,7 +279,19 @@ const onDelete = (key: any) => {
     cancelText: () => "取消",
     onOk() {
       // 调用删除接口
-      dataSource.value = dataSource.value.filter((item) => item.id !== key.id);
+      let data = {
+        uid: key.uid,
+      };
+      deleteTeamMembers(teamId.value, data)
+        .then((res) => {
+          message.success("删除成功");
+          getList();
+        })
+        .catch((err) => {
+          message.error("删除失败");
+        });
+      // dataSource.value = dataSource.value.filter((item) => item.id !== key.id);
+      // message.success("删除成功");
     },
     onCancel() {
       console.log("Cancel");
@@ -261,16 +304,51 @@ const handleOk = () => {
     .validate()
     .then(() => {
       if (addFlag.value) {
+        let data = {
+          phone: formState.phone,
+          identity: "MEMBER",
+        };
+        confirmLoading.value = true;
+        addTeamMembers(teamId.value, data)
+          .then((res) => {
+            message.success("添加成功");
+            visible.value = false;
+            confirmLoading.value = false;
+            formRef.value.resetFields();
+            getList();
+          })
+          .catch((err) => {
+            message.error(err.message);
+          });
         // 添加
       } else {
+        // permissions循环选出selected和permission_id
+        let perList = <any>[];
+        permissions.value.forEach((item) => {
+          perList.push({
+            permission_id: item.permission_id,
+            selected: item.selected,
+          });
+        });
+        let data = {
+          uid: uid.value,
+          identity: "MEMBER",
+          permissions: perList,
+        };
+        confirmLoading.value = true;
+        editTeamMembersPermissions(teamId.value, data)
+          .then((res) => {
+            message.success("修改成功");
+            visible.value = false;
+            confirmLoading.value = false;
+            formRef.value.resetFields();
+            getList();
+          })
+          .catch((err) => {
+            message.error(err.message);
+          });
         // 编辑
       }
-      confirmLoading.value = true;
-      setTimeout(() => {
-        visible.value = false;
-        confirmLoading.value = false;
-        formRef.value.resetFields();
-      }, 2000);
     })
     .catch((error: ValidateErrorEntity<FormState>) => {
       console.log("error", error);
@@ -278,7 +356,7 @@ const handleOk = () => {
 };
 const formState = reactive<FormState>({
   name: "",
-  phone: undefined,
+  phone: "",
   ID: "",
 });
 const rules = {
@@ -296,6 +374,7 @@ const rules = {
     },
   ],
 };
+getList();
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
