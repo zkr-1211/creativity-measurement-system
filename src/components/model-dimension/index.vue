@@ -145,7 +145,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 #myChart {
-  width: 100%;
+  width: 155%;
   height: 4rem;
 }
 </style>

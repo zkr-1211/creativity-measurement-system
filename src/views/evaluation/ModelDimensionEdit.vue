@@ -34,7 +34,7 @@
                   <div class="name">第一维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="oneAttribute"
+                      v-model:value.trim="personage[0]"
                       placeholder="请输入第一维属性"
                       :maxlength="10"
                     />
@@ -44,7 +44,7 @@
                   <div class="name">第二维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="twoAttribute"
+                      v-model:value.trim="personage[1]"
                       placeholder="请输入第二维属性"
                       :maxlength="10"
                     />
@@ -54,7 +54,7 @@
                   <div class="name">第三维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="threeAttribute"
+                      v-model:value.trim="personage[2]"
                       placeholder="请输入第三维属性"
                       :maxlength="10"
                     />
@@ -64,7 +64,7 @@
                   <div class="name">第四维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="fourAttribute"
+                      v-model:value.trim="personage[3]"
                       placeholder="请输入第四维属性"
                       :maxlength="10"
                     />
@@ -74,7 +74,7 @@
                   <div class="name">第五维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="fiveAttribute"
+                      v-model:value.trim="personage[4]"
                       placeholder="请输入第五维属性"
                       :maxlength="10"
                     />
@@ -84,7 +84,7 @@
                   <div class="name">第六维属性</div>
                   <div class="input">
                     <a-input
-                      v-model:value.trim="sixAttribute"
+                      v-model:value.trim="personage[5]"
                       placeholder="请输入第六维属性"
                       :maxlength="10"
                     />
@@ -114,7 +114,7 @@
                     />
                     <div class="model-data">
                       <div
-                        v-for="(item, index) in 3"
+                        v-for="(item, index) in titleList"
                         :key="index"
                         class="model-data-item"
                       >
@@ -123,9 +123,9 @@
                             class="border"
                             :style="`background-color:${colorList[index]}`"
                           />
-                          <div class="data-title">个人</div>
+                          <div class="data-title">{{ item.title }}</div>
                         </div>
-                        <div class="num">33</div>
+                        <div class="num">{{ item.num }}</div>
                       </div>
                     </div>
                   </div>
@@ -148,22 +148,20 @@ function getBase64(img: Blob, callback: any) {
   reader.readAsDataURL(img);
 }
 const route = useRoute();
-const id = route.query.id;
+const id = parseInt(route.query.id);
 const stateMenu = reactive({
   mode: "inline",
   theme: "light",
   selectedKeys: ["1"],
 });
+const titleList = ref([
+  { title: "个人", num: 133 },
+  { title: "平均", num: 433 },
+  { title: "最高", num: 233 },
+]);
 const colorList = ref(["#1890FF", "#2FC25B", "#FACC14"]);
 // 个人信息
-const personage = reactive({
-  oneAttribute: "创造力",
-  twoAttribute: "情商",
-  threeAttribute: "智商",
-  fourAttribute: "领导力",
-  fiveAttribute: "观察力",
-  sixAttribute: "人格",
-});
+const personage = ref(["", "", "", "", "", ""]);
 const attribute = ref(0);
 const data = [
   {
@@ -191,21 +189,27 @@ const imageList = ref([]);
 const loading = ref(false);
 const imageUrl = ref("");
 function getList() {
-  getDimensions({
+  let query = {
     course_id: id,
-  })
+  };
+  getDimensions(query)
     .then((res) => {
       let data = res.data.list;
-      personage.oneAttribute = data[0].name;
-      personage.twoAttribute = data[1].name;
-      personage.threeAttribute = data[2].name;
-      personage.fourAttribute = data[3].name;
-      personage.fiveAttribute = data[4].name;
-      personage.sixAttribute = data[5].name;
-      attribute.value = data.dimension_num == 5 ? 0 : 1;
+      personage.value[0] = data[0].name;
+      personage.value[1] = data[1].name;
+      personage.value[2] = data[2].name;
+      personage.value[3] = data[3].name;
+      personage.value[4] = data[4].name;
+      if (data[5]) {
+        personage.value[5] = data[5].name;
+        attribute.value = 1;
+      } else {
+        attribute.value = 0;
+      }
+      indicatorList();
     })
     .catch((err) => {
-      message.error(err.message);
+      // message.error(err.message);
     });
 }
 const handleChange = (info: {
@@ -261,58 +265,49 @@ const handleChangeFile = (infoFile: {
   }
 };
 function indicatorList() {
-  if (attribute.value === 0) {
+  if (attribute.value == 0) {
     indicator.value = [
-      { name: personage.oneAttribute, max: 10000 },
-      { name: personage.twoAttribute, max: 16000 },
-      { name: personage.threeAttribute, max: 38000 },
-      { name: personage.fourAttribute, max: 52000 },
-      { name: personage.fiveAttribute, max: 58000 },
+      { name: personage.value[0], max: 10000 },
+      { name: personage.value[1], max: 16000 },
+      { name: personage.value[2], max: 38000 },
+      { name: personage.value[3], max: 52000 },
+      { name: personage.value[4], max: 58000 },
     ];
+    // 去除删除personage对象最后一位
+    if (personage.value.length >= 6) {
+      personage.value.pop();
+    }
   } else {
+    if (personage.value.length < 6) {
+      personage.value.push("");
+    }
     indicator.value = [
-      { name: personage.oneAttribute, max: 10000 },
-      { name: personage.twoAttribute, max: 16000 },
-      { name: personage.threeAttribute, max: 38000 },
-      { name: personage.fourAttribute, max: 52000 },
-      { name: personage.fiveAttribute, max: 58000 },
-      { name: personage.sixAttribute, max: 58000 },
+      { name: personage.value[0], max: 10000 },
+      { name: personage.value[1], max: 16000 },
+      { name: personage.value[2], max: 38000 },
+      { name: personage.value[3], max: 52000 },
+      { name: personage.value[4], max: 58000 },
+      { name: personage.value[5], max: 58000 },
     ];
   }
-  console.log(personage);
 }
 const indicator = ref<any>([]);
 const radioChange = () => {
   indicatorList();
 };
 onMounted(() => {
-  updateInfo();
+  indicatorList();
 });
 // 更新基本信息
 const updateInfo = () => {
   // 循环personage对象并push到testing_dimensions数组中
-  const testing_dimensions: any = [];
-  for (const key in personage) {
-    if (personage.hasOwnProperty(key)) {
-      const element = personage[key];
-      if (element !== "") {
-        testing_dimensions.push(element);
-      }
-    }
-  }
   let data = {
     courseId: id,
-    testing_dimensions: testing_dimensions,
+    testing_dimensions: personage.value,
   };
-  updateDimensions({
-    course_id: id,
-  })
+  updateDimensions(data)
     .then((res) => {
-      if (res.code === 0) {
-        message.success("更新成功");
-      } else {
-        message.error(res.message);
-      }
+      message.success("更新成功");
     })
     .catch((err) => {
       message.error(err.message);
@@ -329,14 +324,6 @@ const handleChangeState = (value: any) => {
   console.log(`selected ${value}`);
 };
 const { mode, theme, selectedKeys } = toRefs(stateMenu);
-const {
-  oneAttribute,
-  twoAttribute,
-  threeAttribute,
-  fourAttribute,
-  fiveAttribute,
-  sixAttribute,
-} = toRefs(personage);
 getList();
 </script>
 <style lang="scss" scoped>
@@ -390,8 +377,7 @@ getList();
               margin-bottom: 10px;
             }
             .header {
-              @include wh(300px, 1px);
-              background: #e9e9e9;
+              @include wh(100px, 1px);
             }
             .model-dimension {
               .model-data {

@@ -9,9 +9,9 @@
           name="fadeRouter"
           mode="out-in"
         >
-          <keep-alive>
+          <!-- <keep-alive> -->
             <component :is="Component" />
-          </keep-alive>
+          <!-- </keep-alive> -->
         </transition>
       </router-view>
     </div>

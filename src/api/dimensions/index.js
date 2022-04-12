@@ -15,6 +15,6 @@ export function getDimensions(query) {
   return request({
     url: `https://apis-dev.shukeapp.net/course/v2/admin/course/testing/dimensions`,
     method: "GET",
-    query: query,
+    params: query,
   });
 }

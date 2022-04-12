@@ -35,7 +35,8 @@ import {
   Spin,
   Cascader,
   Breadcrumb,
-  InputNumber
+  InputNumber,
+  Checkbox
 } from 'ant-design-vue'
 
 const plugins = [
@@ -74,7 +75,8 @@ const plugins = [
   Spin,
   Cascader,
   Breadcrumb,
-  InputNumber
+  InputNumber,
+  Checkbox
 ]
 
 export function setupAntd(app: App<Element>): void {

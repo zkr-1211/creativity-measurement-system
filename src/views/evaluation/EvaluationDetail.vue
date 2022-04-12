@@ -83,6 +83,8 @@ const loading = ref<boolean>(true);
 function focus() {}
 const route = useRoute();
 const id = route.query.id;
+console.log(id,'route.query.id;');
+
 function setTheEdit() {
   router.push({
     path: "/evaluation/evaluationset",

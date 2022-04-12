@@ -4,7 +4,7 @@ export function getCourseList(query) {
   return request({
     url: "https://apis-dev.shukeapp.net/course/v2/admin/course",
     method: "GET",
-    query,
+    params: query,
   });
 }
 export function createCourse(data) {

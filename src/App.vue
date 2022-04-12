@@ -16,9 +16,9 @@ const { isRouterAlive } = useRouterReload()
       v-slot="{ Component }"
     >
       <!-- <suspense> -->
-      <keep-alive>
+      <!-- <keep-alive> -->
         <component :is="Component" />
-      </keep-alive>
+      <!-- </keep-alive> -->
       <!-- </suspense> -->
     </router-view>
   </a-config-provider>

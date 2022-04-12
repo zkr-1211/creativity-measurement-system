@@ -234,6 +234,7 @@ function getBase64(file: Blob) {
     reader.onerror = (error) => reject(error);
   });
 }
+
 interface FormState {
   name: string;
   titleName: string;
