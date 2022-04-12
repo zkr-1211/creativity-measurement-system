@@ -20,7 +20,6 @@
           首页
         </router-link>
       </a-menu-item>
-
       <a-sub-menu key="evaluation">
         <template #icon>
           <AppstoreOutlined />
@@ -54,10 +53,12 @@
           <SettingOutlined />
         </template>
         <template #title>
-          审批管理
+          个人页
         </template>
-        <a-menu-item key="7">
-          Option 7
+       <a-menu-item key="administrator">
+          <router-link to="/personnelmanage/administrator">
+            个人中心
+          </router-link>
         </a-menu-item>
       </a-sub-menu>
 

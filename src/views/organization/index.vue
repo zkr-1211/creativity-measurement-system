@@ -85,11 +85,11 @@ function delOrg(item) {
       deleteCourse(item.course_id)
         .then((res) => {
           message.success("删除成功");
+          getList();
         })
         .catch((err) => {
           message.error("删除失败");
         });
-      message.success("删除成功");
     },
     onCancel() {
       console.log("Cancel");

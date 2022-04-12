@@ -2940,6 +2940,11 @@
   "resolved" "https://registry.npmjs.org/js-base64/-/js-base64-2.6.4.tgz"
   "version" "2.6.4"
 
+"js-cookie@^3.0.1":
+  "integrity" "sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw=="
+  "resolved" "https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.1.tgz"
+  "version" "3.0.1"
+
 "js-stringify@^1.0.2":
   "integrity" "sha1-Fzb939lyTyijaCrcYjCufk6Weds="
   "resolved" "https://registry.npmjs.org/js-stringify/-/js-stringify-1.0.2.tgz"
@@ -5673,6 +5678,11 @@
     "vscode-languageserver-textdocument" "^1.0.1"
     "vscode-pug-languageservice" "0.29.8"
     "vscode-typescript-languageservice" "0.29.8"
+
+"vue-cookies@^1.8.0":
+  "integrity" "sha512-5nxAwW4kIS6uP0G9UnWcmSj2NlFpV1wkvAAwGgkWqyPDVCP1IEzFZfg7YUBLiYowZ/cFnxaXqS1nWPIBwfXGRw=="
+  "resolved" "https://registry.npmmirror.com/vue-cookies/-/vue-cookies-1.8.0.tgz"
+  "version" "1.8.0"
 
 "vue-demi@*":
   "integrity" "sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q=="

@@ -55,35 +55,79 @@
             :title="`编辑区（${editAreaTitle || '暂未选择'}）`"
           >
             <div class="bottom-content-right">
-              <div class="eva-des">
-                <div class="des">题目内容:</div>
-                <div class="txarea">
-                  <a-textarea
-                    v-model:value="proContent"
-                    placeholder="请输入题目内容"
-                    :rows="4"
-                  />
-                </div>
-              </div>
-              <div class="upload">
-                <a-upload
-                  v-model:file-list="fileList"
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  list-type="picture-card"
-                  @preview="handlePreview"
-                >
-                  <div v-if="fileList.length < 8">
-                    <plus-outlined />
-                    <div class="ant-upload-text">Upload</div>
+              <div class="bottom-content-right">
+                <div style="display: flex; align-items: center">
+                  <div class="eva-des">
+                    <div class="des">题目内容:</div>
+                    <div class="txarea">
+                      <a-textarea
+                        v-model:value="proContent"
+                        placeholder="请输入题目内容"
+                        :rows="4"
+                      />
+                    </div>
                   </div>
-                </a-upload>
-                <a-modal
-                  :visible="previewVisible"
-                  :footer="null"
-                  @cancel="handleCancel"
-                >
-                  <img alt="example" style="width: 100%" :src="previewImage" />
-                </a-modal>
+                  <div class="upload">
+                    <a-upload
+                      v-model:file-list="fileList"
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      list-type="picture-card"
+                      @preview="handlePreview"
+                    >
+                      <div v-if="fileList.length < 8">
+                        <plus-outlined />
+                        <div class="ant-upload-text">Upload</div>
+                      </div>
+                    </a-upload>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancel"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <div class="eva-des">
+                    <div class="des">答案解析:</div>
+                    <div class="txarea">
+                      <a-textarea
+                        v-model:value="proContent"
+                        placeholder="请输入答案解析"
+                        :rows="4"
+                      />
+                    </div>
+                  </div>
+                  <div class="upload">
+                    <a-upload
+                      v-model:file-list="fileList"
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      list-type="picture-card"
+                      @preview="handlePreview"
+                    >
+                      <div v-if="fileList.length < 8">
+                        <plus-outlined />
+                        <div class="ant-upload-text">Upload</div>
+                      </div>
+                    </a-upload>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancel"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
+                  </div>
+                </div>
               </div>
               <div class="pay-radio-group">
                 <div class="name">题型选择:</div>
@@ -92,6 +136,54 @@
                   <a-radio :value="2"> 填空 </a-radio>
                 </a-radio-group>
               </div>
+              <div
+                class="pay-radio-group"
+                style="display: flex; align-items: center"
+                v-if="isSelect != 1"
+              >
+                <span> 批改方式: </span>
+                <a-select
+                  ref="select"
+                  v-model:value="value"
+                  style="width: 130px; margin-left: 10px"
+                  @focus="focus"
+                  @change="handleChange"
+                >
+                  <a-select-option value="0">手动批改</a-select-option>
+                  <a-select-option value="1">自动批改</a-select-option>
+                </a-select>
+              </div>
+              <div
+                class="pay-radio-group"
+                style="display: flex; align-items: center"
+                v-else
+              >
+                <span> 选项设置: </span>
+                <a-select
+                  ref="select"
+                  v-model:value="opi_random"
+                  style="width: 130px; margin-left: 10px"
+                  @focus="focus"
+                  @change="handleChange"
+                >
+                  <a-select-option value="0">选项不随机</a-select-option>
+                  <a-select-option value="1">选项随机</a-select-option>
+                </a-select>
+              </div>
+
+              <div
+                class="pay-radio-group"
+                style="display: flex; align-items: center"
+              >
+                <span> 设置得分: </span>
+                <a-input
+                  style="width: 130px; margin-left: 10px"
+                  v-model:value="score"
+                  placeholder="请输入得分"
+                  :rows="4"
+                />
+              </div>
+
               <div class="se-edit">选项编辑</div>
               <div
                 v-for="(optItem, optIndex) in options"
@@ -101,16 +193,31 @@
                 <a-row :gutter="24">
                   <a-col :xs="24" :sm="24" :md="14" :xl="13">
                     <div class="left-content">
-                      <div class="eva-des">
+                      <div class="eva-des" style="display: flex;align-items: center;">
                         <div class="des">选项1:</div>
-                        <div class="txarea">
+                        <div class="txarea" v-if="isSelect == 1">
+                          <a-input
+                            v-model:value="optItem.des"
+                            placeholder="请输入选项内容"
+                            :rows="4"
+                          />
+                        </div>
+
+                        <div class="txarea" v-else>
                           <a-textarea
                             v-model:value="optItem.des"
-                            placeholder="请输入题目内容"
+                            placeholder="请输入填空答案"
                             :rows="4"
                           />
                         </div>
                       </div>
+                      <a-checkbox
+                        v-model:checked="optItem.answer"
+                        style="margin: 10px 0"
+                      >
+                        <span v-if="isSelect == 1"> 是否为正确答案 </span>
+                        <span v-else> 包含答案即可得分 </span>
+                      </a-checkbox>
                       <div class="upload">
                         <a-upload
                           v-model:file-list="optItem.imgList"
@@ -145,7 +252,16 @@
                           对应得分维度：
                         </div>
                         <div class="score">
-                          <div
+                          <a-select
+                            ref="select"
+                            v-model:value="value"
+                            style="width: 120px"
+                            @focus="focus"
+                            @change="handleChange"
+                            :options="evaOptions"
+                          >
+                          </a-select>
+                          <!-- <div
                             v-for="(item, index) in optItem.score"
                             :key="index"
                             class="select-item"
@@ -158,7 +274,7 @@
                               :min="1"
                               :max="100"
                             />
-                          </div>
+                          </div> -->
                         </div>
                       </div>
 
@@ -226,6 +342,7 @@
 <script lang="ts" setup name="EvaluationDesign">
 import { PlusOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import { getDimensions } from "@/api/dimensions";
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -240,6 +357,8 @@ interface FormState {
   titleName: string;
 }
 const proContent = ref("");
+const score = ref("");
+const opi_random = ref();
 const selectContent = ref("");
 const isSelect = ref(1);
 const activeKey = ref(["0"]);
@@ -267,6 +386,32 @@ const rules = {
     { required: true, message: "请输入题目名称", trigger: "blur" },
     { min: 1, max: 15, message: "长度15个字符以内", trigger: "blur" },
   ],
+};
+const evaOptions = ref<any>([]);
+const id = ref(105);
+function getList() {
+  let query = {
+    course_id: 105,
+  };
+  getDimensions(query).then((res) => {
+    // evaOptions.value = res.data.list;
+    // 将res.data.list以value和labbel的形式存入evaOptions
+    res.data.list.forEach((item) => {
+      evaOptions.value.push({
+        value: item.dimension_id,
+        label: item.name,
+      });
+    });
+  });
+}
+const evaValue = ref<any>();
+const value = ref<any>();
+const focus = () => {
+  console.log("focus");
+};
+const handleChange = (value: any) => {
+  console.log(`selected ${value}`);
+  // evaValue.value = value;
 };
 const handleOk = () => {
   formRef.value
@@ -322,9 +467,10 @@ const handlePreview = async (file: {
   previewImage.value = file.url || file.preview;
   previewVisible.value = true;
 };
-const handleChange = ({ fileList: newFileList }) => {
-  fileList.value = newFileList;
-};
+
+// const handleChange = ({ fileList: newFileList }) => {
+//   fileList.value = newFileList;
+// };
 const questions = ref<any>([
   {
     title: "哈哈哈",
@@ -449,6 +595,7 @@ function selectQuestions(item) {
   options.value = item.questionsItem;
   editAreaTitle.value = item.title;
 }
+getList();
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -490,7 +637,9 @@ function selectQuestions(item) {
     }
   }
   .bottom-content-right {
-    padding: 20px;
+    padding: 0px 10px;
+    align-items: center;
+    flex-wrap: wrap;
     .eva-des {
       display: flex;
       .des {
@@ -502,10 +651,15 @@ function selectQuestions(item) {
       }
     }
     .upload {
-      margin-top: 30px;
+      display: flex;
+      margin-left: 10px;
+      margin-top: 10px;
+      .ant-upload-picture-card-wrapper {
+        display: flex;
+      }
     }
     .pay-radio-group {
-      margin-left: 30px;
+      margin-left: 10px;
       display: flex;
       margin-top: 24px;
       .name {
