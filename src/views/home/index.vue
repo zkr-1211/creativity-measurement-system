@@ -66,7 +66,7 @@ const route = useRoute()
 console.log(route.matched)
 store.$patch((state) => {
   state.userInfo = { name: 'ZHANG_KE_RONG', age: '22' }
-  state.token = 'token-asgdfebdvvadfsdfgdfh'
+  // state.token = 'token-asgdfebdvvadfsdfgdfh'
 })
 </script>
 <style lang="scss" scoped>
