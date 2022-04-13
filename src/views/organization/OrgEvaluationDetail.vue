@@ -5,22 +5,21 @@
         <div class="header" />
         <div class="item-info">
           <div class="item-right-top">
-            <div class="text">阿萨法术</div>
-            <div class="tag">蚂蚁金服</div>
+            <div class="text">创造力测评</div>
           </div>
           <div class="item-right-bottom">
             <span
-              >简介：手动阀手动阀豆腐干豆腐干大范甘迪的风格的风格的风格的风格的地方古典风格的风格</span
-            >
+              >简介:创造力，是人类特有的一种综合性本领。创造力是指产生新思想，发现和创造新事物的能力。它是成功地完成某种创造性活动所必需的心理品质。它是知识、智力、能力及优良的个性品质等复杂多因素综合优化构成的。
+            </span>
           </div>
         </div>
       </div>
       <template #right>
-        <a-button type="primary" @click="setTheEdit"> 设置编辑 </a-button>
+        <a-button type="primary" @click="setTheEdit"> 关闭测评 </a-button>
       </template>
     </page-header>
     <div class="content">
-      <FourItemCard />
+      <FourItemCard :infoList="infoList"/>
       <TendencyRun>
         <span style="margin-left: 20px">学校：</span>
         <a-select
@@ -41,18 +40,42 @@
 </template>
 
 <script lang="ts" setup>
+import { useStore } from "@/store";
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
+const orgInfo = computed(() => {
+  return store.getOrgInfo;
+});
 const id = route.query.id;
 const handleChange = () => {};
 const value = ref();
 function focus() {}
+const infoList = ref([
+  {
+    title: "本校测评总人数",
+    footerDes: "日均测评数123",
+  },
+  {
+    title: "本校访问量",
+    footerDes: "日访问量3453",
+  },
+  {
+    title: "开通校区数",
+    footerDes: "校区平均测评数234234",
+  },
+  {
+    title: "测评项目数",
+    footerDes: "今年新增123",
+  },
+])
 function setTheEdit() {
-  router.push({ path: "/evaluation/evaluationset",
+  router.push({
+    path: "/evaluation/evaluationset",
     query: {
-      id: id
-    }
-   });
+      id: id,
+    },
+  });
 }
 </script>
 <style lang="scss" scoped>
@@ -63,6 +86,7 @@ function setTheEdit() {
 .eva-record-item {
   display: flex;
   .header {
+    min-width: 152px;
     @include wh(152px, 72px);
     background: rgba(0, 0, 0, 1);
   }
@@ -88,7 +112,7 @@ function setTheEdit() {
       }
     }
     .item-right-bottom {
-      max-width: 800px;
+      margin-top: 5px;
       line-height: 20px;
       @include tbm(2);
       span {

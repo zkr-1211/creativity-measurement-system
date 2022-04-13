@@ -102,6 +102,7 @@
 </template>
 
 <script lang="ts" setup name="StudentManage">
+import { useStore } from "@/store";
 import useTableOperation from "@/hooks/useTableOperation";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { Modal } from "ant-design-vue";
@@ -227,7 +228,10 @@ const selectedRows = (e) => {
   selectedNum.value = e.length;
 };
 const { dataSource, editableData, save, cancel } = useTableOperation(data);
-const onDetail = (key: any) => {
+
+const store = useStore();
+const onDetail = (data: any) => {
+  store.setStudentInfo(data);
   router.push({
     path: "/student-record",
   });
@@ -276,7 +280,7 @@ const onDelete = (key: any) => {
     cancelText: () => "取消",
     onOk() {
       // 调用删除接口
-      dataSource.value = dataSource.value.filter((item) => item.id !== key.id);
+      dataSource.value = dataSource.value.filter((item) => item.stuid !== key.stuid);
     },
     onCancel() {
       console.log("Cancel");

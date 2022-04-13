@@ -12,7 +12,7 @@
         >
           <chart-card
             :loading="loading"
-            title="测评总人数"
+            :title="infoList[0].title"
             :total="list[0]?.count"
           >
             <template #action>
@@ -21,7 +21,7 @@
               </a-tooltip>
             </template>
 
-            <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between">
               <trend
                 flag="up"
                 style="margin-right: 16px"
@@ -36,7 +36,7 @@
               />
             </div>
             <template #footer>
-              {{ infoList[0].footerDes }} 123
+              {{ infoList[0].footerDes }}
             </template>
           </chart-card>
         </a-col>
@@ -50,7 +50,7 @@
           <!--  -->
           <chart-card
             :loading="loading"
-            title="访问量"
+            :title="infoList[1].title"
             :total="list[1]?.count"
           >
             <template #action>
@@ -64,7 +64,7 @@
             </div>
             <template #footer>
               {{ infoList[1].footerDes }}
-              <span>60%</span>
+              <!-- <span>60%</span> -->
             </template>
           </chart-card>
         </a-col>
@@ -78,7 +78,7 @@
         >
           <chart-card
             :loading="loading"
-             title="参与机构数"
+            :title="infoList[2].title"
             :total="list[2]?.count"
           >
             <template #action>
@@ -104,7 +104,7 @@
         >
           <chart-card
             :loading="loading"
-            title="测评项目数"
+            :title="infoList[3].title"
             :total="list[3]?.count"
           >
             <template #action>
@@ -122,7 +122,7 @@
               />
             </div>
             <template #footer>
-              {{ infoList[3].footerDes }} 1
+              {{ infoList[3].footerDes }}
             </template>
           </chart-card>
         </a-col>
@@ -132,14 +132,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, PropType } from 'vue'
-import ChartArea from '@/components/chart-area/index.vue'
-import ChartMbar from '@/components/chart-mbar/index.vue'
-import MiniProgress from '@/components/mini-progress/index.vue'
-import ChartCard from '@/components/chart-card/index.vue'
-import Trend from '@/components/trend/index.vue'
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import { getFourItem } from '@/api'
+import { onMounted, ref, PropType } from "vue";
+import ChartArea from "@/components/chart-area/index.vue";
+import ChartMbar from "@/components/chart-mbar/index.vue";
+import MiniProgress from "@/components/mini-progress/index.vue";
+import ChartCard from "@/components/chart-card/index.vue";
+import Trend from "@/components/trend/index.vue";
+import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
+import { getFourItem } from "@/api";
 interface listType {
   title: string;
   footerDes: string;
@@ -147,34 +147,36 @@ interface listType {
 defineProps({
   infoList: {
     type: Array as PropType<listType[]>,
-    default: () => [{
-      title: '测评总人数',
-      footerDes: '日均测评数'
-    },
-    {
-      title: '访问量',
-      footerDes: '日访问量'
-    },
-    {
-      title: '参与机构数',
-      footerDes: '机构平均开通测评数'
-    },
-    {
-      title: '测评项目数',
-      footerDes: '今年新增'
-    }]
-  }
-})
-const loading = ref<boolean>(true)
+    default: () => [
+      {
+        title: "测评总人数",
+        footerDes: "日均测评数543",
+      },
+      {
+        title: "访问量",
+        footerDes: "日访问量3453",
+      },
+      {
+        title: "参与机构数",
+        footerDes: "机构平均开通测评数74",
+      },
+      {
+        title: "测评项目数",
+        footerDes: "今年新增55",
+      },
+    ],
+  },
+});
+const loading = ref<boolean>(true);
 onMounted(() => {
-  __getFourItem()
-})
-const list:any = ref([])
+  __getFourItem();
+});
+const list: any = ref([]);
 async function __getFourItem() {
-  const { data } = await getFourItem()
-  list.value = data.list
-  console.log(data)
-  loading.value = false
+  const { data } = await getFourItem();
+  list.value = data.list;
+  console.log(data);
+  loading.value = false;
 }
 </script>
 <style lang="scss" scoped>

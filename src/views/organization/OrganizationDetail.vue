@@ -5,14 +5,14 @@
       <div class="eva-record-item">
         <div class="header" />
         <div class="item-info">
-          <div class="item-right-top">哈哈哈</div>
+          <div class="item-right-top">{{ orgInfo.course_name }}</div>
           <div class="item-right-bottom">
-            <span>学校简介：位于的一高校</span>
+            <span>学校简介：{{ orgInfo.describe }}</span>
           </div>
         </div>
       </div>
       <template #right>
-        <a-button type="primary"> 新建测评 </a-button>
+        <a-button type="primary" @click="toEdit"> 设置编辑 </a-button>
       </template>
     </page-header>
 
@@ -78,7 +78,50 @@
                   </template>
                 </a-list>
               </div>
-              <p v-else-if="noTitleKey === 'app'">访问量</p>
+              <div v-else-if="noTitleKey === 'app'" class="content">
+                <a-list
+                  :grid="{
+                    gutter: 24,
+                    xxl: 3,
+                    xl: 3,
+                    lg: 3,
+                    md: 2,
+                    sm: 2,
+                    xs: 1,
+                  }"
+                  :data-source="data"
+                >
+                  <template #renderItem="{ item }">
+                    <a-list-item>
+                      <a-card>
+                        <template #cover>
+                          <img
+                            alt="example"
+                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                          />
+                        </template>
+                        <a-card-meta>
+                          <template #title>
+                            <span style="font-weight: bold">
+                              {{ item.title }}
+                            </span>
+                          </template>
+                          <template #description>
+                            <div class="des">
+                              <div class="text">全网测评数：</div>
+                              <div class="time">3132</div>
+                            </div>
+                          </template>
+                        </a-card-meta>
+                        <template #actions>
+                          <a>开通测评</a>
+                          <a>不看该测评</a>
+                        </template>
+                      </a-card>
+                    </a-list-item>
+                  </template>
+                </a-list>
+              </div>
               <template #tabBarExtraContent>
                 <div class="tabs-right">全部项目</div>
               </template>
@@ -158,7 +201,12 @@ import PageHeader from "@/components/page-header/index.vue";
 import RecordList from "@/components/record-list/index.vue";
 import { useRouter } from "vue-router";
 import { message, Modal } from "ant-design-vue";
-
+import { func } from "vue-types";
+import { useStore } from "@/store";
+const store = useStore();
+const orgInfo = computed(() => {
+  return store.getOrgInfo;
+});
 const loading = ref<boolean>(true);
 onMounted(() => {
   setTimeout(() => {
@@ -168,11 +216,11 @@ onMounted(() => {
 const tabListNoTitle = [
   {
     key: "article",
-    tab: "测评人数",
+    tab: "已开通测评",
   },
   {
     key: "app",
-    tab: "访问量",
+    tab: "可开通测评",
   },
 ];
 const data: any[] = [];
@@ -205,6 +253,14 @@ const manageList = ref([
     num: "1",
   },
 ]);
+function toEdit() {
+  router.push({
+    path: "/organization/addorganization",
+    query: {
+      id: orgInfo.value.course_id,
+    },
+  });
+}
 const router = useRouter();
 const toManage = (index) => {
   switch (index) {
@@ -264,6 +320,7 @@ function cancelTheOpening(item) {
   .eva-record-item {
     display: flex;
     .header {
+      min-width: 72px;
       @include wh(72px, 72px);
       background: rgba(0, 0, 0, 1);
       border-radius: 50%;

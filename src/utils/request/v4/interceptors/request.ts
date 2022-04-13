@@ -14,6 +14,9 @@ export default (axios) => {
         case "/api/tendency_run":
           config.baseURL = "";
           break;
+        case "/api/table":
+          config.baseURL = "";
+          break;
       }
       const token = store.getToken;
       const appSource = import.meta.env.VITE_APP_SOURCE || "shu.ke";

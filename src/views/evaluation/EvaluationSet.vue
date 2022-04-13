@@ -33,7 +33,7 @@
               />
             </div>
           </div>
-          <div class="eva-tag">
+          <!-- <div class="eva-tag">
             <div class="name">测评标签</div>
             <div class="input">
               <a-input
@@ -71,7 +71,7 @@
                 <plus-outlined />
               </a-tag>
             </div>
-          </div>
+          </div> -->
           <div class="cover-set">
             <div class="name">封面设置</div>
             <a-upload

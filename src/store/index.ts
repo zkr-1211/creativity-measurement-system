@@ -9,6 +9,9 @@ interface UserState {
   token: string;
   collapsed: boolean;
   courseInfo: any;
+  orgInfo: any;
+  studentInfo: any;
+  teacherInfo: any;
 }
 
 export const useStore = defineStore("store", {
@@ -17,6 +20,9 @@ export const useStore = defineStore("store", {
     token: "b3fd3f5fcc697eef62e5313bf99c6b88872a5ee09a7824987d07c1577e5d7c40",
     collapsed: false,
     courseInfo: {},
+    orgInfo: {},
+    studentInfo: {},
+    teacherInfo: {},
   }),
   getters: {
     getToken(): string {
@@ -37,6 +43,15 @@ export const useStore = defineStore("store", {
     },
     getCourseInfo(): any {
       return this.courseInfo;
+    },
+    getOrgInfo(): any {
+      return this.orgInfo;
+    },
+    getStudentInfo(): any {
+      return this.studentInfo;
+    },
+    getTeacherInfo(): any {
+      return this.teacherInfo;
     },
   },
   actions: {
@@ -60,7 +75,15 @@ export const useStore = defineStore("store", {
     },
     setCourseInfo(info: any | null) {
       this.courseInfo = info || {};
-      console.log("courseInfo", this.courseInfo);
+    },
+    setOrgInfo(info: any | null) {
+      this.orgInfo = info || {};
+    },
+    setStudentInfo(info: any | null) {
+      this.studentInfo = info || {};
+    },
+    setTeacherInfo(info: any | null) {
+      this.teacherInfo = info || {};
     },
     setCollapsed(collapsed: boolean) {
       this.collapsed = collapsed || false;

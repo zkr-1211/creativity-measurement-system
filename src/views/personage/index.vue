@@ -20,37 +20,29 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import RecordInfos from "../components/RecordInfos.vue";
-import RecordCard from "../components/RecordCard.vue";
+import RecordInfos from "./components/RecordInfos.vue";
+import RecordCard from "./components/RecordCard.vue";
 import { useStore } from "@/store";
 const store = useStore();
-const studentInfo = computed(() => {
-  return store.getStudentInfo;
+const userInfo = computed(() => {
+  return store.getUserInfo;
 });
-console.log(studentInfo.value, "studentInfo");
-
 const person = reactive({
   name: "我是学生",
   avatar: "",
 });
+
 // 遍历对象形式生成infoList数组
-const infoList = Object.keys(studentInfo.value).map((key) => {
+const infoList = Object.keys(userInfo.value).map((key) => {
   if (key === "name") {
-    person.name = studentInfo.value[key];
+    person.name = userInfo.value[key];
   }
   return {
     lable: key,
-    value: studentInfo.value[key],
+    value: userInfo.value[key],
   };
 });
 
-// const infoList: any[] = []
-// for (let i = 1; i < 10; i++) {
-//   infoList.push({
-//     lable: `姓名${i}`,
-//     value: `类目${i}`
-//   })
-// }
 const loading = ref<boolean>(true);
 
 onMounted(() => {
@@ -59,7 +51,7 @@ onMounted(() => {
   }, 500);
 });
 const data: any[] = [];
-for (let i = 1; i < 21; i++) {
+for (let i = 1; i < 1; i++) {
   data.push({
     id: i.toString(),
     name: `类目 ${i}`,

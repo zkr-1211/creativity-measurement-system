@@ -6,10 +6,7 @@
     :active-tab-key="noTitleKey"
     @tab-change="(key) => onTabChange(key, 'noTitleKey')"
   >
-    <div
-      v-if="noTitleKey === 'tab1'"
-      class="content"
-    >
+    <div v-if="noTitleKey === 'tab1'" class="content">
       <RecordList />
     </div>
     <div v-else-if="noTitleKey === 'tab2'">
@@ -24,7 +21,7 @@
                 <img
                   alt="example"
                   src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                >
+                />
               </template>
               <a-card-meta>
                 <template #title>
@@ -35,20 +32,12 @@
               </a-card-meta>
               <div class="item-content">
                 <div class="des">
-                  <div class="">
-                    测评次数：
-                  </div>
-                  <div class="">
-                    1次
-                  </div>
+                  <div class="">测评次数：</div>
+                  <div class="">1次</div>
                 </div>
                 <div class="info">
-                  <div class="num">
-                    开始时间：
-                  </div>
-                  <div class="imgs">
-                    2022.03.03 16:30
-                  </div>
+                  <div class="num">开始时间：</div>
+                  <div class="imgs">2022.03.03 16:30</div>
                 </div>
               </div>
             </a-card>
@@ -60,43 +49,43 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import RecordList from '@/components/record-list/index.vue'
-const loading = ref<boolean>(true)
+import { onMounted, ref } from "vue";
+import RecordList from "@/components/record-list/index.vue";
+const loading = ref<boolean>(true);
 
 onMounted(() => {
   setTimeout(() => {
-    loading.value = false
-  }, 500)
-})
+    loading.value = false;
+  }, 500);
+});
 const tabListNoTitle = [
   {
-    key: 'tab1',
-    tab: '测评记录'
+    key: "tab1",
+    tab: "测评记录",
   },
   {
-    key: 'tab2',
-    tab: '已参与测评'
-  }
-]
-const data: any[] = []
-for (let i = 1; i < 21; i++) {
+    key: "tab2",
+    tab: "已参与测评",
+  },
+];
+const data: any[] = [];
+for (let i = 1; i < 7; i++) {
   data.push({
     id: i.toString(),
     name: `类目 ${i}`,
-    title: '创造力测评'
-  })
+    title: "创造力测评",
+  });
 }
-const key = ref('tab1')
-const noTitleKey = ref('tab1')
+const key = ref("tab1");
+const noTitleKey = ref("tab1");
 const onTabChange = (value: string, type: string) => {
-  console.log(value, type)
-  if (type === 'key') {
-    key.value = value
-  } else if (type === 'noTitleKey') {
-    noTitleKey.value = value
+  console.log(value, type);
+  if (type === "key") {
+    key.value = value;
+  } else if (type === "noTitleKey") {
+    noTitleKey.value = value;
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

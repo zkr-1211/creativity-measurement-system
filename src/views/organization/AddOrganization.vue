@@ -3,7 +3,6 @@
     <page-header title="新建机构/学校" />
     <a-card class="card">
       <a-form
-        v-if="finish"
         ref="formRef"
         :model="formState"
         :label-col="labelCol"
@@ -70,24 +69,20 @@
           />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 10, offset: 10 }" class="button">
-          <a-button type="primary" @click="onSubmit"> 创建 </a-button>
+          <a-button type="primary" @click="onSubmit"> 保存 </a-button>
           <a-button style="margin-left: 10px" @click="resetForm">
             重置
           </a-button>
         </a-form-item>
       </a-form>
-      <a-result
-        v-if="!finish"
-        status="success"
-        title="创建成功"
-      >
+      <!-- <a-result v-if="!finish" status="success" title="创建成功">
         <template #extra>
           <router-link to="/organization">
             <a-button key="console" type="primary"> 回到起始页 </a-button>
           </router-link>
           <a-button key="buy"> 查看详情 </a-button>
         </template>
-      </a-result>
+      </a-result> -->
     </a-card>
   </div>
 </template>
@@ -95,10 +90,13 @@
 <script lang="ts">
 import { reactive, defineComponent, UnwrapRef, ref, onActivated } from "vue";
 import PageHeader from "@/components/page-header/index.vue";
-import { createCourse } from "@/api/course";
+import { createCourse, editCourse } from "@/api/course";
+import { useStore } from "@/store";
 import map from "@/assets/js/map";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { message } from "ant-design-vue";
+import router from "@/router";
+
 interface FormState {
   course_name: string;
   describe: string;
@@ -115,6 +113,7 @@ interface Option {
   children?: Option[];
   [key: string]: any;
 }
+
 const options: Option[] = map;
 export default defineComponent({
   name: "AddOrganization",
@@ -147,14 +146,12 @@ export default defineComponent({
       ],
       superName: [
         {
-          required: true,
           message: "请输入校区管理员姓名",
           trigger: "blur",
         },
       ],
       address: [
         {
-          required: true,
           message: "地址不能为空",
           trigger: "blur",
         },
@@ -162,7 +159,6 @@ export default defineComponent({
       area: [
         {
           type: "array",
-          required: true,
           message: "请选择所在省市",
           trigger: "blur",
         },
@@ -170,21 +166,18 @@ export default defineComponent({
       type: [
         {
           type: "array",
-          required: true,
           message: "Please select at least one activity type",
           trigger: "change",
         },
       ],
       resource: [
         {
-          required: true,
           message: "请输入校区管理员姓名",
           trigger: "change",
         },
       ],
       superPhone: [
         {
-          required: true,
           message: "请输入正确的校区管理员手机号",
           trigger: "blur",
           pattern: "^1[3456789]\\d{9}$",
@@ -198,30 +191,51 @@ export default defineComponent({
     const change = (e) => {
       // console.log(e, formState.area);
     };
-    const finish = ref(true);
+    // const finish = ref(true);
     onActivated(() => {
       // 被包裹组件被激活的状态下触发
-      finish.value = true;
     });
-
+    const route = useRoute();
+    const store = useStore();
+    const { id } = route.query;
+    const orgInfo = computed(() => {
+      return store.getOrgInfo;
+    });
+    if (id) {
+      formState.course_name = orgInfo.value.course_name;
+      formState.describe = orgInfo.value.describe;
+    }
     const onSubmit = () => {
-      formRef.value
-        .validate()
-        .then(() => {
-          // 调用创建接口
-          finish.value = false;
+      formRef.value.validate().then(() => {
+        if (id) {
           let data = {
             name: formState.course_name,
             describe: formState.describe,
             type: "course",
           };
-          createCourse(data).then((res) => {
+          editCourse(id, data).then(() => {
             formRef.value.resetFields();
-            message.success("创建成功");
-          }).catch((err) => {
-            // message.error(err.message);
+            message.success("编辑成功");
+            router.replace("/organization");
           });
-        })
+        } else {
+          // 调用创建接口
+          let data = {
+            name: formState.course_name,
+            describe: formState.describe,
+            type: "course",
+          };
+          createCourse(data)
+            .then((res) => {
+              formRef.value.resetFields();
+              message.success("创建成功");
+              router.replace("/organization");
+            })
+            .catch((err) => {
+              // message.error(err.message);
+            });
+        }
+      });
     };
 
     return {
@@ -236,7 +250,6 @@ export default defineComponent({
       rules,
       resetForm,
       formRef,
-      finish,
       options,
       change,
     };

@@ -1,8 +1,5 @@
 <template>
-  <a-layout-sider
-    v-model:collapsed="collapsed"
-    width="256px"
-  >
+  <a-layout-sider v-model:collapsed="collapsed" width="256px">
     <!-- 树课测评系统 -->
     <span v-if="!collapsed"> 树课测评系统 </span>
     <span v-else> Icon </span>
@@ -16,26 +13,18 @@
         <template #icon>
           <MailOutlined />
         </template>
-        <router-link to="/homepage">
-          首页
-        </router-link>
+        <router-link to="/homepage"> 首页 </router-link>
       </a-menu-item>
       <a-sub-menu key="evaluation">
         <template #icon>
           <AppstoreOutlined />
         </template>
-        <template #title>
-          测评管理
-        </template>
+        <template #title> 测评管理 </template>
         <a-menu-item key="allevaluation">
-          <router-link to="/evaluation/allevaluation">
-            全部测评
-          </router-link>
+          <router-link to="/evaluation/allevaluation"> 全部测评 </router-link>
         </a-menu-item>
         <a-menu-item key="design">
-          <router-link to="/evaluation/design">
-            测评设计
-          </router-link>
+          <router-link to="/evaluation/design"> 测评设计 </router-link>
         </a-menu-item>
       </a-sub-menu>
 
@@ -43,41 +32,29 @@
         <template #icon>
           <CalendarOutlined />
         </template>
-        <router-link to="/organization">
-          机构/学校
-        </router-link>
+        <router-link to="/organization"> 机构/学校 </router-link>
       </a-menu-item>
-
-      <a-sub-menu key="sub2">
-        <template #icon>
-          <SettingOutlined />
-        </template>
-        <template #title>
-          个人页
-        </template>
-       <a-menu-item key="administrator">
-          <router-link to="/personnelmanage/administrator">
-            个人中心
-          </router-link>
-        </a-menu-item>
-      </a-sub-menu>
-
       <a-sub-menu key="personnel">
         <template #icon>
           <SettingOutlined />
         </template>
-        <template #title>
-          人员管理
-        </template>
+        <template #title> 人员管理 </template>
         <a-menu-item key="administrator">
           <router-link to="/personnelmanage/administrator">
             管理员
           </router-link>
         </a-menu-item>
         <a-menu-item key="evaluator">
-          <router-link to="/personnelmanage/evaluator">
-            测评师
-          </router-link>
+          <router-link to="/personnelmanage/evaluator"> 测评师 </router-link>
+        </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="personage">
+        <template #icon>
+          <SettingOutlined />
+        </template>
+        <template #title> 个人管理 </template>
+        <a-menu-item key="center">
+          <router-link to="/personage/center"> 个人中心 </router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>
@@ -85,60 +62,60 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, watch, computed } from 'vue'
+import { reactive, toRefs, watch, computed } from "vue";
 // import SidebarMenu from './SidebarMenuConfig.js'
-import { useRoute } from 'vue-router'
-import { useStore } from '@/store'
+import { useRoute } from "vue-router";
+import { useStore } from "@/store";
 
 import {
   MailOutlined,
   CalendarOutlined,
   AppstoreOutlined,
-  SettingOutlined
-} from '@ant-design/icons-vue'
+  SettingOutlined,
+} from "@ant-design/icons-vue";
 const state = reactive({
-  mode: 'inline',
-  theme: 'dark',
+  mode: "inline",
+  theme: "dark",
   openKeys: <string[]>[],
-  selectedKeys: ['HomePage']
-})
-const { theme, openKeys, selectedKeys } = toRefs(state)
-const route = useRoute()
-const store = useStore()
+  selectedKeys: ["HomePage"],
+});
+const { theme, openKeys, selectedKeys } = toRefs(state);
+const route = useRoute();
+const store = useStore();
 const collapsed = computed(() => {
-  return store.getCollapsed
-})
+  return store.getCollapsed;
+});
 watch(
   () => route.name,
   () => {
-    const sub = route.matched[0].meta.id
-    const name = route.name
+    const sub = route.matched[0].meta.id;
+    const name = route.name;
     // const isPush = state.openKeys.every((item) => {
     //   return item !== sub
     // })
     // sub && isPush && state.openKeys.push(String(sub))
-    state.openKeys = [String(sub)]
-    state.selectedKeys = [String(name)]
+    state.openKeys = [String(sub)];
+    state.selectedKeys = [String(name)];
   },
   {
-    immediate: true
+    immediate: true,
   }
-)
+);
 watch(
   () => collapsed.value,
   (newVal, oldVal) => {
-    store.setCollapsed(newVal)
+    store.setCollapsed(newVal);
   },
   {
-    immediate: true
+    immediate: true,
   }
-)
+);
 window.onresize = () => {
-  const ddw = document.documentElement.clientWidth
+  const ddw = document.documentElement.clientWidth;
   if (ddw < 1200) {
-    store.setCollapsed(true)
+    store.setCollapsed(true);
   }
-}
+};
 // const changeMode = (checked: string) => {
 //   state.mode = checked ? 'vertical' : 'inline'
 // }

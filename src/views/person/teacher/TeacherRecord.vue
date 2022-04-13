@@ -9,18 +9,9 @@
         :xl="7"
         :style="{ marginBottom: '24px' }"
       >
-        <RecordInfos
-          :person="person"
-          :info-list="infoList"
-          :is-stu="false"
-        />
+        <RecordInfos :person="person" :info-list="infoList" is-stu />
       </a-col>
-      <a-col
-        :xs="24"
-        :sm="24"
-        :md="24"
-        :xl="17"
-      >
+      <a-col :xs="24" :sm="24" :md="24" :xl="17">
         <RecordCard />
       </a-col>
     </a-row>
@@ -28,34 +19,52 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import RecordInfos from '../components/RecordInfos.vue'
-import RecordCard from '../components/RecordCard.vue'
-const loading = ref<boolean>(true)
-const person = {
-  name: '我是老师',
-  avatar: ''
-}
+import { onMounted, ref } from "vue";
+import RecordInfos from "../components/RecordInfos.vue";
+import RecordCard from "../components/RecordCard.vue";
+import { useStore } from "@/store";
+const store = useStore();
+const teacherInfo = computed(() => {
+  return store.getTeacherInfo;
+});
+console.log(teacherInfo.value, "teacherInfo");
 
-const infoList: any[] = []
-for (let i = 1; i < 10; i++) {
-  infoList.push({
-    lable: `姓名${i}`,
-    value: `类目${i}`
-  })
-}
+const person = reactive({
+  name: "我是教师",
+  avatar: "",
+});
+// 遍历对象形式生成infoList数组
+const infoList = Object.keys(teacherInfo.value).map((key) => {
+  if (key === "name") {
+    person.name = teacherInfo.value[key];
+  }
+  return {
+    lable: key,
+    value: teacherInfo.value[key],
+  };
+});
+
+// const infoList: any[] = []
+// for (let i = 1; i < 10; i++) {
+//   infoList.push({
+//     lable: `姓名${i}`,
+//     value: `类目${i}`
+//   })
+// }
+const loading = ref<boolean>(true);
+
 onMounted(() => {
   setTimeout(() => {
-    loading.value = false
-  }, 500)
-})
-const data: any[] = []
+    loading.value = false;
+  }, 500);
+});
+const data: any[] = [];
 for (let i = 1; i < 21; i++) {
   data.push({
     id: i.toString(),
     name: `类目 ${i}`,
-    title: '创造力测评'
-  })
+    title: "创造力测评",
+  });
 }
 </script>
 <style lang="scss" scoped>

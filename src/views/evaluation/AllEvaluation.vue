@@ -10,7 +10,7 @@
     <div class="main-content">
       <a-card>
         <div class="search-info">
-          <div class="tags">
+          <!-- <div class="tags">
             <div class="tags-text">标签类目：</div>
             <div class="tags-content">
               <div
@@ -24,7 +24,7 @@
                 <span v-else>类目{{ index }}</span>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="other-select">
             <div class="other-text">其他选项：</div>
             <div class="other-right">
@@ -38,14 +38,11 @@
                     @change="handleChange"
                     style="width: 220px"
                   >
-                    <a-select-option value="jack"> Jack </a-select-option>
-                    <a-select-option value="lucy"> Lucy </a-select-option>
-                    <a-select-option value="Yiminghe">
-                      yiminghe
-                    </a-select-option>
+                    <a-select-option value="1"> 小学 </a-select-option>
+                    <a-select-option value="2"> 初中 </a-select-option>
                   </a-select>
                 </div>
-                <div class="participate-num">
+                <!-- <div class="participate-num">
                   参与人数：
                   <a-select
                     ref="select"
@@ -60,7 +57,7 @@
                       yiminghe
                     </a-select-option>
                   </a-select>
-                </div>
+                </div> -->
               </div>
               <div class="search">
                 <a-input-search
@@ -81,34 +78,30 @@
         >
           <template #renderItem="{ item }">
             <a-list-item>
-                <a-card @click="toDetail(item)">
-                  <template #cover>
-                    <img
-                      alt="example"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                    />
+              <a-card @click="toDetail(item)">
+                <template #cover>
+                  <img
+                    alt="example"
+                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  />
+                </template>
+                <a-card-meta>
+                  <template #title>
+                    <span style="font-weight: bold">
+                      {{ item.course_name }}
+                    </span>
                   </template>
-                  <a-card-meta>
-                    <template #title>
-                      <span style="font-weight: bold">
-                        {{ item.course_name }}
-                      </span>
-                    </template>
-                    <template #description>
-                      {{ item.describe || "暂无描述" }}
-                    </template>
-                  </a-card-meta>
-                  <div class="info">
-                    <div class="num">14679人参与测评</div>
-                    <div class="imgs">
-                      <div
-                        v-for="(item, index) in 4"
-                        :key="index"
-                        class="img"
-                      />
-                    </div>
+                  <template #description>
+                    {{ item.describe || "暂无描述" }}
+                  </template>
+                </a-card-meta>
+                <div class="info">
+                  <div class="num">14679人参与测评</div>
+                  <div class="imgs">
+                    <div v-for="(item, index) in 4" :key="index" class="img" />
                   </div>
-                </a-card>
+                </div>
+              </a-card>
             </a-list-item>
           </template>
         </a-list>
@@ -142,7 +135,7 @@
 
 <script lang="ts" setup name="AllEvaluation">
 import { getCourseList, createCourse } from "@/api/course";
-import { useStore } from '@/store'
+import { useStore } from "@/store";
 
 const learningPeriod = ref("");
 const participation = ref("");
@@ -236,18 +229,22 @@ const selectTag = (id: string) => {
 // 搜索
 const value = ref("");
 const onSearch = (searchValue: any) => {
-  // 搜索列表
-  const searchList = data.value.filter((item: any) => {
-    return item.title.indexOf(searchValue) > -1;
-  });
-  data.value = searchList;
+  if (searchValue) {
+    // 搜索列表
+    const searchList = data.value.filter((item: any) => {
+      return item.course_name.indexOf(searchValue) > -1;
+    });
+    data.value = searchList;
+  }else{
+    getList()
+  }
 };
 // 选择框改变时
 const handleChange = (value: any) => {
   console.log(`selected ${value}`);
 };
-const store = useStore()
-const router = useRouter()
+const store = useStore();
+const router = useRouter();
 function toDetail(data) {
   store.setCourseInfo(data);
   router.push({
