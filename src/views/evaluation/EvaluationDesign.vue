@@ -20,32 +20,69 @@
             </template>
 
             <div class="bottom-content">
-              <a-collapse v-model:activeKey="activeKey" :bordered="false">
+              <a-collapse
+                v-model:activeKey="activeKey"
+                :bordered="false"
+                accordion
+              >
                 <a-collapse-panel
-                  v-for="(item, index) in questions"
+                  v-for="(item, index) in questionsSetList"
                   :key="index"
-                  :header="`阶段${index + 1}`"
+                  :header="item.name"
+                  @click="selectQuestionsSet(item.question_set_id)"
                 >
                   <div
-                    v-for="(q, index1) in item.list"
-                    :key="index1"
+                    v-for="(q, questionsIndex) in questions"
+                    :key="q.question_id"
                     class="item"
                     @click="selectQuestions(q)"
                   >
                     <div class="item-left">
-                      <div class="index">0{{ index1 + 1 }}：</div>
-                      <div class="title">第{{ index1 + 1 }}题</div>
+                      <div class="index">0{{ questionsIndex + 1 }}：</div>
+                      <div class="title">
+                        第{{ questionsIndex + 1 }}题
+                        {{ q.type == "RADIO" ? "单选" : "填空" }}
+                      </div>
                     </div>
-                    <div class="item-right">
-                      <Dot />
+                    <div class="item-right" @click.stop>
+                      <a-dropdown>
+                        <a class="ant-dropdown-link" @click.prevent>
+                          <Dot />
+                        </a>
+                        <template #overlay>
+                          <a-menu>
+                            <!-- <a-menu-item @click="updateQue(q)">
+                              修改
+                            </a-menu-item> -->
+                            <a-menu-item @click="delQue(q.question_id)">
+                              删除
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown>
                     </div>
                   </div>
+                  <div class="add-p" @click="newTopic(item)">+ 新增题目</div>
+
                   <template #extra>
-                    <Dot />
+                    <a-dropdown trigger="click" @click.stop>
+                      <a class="ant-dropdown-link" @click.prevent>
+                        <Dot />
+                      </a>
+                      <template #overlay>
+                        <a-menu>
+                          <a-menu-item @click="updateQueSet(item)">
+                            修改
+                          </a-menu-item>
+                          <a-menu-item @click="detQueSet(item.question_set_id)">
+                            删除
+                          </a-menu-item>
+                        </a-menu>
+                      </template>
+                    </a-dropdown>
                   </template>
                 </a-collapse-panel>
               </a-collapse>
-              <div class="add-p" @click="newTopic">+ 新增题目</div>
             </div>
           </a-card>
         </a-col>
@@ -97,7 +134,7 @@
                     <div class="des">答案解析:</div>
                     <div class="txarea">
                       <a-textarea
-                        v-model:value="proContent"
+                        v-model:value="answerKey"
                         placeholder="请输入答案解析"
                         :rows="4"
                       />
@@ -178,7 +215,8 @@
                 <span> 设置得分: </span>
                 <a-input
                   style="width: 130px; margin-left: 10px"
-                  v-model:value="score"
+                  v-model:value.number="score"
+                  oninput="if(isNaN(value)) { value=value.replace(/^\.+|[^\d.]/g,'')}"
                   placeholder="请输入得分"
                   :rows="4"
                 />
@@ -193,11 +231,15 @@
                 <a-row :gutter="24">
                   <a-col :xs="24" :sm="24" :md="14" :xl="13">
                     <div class="left-content">
-                      <div class="eva-des" style="display: flex;align-items: center;">
+                      <div
+                        class="eva-des"
+                        style="display: flex; align-items: center"
+                      >
                         <div class="des">选项1:</div>
                         <div class="txarea" v-if="isSelect == 1">
                           <a-input
-                            v-model:value="optItem.des"
+                            style="margin-left: 10px"
+                            v-model:value="optItem.value"
                             placeholder="请输入选项内容"
                             :rows="4"
                           />
@@ -205,14 +247,32 @@
 
                         <div class="txarea" v-else>
                           <a-textarea
-                            v-model:value="optItem.des"
+                            style="margin-left: 10px"
+                            v-model:value="optItem.answer"
                             placeholder="请输入填空答案"
                             :rows="4"
                           />
                         </div>
                       </div>
+
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          margin-top: 10px;
+                        "
+                      >
+                        <span> 设置得分: </span>
+                        <a-input
+                          style="width: 130px; margin-left: 5px"
+                          v-model:value.number="optItem.score"
+                          oninput="if(isNaN(value)) { value=value.replace(/^\.+|[^\d.]/g,'')}"
+                          placeholder="请输入得分"
+                          :rows="4"
+                        />
+                      </div>
                       <a-checkbox
-                        v-model:checked="optItem.answer"
+                        v-model:checked="optItem.is_answer"
                         style="margin: 10px 0"
                       >
                         <span v-if="isSelect == 1"> 是否为正确答案 </span>
@@ -296,7 +356,7 @@
         </a-col>
       </a-row>
     </div>
-    <!--新建阶段 -->
+    <!--新建/修改阶段 -->
     <a-modal
       v-model:visible="visible"
       style="top: 200px"
@@ -343,6 +403,20 @@
 import { PlusOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { getDimensions } from "@/api/dimensions";
+import {
+  getQuestionsSetList,
+  createQuestionsSet,
+  updateQuestionsSet,
+  delQuestionsSet,
+  detailQuestionsSet,
+} from "@/api/questionsset";
+import {
+  createQuestions,
+  delQuestions,
+  detailQuestions,
+} from "@/api/questions";
+import { message, Modal } from "ant-design-vue";
+
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -354,14 +428,15 @@ function getBase64(file: Blob) {
 
 interface FormState {
   name: string;
-  titleName: string;
+  // time_limit: number||;
+  is_auto_correct: boolean;
 }
-const proContent = ref("");
+const proContent = ref("sdfsdfd");
 const score = ref("");
-const opi_random = ref();
+const opi_random = ref("选项不随机");
 const selectContent = ref("");
 const isSelect = ref(1);
-const activeKey = ref(["0"]);
+const activeKey = ref([""]);
 const loading = ref<boolean>(true);
 onMounted(() => {
   setTimeout(() => {
@@ -375,7 +450,9 @@ const visible = ref<boolean>(false);
 const visibleTitle = ref<boolean>(false);
 const formState = reactive<FormState>({
   name: "",
-  titleName: "",
+  // titleName: "",
+  // time_limit:null,
+  // is_auto_correct: true,
 });
 const rules = {
   name: [
@@ -387,12 +464,20 @@ const rules = {
     { min: 1, max: 15, message: "长度15个字符以内", trigger: "blur" },
   ],
 };
+const questionsSetList = ref([]);
 const evaOptions = ref<any>([]);
 const id = ref(105);
 function getList() {
   let query = {
     course_id: 105,
   };
+  getQuestionsSetList(query)
+    .then((res) => {
+      questionsSetList.value = res.data;
+      console.log(res.data);
+    })
+    .catch((err) => {});
+
   getDimensions(query).then((res) => {
     // evaOptions.value = res.data.list;
     // 将res.data.list以value和labbel的形式存入evaOptions
@@ -409,25 +494,118 @@ const value = ref<any>();
 const focus = () => {
   console.log("focus");
 };
+const questions = ref<any>([]);
+const selectQuestionsSet = (id: number) => {
+  detailQuestionsSet(id).then((res) => {
+    console.log(res.data);
+    questions.value = res.data.questions;
+  });
+};
+function detQueSet(id: number) {
+  Modal.confirm({
+    title: () => "你确定删除该题集吗？",
+    content: () => "删除后不可撤回",
+    okText: () => "确定",
+    okType: "danger",
+    cancelText: () => "取消",
+    onOk() {
+      delQuestionsSet(id)
+        .then((res) => {
+          getList();
+          message.success("删除成功");
+        })
+        .catch((err) => {
+          message.error("删除失败");
+        });
+    },
+    onCancel() {
+      console.log("Cancel");
+    },
+  });
+}
+function delQue(id: number) {
+  Modal.confirm({
+    title: () => "你确定删除该题集吗？",
+    content: () => "删除后不可撤回",
+    okText: () => "确定",
+    okType: "danger",
+    cancelText: () => "取消",
+    onOk() {
+      delQuestions(id)
+        .then((res) => {
+          getList();
+          questions.value.forEach((item) => {
+            if (item.question_id === id) {
+              questions.value.splice(questions.value.indexOf(item), 1);
+            }
+          });
+          message.success("删除成功");
+        })
+        .catch((err) => {
+          message.error("删除失败");
+        });
+    },
+    onCancel() {
+      console.log("Cancel");
+    },
+  });
+}
+
+const question_set_id = ref();
+// 更新题集
+function updateQueSet(item: any) {
+  formState.name = item.name;
+  visible.value = true;
+  addFlag.value = false;
+  question_set_id.value = item.question_set_id;
+}
+
 const handleChange = (value: any) => {
   console.log(`selected ${value}`);
   // evaValue.value = value;
 };
 const handleOk = () => {
+  console.log("点击了确定");
+
   formRef.value
     .validate()
     .then(() => {
       if (addFlag.value) {
+        let query = {
+          course_id: 105,
+        };
+        confirmLoading.value = true;
+        createQuestionsSet(query, formState)
+          .then((res) => {
+            console.log(res.data);
+            visible.value = false;
+            confirmLoading.value = false;
+            formRef.value.resetFields();
+            getList();
+            message.success("添加成功");
+          })
+          .catch((err) => {
+            visible.value = false;
+            confirmLoading.value = false;
+          });
         // 添加
       } else {
         // 编辑
+        confirmLoading.value = true;
+        updateQuestionsSet(question_set_id.value, formState)
+          .then((res) => {
+            visible.value = false;
+            confirmLoading.value = false;
+            formRef.value.resetFields();
+
+            getList();
+            message.success("修改成功");
+          })
+          .catch((err) => {
+            visible.value = false;
+            confirmLoading.value = false;
+          });
       }
-      confirmLoading.value = true;
-      setTimeout(() => {
-        visible.value = false;
-        confirmLoading.value = false;
-        formRef.value.resetFields();
-      }, 2000);
     })
     .catch((error: ValidateErrorEntity<FormState>) => {
       console.log("error", error);
@@ -435,17 +613,19 @@ const handleOk = () => {
 };
 // 新建阶段
 function aNewPhase() {
+  addFlag.value = true;
   reset();
   visible.value = true;
 }
 // 新建题目
-function newTopic() {
-  reset();
-  visibleTitle.value = true;
+function newTopic(item) {
+  question_set_id.value = item.question_set_id;
+  editAreaTitle.value = item.name;
+  message.info("在右侧新增题目");
 }
 function reset() {
   formState.name = "";
-  formState.titleName = "";
+  // formState.titleName = "";
   formRef.value?.resetFields();
 }
 const previewVisible = ref(false);
@@ -471,129 +651,66 @@ const handlePreview = async (file: {
 // const handleChange = ({ fileList: newFileList }) => {
 //   fileList.value = newFileList;
 // };
-const questions = ref<any>([
-  {
-    title: "哈哈哈",
-    list: [
-      {
-        title: "第一阶段第一题",
-        des: "123",
-        imgList: [],
-        queType: 1,
-        questionsItem: [
-          {
-            des: "",
-            imgList: [],
-            score: [
-              {
-                title: "创造力",
-                value: "12",
-              },
-              {
-                title: "自制力",
-                value: "3",
-              },
-              {
-                title: "行动力",
-                value: "4",
-              },
-              {
-                title: "领导力",
-                value: "5",
-              },
-              {
-                title: "决策力",
-                value: "6",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "第一阶段第二题",
-        des: "123",
-        imgList: [],
-        queType: 2,
-        questionsItem: [
-          {
-            des: "",
-            imgList: [],
-            score: [
-              {
-                title: "创造力",
-                value: "23",
-              },
-              {
-                title: "自制力",
-                value: "11",
-              },
-              {
-                title: "行动力",
-                value: "3",
-              },
-              {
-                title: "领导力",
-                value: "4",
-              },
-              {
-                title: "决策力",
-                value: "5",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-]);
 const options = ref<any>([]);
 const addOption = () => {
   options.value.push({
-    des: "",
-    imgList: [],
-    score: [
-      {
-        title: "创造力",
-        value: "",
-      },
-      {
-        title: "自制力",
-        value: "",
-      },
-      {
-        title: "行动力",
-        value: "",
-      },
-      {
-        title: "领导力",
-        value: "",
-      },
-      {
-        title: "决策力",
-        value: "",
-      },
-    ],
+    value: "asdfsdf",
+    resource_id: undefined,
+    score: undefined,
+    sort: 0,
+    is_answer: false,
   });
 };
 const delOption = (index) => {
   options.value.splice(index, 1);
 };
+const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {
-  saveLoading.value = true;
-  setTimeout(() => {
-    proxy.$message.success("保存成功");
-    saveLoading.value = false;
-  }, 1000);
+  let data = {
+    type: isSelect.value == 1 ? "RADIO" : "FILL_BLANK",
+    content: proContent.value,
+    content_resource_id: [],
+    // "answer": null,
+    answer_key: answerKey.value,
+    score: 35.5,
+    is_partial_score: false,
+    opi_random: opi_random.value ? true : false,
+    opi_select_num: 1,
+    options: options.value,
+  };
+  let query = {
+    question_set_id: question_set_id.value,
+  };
+  createQuestions(query, data)
+    .then((res) => {
+      console.log(res.data);
+      getList();
+      message.success("添加成功");
+      saveLoading.value = false;
+    })
+    .catch((err) => {
+      message.error("添加失败", err);
+      saveLoading.value = false;
+    });
 };
 const editAreaTitle = ref("");
 // 选择题目
 function selectQuestions(item) {
-  proContent.value = item.des;
-  isSelect.value = item.queType;
-  options.value = item.questionsItem;
-  editAreaTitle.value = item.title;
+  detailQuestions(item.question_id).then((res) => {
+    isSelect.value = item.type == "RADIO" ? 1 : 2;
+    answerKey.value = res.data.answer_key;
+    opi_random.value = res.data.opi_random;
+    proContent.value = res.data.content;
+    options.value = res.data.options;
+    addFlag.value = false;
+    question_set_id.value = item.question_set_id;
+  });
+  // proContent.value = item.des;
+  // isSelect.value = item.queType;
+  // options.value = item.questionsItem;
+  // editAreaTitle.value = item.title;
 }
 getList();
 </script>

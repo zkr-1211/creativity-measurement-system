@@ -36,7 +36,7 @@ import {
   Cascader,
   Breadcrumb,
   InputNumber,
-  Checkbox
+  Checkbox,
 } from 'ant-design-vue'
 
 const plugins = [
