@@ -20,7 +20,7 @@
               <template #cover>
                 <img
                   alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  src="https://s1.ax1x.com/2022/04/19/LBrTG4.png"
                 />
               </template>
               <a-card-meta>

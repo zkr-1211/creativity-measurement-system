@@ -2,16 +2,16 @@
   <div class="body">
     <page-header title="">
       <div class="eva-record-item">
-        <div class="header" />
+        <div class="header">
+          <img src="https://s1.ax1x.com/2022/04/19/LBrTG4.png" alt="" />
+        </div>
         <div class="item-info">
           <div class="item-right-top">
-            <div class="text">{{courseInfo.course_name}}</div>
-            <div class="tag">{{courseInfo.course_name}}</div>
+            <div class="text">{{ courseInfo.course_name }}</div>
+            <div class="tag">{{ courseInfo.course_name }}</div>
           </div>
           <div class="item-right-bottom">
-            <span
-              >简介：{{courseInfo.describe}}</span
-            >
+            <span>简介：{{ courseInfo.describe }}</span>
           </div>
         </div>
       </div>
@@ -35,7 +35,9 @@
                     </a-button>
                   </div>
                 </div>
-                <div class="icon" />
+                <div class="icon">
+                  <img src="https://s1.ax1x.com/2022/04/19/LBLgqP.png" alt="" />
+                </div>
               </div>
             </a-card>
           </a-col>
@@ -46,10 +48,14 @@
                   <div class="title">第二步</div>
                   <div class="text">测评题目与阶段</div>
                   <div class="button">
-                      <a-button type="primary" @click="editProblem"> 编辑 </a-button>
+                    <a-button type="primary" @click="editProblem">
+                      编辑
+                    </a-button>
                   </div>
                 </div>
-                <div class="icon" />
+                <div class="icon">
+                  <img src="https://s1.ax1x.com/2022/04/19/LBLOaT.png" alt="" />
+                </div>
               </div>
             </a-card>
           </a-col>
@@ -85,7 +91,7 @@ function focus() {}
 const route = useRoute();
 const id = route.query.id;
 const store = useStore();
-const courseInfo = computed( () => {
+const courseInfo = computed(() => {
   return store.getCourseInfo;
 });
 
@@ -148,6 +154,10 @@ onMounted(() => {
           @include wh(106px, 101px);
           background: #1e7ffe;
           margin-right: 30px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
@@ -161,6 +171,11 @@ onMounted(() => {
   .header {
     @include wh(152px, 72px);
     background: rgba(0, 0, 0, 1);
+    border: #bbbbbb solid 2px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
   .item-info {
     @include faj(none, space-around);

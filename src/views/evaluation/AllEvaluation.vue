@@ -76,13 +76,15 @@
           :grid="{ gutter: 24, xxl: 5, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
           :data-source="data"
         >
-          <template #renderItem="{ item }">
+          <template #renderItem="{ item,index }">
             <a-list-item>
               <a-card @click="toDetail(item)">
                 <template #cover>
                   <img
                     alt="example"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                    :src="index % 2 === 0
+                            ? 'https://s1.ax1x.com/2022/04/19/LBrTG4.png'
+                            : 'https://s1.ax1x.com/2022/04/19/LBsgYD.png'"
                   />
                 </template>
                 <a-card-meta>
@@ -235,8 +237,8 @@ const onSearch = (searchValue: any) => {
       return item.course_name.indexOf(searchValue) > -1;
     });
     data.value = searchList;
-  }else{
-    getList()
+  } else {
+    getList();
   }
 };
 // 选择框改变时
@@ -356,19 +358,26 @@ getList();
     }
     .img:nth-of-type(1) {
       right: 10px;
-      background: red;
+      background-image: url(https://s1.ax1x.com/2022/04/19/LBOxTf.png);
+      background-size: cover;
     }
     .img:nth-of-type(2) {
       right: 25px;
-      background: black;
+      background: rgb(203, 212, 76);
+      background-image: url(https://s1.ax1x.com/2022/04/19/LBOv0P.png);
+      background-size: cover;
     }
     .img:nth-of-type(3) {
       right: 40px;
-      background-color: blue;
+      background-color: rgb(58, 58, 155);
+      background-image: url(https://s1.ax1x.com/2022/04/19/LBXSk8.png);
+      background-size: cover;
     }
     .img:nth-of-type(4) {
       right: 55px;
-      background-color: chartreuse;
+      background-color: rgb(175, 199, 150);
+      background-image: url(https://s1.ax1x.com/2022/04/19/LBOOOI.png);
+      background-size: cover;
     }
   }
 }

@@ -24,7 +24,7 @@
                 </template>
                 <template #avatar>
                   <a-avatar
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    src="https://s1.ax1x.com/2022/04/19/LBx4jH.png"
                   />
                 </template>
                 <template #description>
