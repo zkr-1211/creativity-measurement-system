@@ -142,13 +142,19 @@
 <script lang="ts" setup name="ModelDimensionEdit">
 import { message } from "ant-design-vue";
 import { getDimensions, updateDimensions } from "@/api/dimensions";
+import { useStore } from "@/store";
 function getBase64(img: Blob, callback: any) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 const route = useRoute();
-const id = parseInt(route.query.id);
+const store = useStore();
+const courseInfo = computed(() => {
+  return store.getCourseInfo;
+});
+const course_id = courseInfo.value.course_id;
+// const id = parseInt(route.query.id);
 const stateMenu = reactive({
   mode: "inline",
   theme: "light",
@@ -190,7 +196,7 @@ const loading = ref(false);
 const imageUrl = ref("");
 function getList() {
   let query = {
-    course_id: id,
+    course_id: course_id,
   };
   getDimensions(query)
     .then((res) => {
@@ -302,7 +308,7 @@ onMounted(() => {
 const updateInfo = () => {
   // 循环personage对象并push到testing_dimensions数组中
   let data = {
-    courseId: id,
+    courseId: course_id,
     testing_dimensions: personage.value,
   };
   updateDimensions(data)

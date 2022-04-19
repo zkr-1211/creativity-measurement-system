@@ -1,9 +1,14 @@
 <!--  -->
 <template>
   <div class="body">
-    <page-header title="设计测评题目与阶段">
+    <page-header :title="`${courseInfo.course_name || '未选择课程'}：题集管理`">
       <template #right>
-        <a-button type="primary" :loading="saveLoading" @click="onSave">
+        <a-button
+          type="primary"
+          :loading="saveLoading"
+          @click="onSave"
+          :disabled="question_set_id == null"
+        >
           保存
         </a-button>
         <a-button style="margin-left: 10px"> 取消 </a-button>
@@ -11,11 +16,11 @@
     </page-header>
     <div ref="el" class="content">
       <a-row :gutter="24">
-        <a-col :xs="24" :sm="24" :md="24" :xl="6">
-          <a-card :loading="loading" title="题目与阶段">
+        <a-col :xs="24" :sm="24" :md="24" :xl="8">
+          <a-card :loading="loading" title="题集与题目">
             <template #extra>
               <a-button type="primary" @click="aNewPhase">
-                + 新建阶段
+                + 新建题集
               </a-button>
             </template>
 
@@ -40,8 +45,8 @@
                     <div class="item-left">
                       <div class="index">0{{ questionsIndex + 1 }}：</div>
                       <div class="title">
-                        第{{ questionsIndex + 1 }}题
                         {{ q.type == "RADIO" ? "单选" : "填空" }}
+                        :{{ q.content }}
                       </div>
                     </div>
                     <div class="item-right" @click.stop>
@@ -86,10 +91,10 @@
             </div>
           </a-card>
         </a-col>
-        <a-col :xs="24" :sm="24" :md="24" :xl="18">
+        <a-col :xs="24" :sm="24" :md="24" :xl="16">
           <a-card
             :loading="loading"
-            :title="`编辑区（${editAreaTitle || '暂未选择'}）`"
+            :title="`题集： 编辑区（${editAreaTitle || '暂未选择题集...'}）`"
           >
             <div class="bottom-content-right">
               <div class="bottom-content-right">
@@ -176,6 +181,22 @@
               <div
                 class="pay-radio-group"
                 style="display: flex; align-items: center"
+                v-if="question_id != null"
+              >
+                <span> 测评维度: </span>
+                <a-select
+                  ref="select"
+                  v-model:value="evaValue"
+                  @focus="focus"
+                  @change="handleEvaChange"
+                  :options="evaOptions"
+                  style="width: 130px; margin-left: 10px"
+                >
+                </a-select>
+              </div>
+              <!-- <div
+                class="pay-radio-group"
+                style="display: flex; align-items: center"
                 v-if="isSelect != 1"
               >
                 <span> 批改方式: </span>
@@ -189,11 +210,11 @@
                   <a-select-option value="0">手动批改</a-select-option>
                   <a-select-option value="1">自动批改</a-select-option>
                 </a-select>
-              </div>
+              </div> -->
               <div
                 class="pay-radio-group"
                 style="display: flex; align-items: center"
-                v-else
+                v-if="isSelect == 1"
               >
                 <span> 选项设置: </span>
                 <a-select
@@ -274,9 +295,24 @@
                       <a-checkbox
                         v-model:checked="optItem.is_answer"
                         style="margin: 10px 0"
+                        v-if="isSelect == 1"
                       >
-                        <span v-if="isSelect == 1"> 是否为正确答案 </span>
-                        <span v-else> 包含答案即可得分 </span>
+                        <span> 是否为正确答案 </span>
+                      </a-checkbox>
+                      <a-checkbox
+                        v-else
+                        v-model:checked="optItem.is_include_str"
+                        style="margin: 10px 0"
+                      >
+                        <span> 包含答案即可得分 </span>
+                      </a-checkbox>
+                      <br />
+                      <a-checkbox
+                        v-if="isSelect == 2"
+                        v-model:checked="optItem.is_ignore_case"
+                        style="margin: 10px 0"
+                      >
+                        <span> 忽略大小写 </span>
                       </a-checkbox>
                       <div class="upload">
                         <a-upload
@@ -308,7 +344,7 @@
                   <a-col :xs="24" :sm="24" :md="10" :xl="11">
                     <div style="display: flex; justify-content: space-between">
                       <div style="display: flex">
-                        <div class="text" style="margin-right: 20px">
+                        <!-- <div class="text" style="margin-right: 20px">
                           对应得分维度：
                         </div>
                         <div class="score">
@@ -320,8 +356,8 @@
                             @change="handleChange"
                             :options="evaOptions"
                           >
-                          </a-select>
-                          <!-- <div
+                          </a-select> -->
+                        <!-- <div
                             v-for="(item, index) in optItem.score"
                             :key="index"
                             class="select-item"
@@ -335,7 +371,7 @@
                               :max="100"
                             />
                           </div> -->
-                        </div>
+                        <!-- </div> -->
                       </div>
 
                       <a-popconfirm
@@ -356,11 +392,11 @@
         </a-col>
       </a-row>
     </div>
-    <!--新建/修改阶段 -->
+    <!--新建/修改题集 -->
     <a-modal
       v-model:visible="visible"
       style="top: 200px"
-      title="新建阶段"
+      title="新建题集"
       :confirm-loading="confirmLoading"
       @ok="handleOk"
       @cancel="handleCancel"
@@ -371,28 +407,19 @@
         :rules="rules"
         :label-col="{ span: 4 }"
       >
-        <a-form-item label="阶段名称" name="name">
+        <a-form-item label="题集名称" name="name">
           <a-input v-model:value="formState.name" />
         </a-form-item>
-      </a-form>
-    </a-modal>
-    <!--新建题目 -->
-    <a-modal
-      v-model:visible="visibleTitle"
-      style="top: 200px"
-      title="新建题目"
-      :confirm-loading="confirmLoading"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
-      <a-form
-        ref="formRef"
-        :model="formState"
-        :rules="rules"
-        :label-col="{ span: 4 }"
-      >
-        <a-form-item label="题目名称" name="name">
-          <a-input v-model:value="formState.titleName" />
+        <a-form-item label="时间限制" name="time_limit">
+          <a-input
+            v-model:value="formState.time_limit"
+            disabled
+            placeholder="无时间限制"
+          />
+        </a-form-item>
+        <a-form-item label="自动批改" name="is_auto_correct">
+          <a-checkbox v-model:checked.boolen="formState.is_auto_correct">
+          </a-checkbox>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -402,7 +429,7 @@
 <script lang="ts" setup name="EvaluationDesign">
 import { PlusOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
-import { getDimensions } from "@/api/dimensions";
+import { getDimensions, setDimensions } from "@/api/dimensions";
 import {
   getQuestionsSetList,
   createQuestionsSet,
@@ -416,6 +443,7 @@ import {
   detailQuestions,
 } from "@/api/questions";
 import { message, Modal } from "ant-design-vue";
+import { useStore } from "@/store";
 
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -425,14 +453,18 @@ function getBase64(file: Blob) {
     reader.onerror = (error) => reject(error);
   });
 }
-
+const store = useStore();
+const courseInfo = computed(() => {
+  return store.getCourseInfo;
+});
+const course_id = courseInfo.value.course_id;
 interface FormState {
   name: string;
-  // time_limit: number||;
+  time_limit: any;
   is_auto_correct: boolean;
 }
 const proContent = ref("sdfsdfd");
-const score = ref("");
+const score = ref(100);
 const opi_random = ref("选项不随机");
 const selectContent = ref("");
 const isSelect = ref(1);
@@ -450,9 +482,10 @@ const visible = ref<boolean>(false);
 const visibleTitle = ref<boolean>(false);
 const formState = reactive<FormState>({
   name: "",
+  time_limit: undefined,
   // titleName: "",
   // time_limit:null,
-  // is_auto_correct: true,
+  is_auto_correct: true,
 });
 const rules = {
   name: [
@@ -466,10 +499,9 @@ const rules = {
 };
 const questionsSetList = ref([]);
 const evaOptions = ref<any>([]);
-const id = ref(105);
 function getList() {
   let query = {
-    course_id: 105,
+    course_id: course_id,
   };
   getQuestionsSetList(query)
     .then((res) => {
@@ -489,8 +521,24 @@ function getList() {
     });
   });
 }
+// 测评维度id
 const evaValue = ref<any>();
 const value = ref<any>();
+function handleEvaChange(value: any) {
+  evaValue.value = value;
+  let dimensions = {
+    courseId: course_id,
+    question_dimensions: [
+      {
+        question_id: question_id.value,
+        dimension_id: evaValue.value,
+      },
+    ],
+  };
+  setDimensions(dimensions)
+    .then(() => {})
+    .catch((err) => {});
+}
 const focus = () => {
   console.log("focus");
 };
@@ -555,6 +603,8 @@ const question_set_id = ref();
 // 更新题集
 function updateQueSet(item: any) {
   formState.name = item.name;
+  formState.is_auto_correct = item.is_auto_correct;
+  formState.time_limit = item.time_limit;
   visible.value = true;
   addFlag.value = false;
   question_set_id.value = item.question_set_id;
@@ -572,7 +622,7 @@ const handleOk = () => {
     .then(() => {
       if (addFlag.value) {
         let query = {
-          course_id: 105,
+          course_id: course_id,
         };
         confirmLoading.value = true;
         createQuestionsSet(query, formState)
@@ -621,7 +671,7 @@ function aNewPhase() {
 function newTopic(item) {
   question_set_id.value = item.question_set_id;
   editAreaTitle.value = item.name;
-  message.info("在右侧新增题目");
+  message.info("在右侧编辑题目!");
 }
 function reset() {
   formState.name = "";
@@ -653,13 +703,26 @@ const handlePreview = async (file: {
 // };
 const options = ref<any>([]);
 const addOption = () => {
-  options.value.push({
-    value: "asdfsdf",
-    resource_id: undefined,
-    score: undefined,
-    sort: 0,
-    is_answer: false,
-  });
+  if (isSelect.value == 1) {
+    options.value.push({
+      // name: "",// 选项名称，例如A、B这类，为空则系统自动生成选项
+      value: "asdfsdf",
+      // resource_id: undefined,// 该选项的文件资源ID，与文本内容二选一，优先展示文件资源
+      score: undefined,
+      sort: 0,
+      is_answer: false,
+    });
+  } else {
+    options.value.push({
+      resource_id: undefined,
+      score: undefined,
+      sort: 0,
+      answer: "",
+      is_ignore_case: true,
+      is_include_str: false,
+      // answer_res: undefined,该空的答案文件ID
+    });
+  }
 };
 const delOption = (index) => {
   options.value.splice(index, 1);
@@ -668,18 +731,36 @@ const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {
-  let data = {
-    type: isSelect.value == 1 ? "RADIO" : "FILL_BLANK",
-    content: proContent.value,
-    content_resource_id: [],
-    // "answer": null,
-    answer_key: answerKey.value,
-    score: 35.5,
-    is_partial_score: false,
-    opi_random: opi_random.value ? true : false,
-    opi_select_num: 1,
-    options: options.value,
-  };
+  let data = {};
+  if (isSelect.value == 1) {
+    data = {
+      type: "RADIO",
+      content: proContent.value,
+      content_resource_id: [],
+      // "answer": null,
+      // "answer_res": null,
+      // "answer_key_res": [],
+      answer_key: answerKey.value,
+      score: score.value,
+      is_partial_score: false,
+      opi_random: opi_random.value ? false : true,
+      opi_select_num: 1,
+      options: options.value,
+    };
+  } else {
+    data = {
+      type: "FILL_BLANK",
+      content: proContent.value,
+      content_resource_id: [],
+      // "answer": null,
+      // "answer_res": null,
+      // "answer_key_res": [],
+      answer_key: answerKey.value,
+      score: undefined,
+      is_partial_score: false,
+      blanks: options.value,
+    };
+  }
   let query = {
     question_set_id: question_set_id.value,
   };
@@ -687,6 +768,7 @@ const onSave = (index) => {
     .then((res) => {
       console.log(res.data);
       getList();
+      selectQuestionsSet(question_set_id.value);
       message.success("添加成功");
       saveLoading.value = false;
     })
@@ -696,14 +778,20 @@ const onSave = (index) => {
     });
 };
 const editAreaTitle = ref("");
+const question_id = ref();
 // 选择题目
 function selectQuestions(item) {
+  question_id.value = item.question_id;
   detailQuestions(item.question_id).then((res) => {
     isSelect.value = item.type == "RADIO" ? 1 : 2;
     answerKey.value = res.data.answer_key;
-    opi_random.value = res.data.opi_random;
+    opi_random.value = res.data.opi_random ? "选项随机" : "选项不随机";
     proContent.value = res.data.content;
-    options.value = res.data.options;
+    if (item.type == "RADIO") {
+      options.value = res.data.options;
+    } else {
+      options.value = res.data.blanks;
+    }
     addFlag.value = false;
     question_set_id.value = item.question_set_id;
   });
@@ -739,6 +827,7 @@ getList();
           @include sc(14px, #2065e0);
         }
         .title {
+          @include tbm(1);
           @include sc(14px, #666666);
         }
       }
@@ -760,6 +849,7 @@ getList();
     .eva-des {
       display: flex;
       .des {
+        white-space: nowrap;
         @include sc(0.14rem, rgba(0, 0, 0, 0.85));
       }
       .txarea {

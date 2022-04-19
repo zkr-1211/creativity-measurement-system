@@ -1,4 +1,3 @@
-
 import request from "@/utils/request/v4";
 import qs from "qs";
 
@@ -16,5 +15,13 @@ export function getDimensions(query) {
     url: `/course/testing/dimensions`,
     method: "GET",
     params: query,
+  });
+}
+// 获取测评维度列表
+export function setDimensions(data) {
+  return request({
+    url: `/course/testing/dimensions/questions`,
+    method: "POST",
+    data: data,
   });
 }

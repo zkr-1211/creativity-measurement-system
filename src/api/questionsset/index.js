@@ -13,7 +13,7 @@ export function createQuestionsSet(query, data) {
     url: "/questions/set",
     method: "POST",
     params: query,
-    data: qs.stringify(data),
+    data: data,
   });
 }
 
@@ -21,7 +21,7 @@ export function updateQuestionsSet(questionSetId,data) {
   return request({
     url: "/questions/set/" + questionSetId,
     method: "PUT",
-    data: qs.stringify(data),
+    data: data,
   });
 }
 

@@ -89,7 +89,6 @@ const courseInfo = computed( () => {
   return store.getCourseInfo;
 });
 
-
 function setTheEdit() {
   router.push({
     path: "/evaluation/evaluationset",
@@ -110,7 +109,7 @@ function editProblem() {
   router.push({
     path: "/evaluation/design",
     query: {
-      id: id,
+      id: courseInfo.value.course_id,
     },
   });
 }
