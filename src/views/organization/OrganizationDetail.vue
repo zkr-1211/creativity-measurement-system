@@ -3,7 +3,9 @@
   <div class="body">
     <page-header title="">
       <div class="eva-record-item">
-        <div class="header" />
+        <div class="header">
+        <img src="https://s1.ax1x.com/2022/04/19/LBx4jH.png" alt="">
+        </div>
         <div class="item-info">
           <div class="item-right-top">{{ orgInfo.course_name }}</div>
           <div class="item-right-bottom">
@@ -322,8 +324,13 @@ function cancelTheOpening(item) {
     .header {
       min-width: 72px;
       @include wh(72px, 72px);
-      background: rgba(0, 0, 0, 1);
+      background: rgb(188, 192, 196);
       border-radius: 50%;
+      img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
     }
     .item-info {
       @include faj(none, space-around);

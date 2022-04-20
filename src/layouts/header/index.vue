@@ -82,12 +82,12 @@
         <div class="user-info">
           <div class="user-header">
             <img
-              src=""
+              src="https://s1.ax1x.com/2022/04/20/LsaTcn.png"
               alt=""
             >
           </div>
           <div class="user-name">
-            用户名
+            张克榕
           </div>
         </div>
       </a-dropdown>
@@ -189,6 +189,11 @@ const FullScree = () => {
       @include wh(0.34rem, 0.34rem);
       background: #aad315;
       @include borderRadius(50%);
+      overflow: hidden;
+      img{
+        width: 100%;
+        height: 100%;
+      }
     }
     .user-name {
       margin-left: 0.12rem;
