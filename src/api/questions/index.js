@@ -5,17 +5,18 @@ export function createQuestions(query, data) {
   return request({
     url: "/questions",
     method: "POST",
-    params:query,
-    data:data,
+    params: query,
+    data: data,
   });
 }
 
-// export function updateQuestionsSet(questionSetId) {
-//   return request({
-//     url: "/questions/" + questionSetId,
-//     method: "PUT",
-//   });
-// }
+export function updateQuestions(questionId, data) {
+  return request({
+    url: "/questions/" + questionId,
+    method: "PUT",
+    data: data,
+  });
+}
 
 export function delQuestions(questionId) {
   return request({
@@ -30,4 +31,3 @@ export function detailQuestions(questionId) {
     method: "GET",
   });
 }
-

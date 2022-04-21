@@ -3,12 +3,7 @@
   <div class="body">
     <page-header :title="`${courseInfo.course_name || '未选择课程'}：题集管理`">
       <template #right>
-        <a-button
-          type="primary"
-          :loading="saveLoading"
-          @click="onSave"
-          :disabled="question_set_id == null"
-        >
+        <a-button type="primary" :loading="saveLoading" @click="onSave">
           保存
         </a-button>
         <a-button style="margin-left: 10px"> 取消 </a-button>
@@ -40,7 +35,7 @@
                     v-for="(q, questionsIndex) in questions"
                     :key="q.question_id"
                     class="item"
-                    @click="selectQuestions(q)"
+                    @click="selectQuestions(q,item.question_set_id)"
                   >
                     <div class="item-left">
                       <div class="index">0{{ questionsIndex + 1 }}：</div>
@@ -441,6 +436,7 @@ import {
   createQuestions,
   delQuestions,
   detailQuestions,
+  updateQuestions,
 } from "@/api/questions";
 import { message, Modal } from "ant-design-vue";
 import { useStore } from "@/store";
@@ -731,56 +727,85 @@ const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {
+        selectQuestionsSet(question_set_id.value);
   let data = {};
-  if (isSelect.value == 1) {
-    data = {
-      type: "RADIO",
-      content: proContent.value,
-      content_resource_id: [],
-      // "answer": null,
-      // "answer_res": null,
-      // "answer_key_res": [],
-      answer_key: answerKey.value,
-      score: score.value,
-      is_partial_score: false,
-      opi_random: opi_random.value ? false : true,
-      opi_select_num: 1,
-      options: options.value,
+  if (addFlag.value) {
+    if (isSelect.value == 1) {
+      data = {
+        type: "RADIO",
+        content: proContent.value,
+        content_resource_id: [],
+        // "answer": null,
+        // "answer_res": null,
+        // "answer_key_res": [],
+        answer_key: answerKey.value,
+        score: score.value,
+        is_partial_score: false,
+        opi_random: opi_random.value ? false : true,
+        opi_select_num: 1,
+        options: options.value,
+      };
+    } else {
+      data = {
+        type: "FILL_BLANK",
+        content: proContent.value,
+        content_resource_id: [],
+        // "answer": null,
+        // "answer_res": null,
+        // "answer_key_res": [],
+        answer_key: answerKey.value,
+        score: undefined,
+        is_partial_score: false,
+        blanks: options.value,
+      };
+    }
+    let query = {
+      question_set_id: question_set_id.value,
     };
+    createQuestions(query, data)
+      .then((res) => {
+        console.log(res.data);
+        getList();
+        selectQuestionsSet(question_set_id.value);
+        message.success("添加成功");
+        saveLoading.value = false;
+      })
+      .catch((err) => {
+        message.error("添加失败", err);
+        saveLoading.value = false;
+      });
   } else {
-    data = {
-      type: "FILL_BLANK",
-      content: proContent.value,
-      content_resource_id: [],
-      // "answer": null,
-      // "answer_res": null,
-      // "answer_key_res": [],
-      answer_key: answerKey.value,
-      score: undefined,
-      is_partial_score: false,
-      blanks: options.value,
-    };
+    if (isSelect.value == 1) {
+      data = {
+        content: proContent.value,
+        answer_key: answerKey.value,
+      };
+    } else {
+      data = {
+        "content": proContent.value,
+        "answer_key": answerKey.value,
+        "score": score.value,
+        "is_partial_score": false,
+      };
+    }
+  console.log("item",  question_set_id.value);
+    updateQuestions(question_id.value, data)
+      .then((res) => {
+        // getList();
+        message.success("修改成功");
+        saveLoading.value = false;
+      })
+      .catch((err) => {
+        message.error("修改失败", err);
+        saveLoading.value = false;
+      });
   }
-  let query = {
-    question_set_id: question_set_id.value,
-  };
-  createQuestions(query, data)
-    .then((res) => {
-      console.log(res.data);
-      getList();
-      selectQuestionsSet(question_set_id.value);
-      message.success("添加成功");
-      saveLoading.value = false;
-    })
-    .catch((err) => {
-      message.error("添加失败", err);
-      saveLoading.value = false;
-    });
 };
 const editAreaTitle = ref("");
 const question_id = ref();
 // 选择题目
-function selectQuestions(item) {
+function selectQuestions(item, id) {
+  question_set_id.value = id;
   question_id.value = item.question_id;
   detailQuestions(item.question_id).then((res) => {
     isSelect.value = item.type == "RADIO" ? 1 : 2;
@@ -793,7 +818,6 @@ function selectQuestions(item) {
       options.value = res.data.blanks;
     }
     addFlag.value = false;
-    question_set_id.value = item.question_set_id;
   });
   // proContent.value = item.des;
   // isSelect.value = item.queType;
