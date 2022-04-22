@@ -24,29 +24,29 @@
     </div> -->
     <a-list>
       <a-list-item
-        v-for="(item, index) in 5"
+        v-for="(item, index) in 6"
         :key="index"
       >
         <a-list-item-meta>
           <template #avatar>
             <a-avatar
               size="small"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              src="https://s1.ax1x.com/2022/04/22/LR9is1.png"
             />
           </template>
           <template #title>
             <div class="item-right-top">
-              林东东在
-              <span> 云凤蝶精英小分队</span>
-              新建项目
-              <span>6月迭代</span>
+               张老师在
+              <span> 智力测评</span>
+              新建题集
+              <span>自制力测评</span>
             </div>
           </template>
 
           <template #description>
             <div class="item-right-bottom">
               <span>2 分钟前</span>
-              <span>测评人：闫肃</span>
+              <span>测评人：李华</span>
             </div>
           </template>
         </a-list-item-meta>

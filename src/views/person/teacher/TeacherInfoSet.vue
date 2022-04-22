@@ -150,7 +150,7 @@ export default defineComponent({
     })
     // 个人信息
     const personage = reactive({
-      userName: '张克榕',
+      userName: '张老师',
       sex: '男',
       jobId: '123456',
       ID: '123456',

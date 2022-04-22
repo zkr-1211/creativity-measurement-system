@@ -79,11 +79,12 @@ import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { Modal } from "ant-design-vue";
 import { createVNode } from "vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import { message } from "ant-design-vue";
 
 interface dataType {
   area: string;
   name: string;
-  inCampus: string;
+  area: string;
   time: string;
   increase: boolean;
 }
@@ -126,10 +127,10 @@ const columns = [
   {
     title: "所在校区",
     wareath: 200,
-    dataIndex: "inCampus",
+    dataIndex: "area",
     isEdit: true,
     slots: {
-      customRender: "inCampus",
+      customRender: "area",
     },
   },
   // {
@@ -161,7 +162,7 @@ const columns = [
 //     area: `测评师${i}`,
 //     name: `John Brown${i}`,
 //     phone: `12353434634${i}`,
-//     inCampus: `${i}`,
+//     area: `${i}`,
 //     time: `2017-10-31 23:12:${i}`,
 //     increase: true
 //   })
@@ -224,9 +225,8 @@ const onDelete = (key: any) => {
     cancelText: () => "取消",
     onOk() {
       // 调用删除接口
-      dataSource.value = dataSource.value.filter(
-        (item) => item.area !== key.area
-      );
+      dataSource.value = dataSource.value.filter((item) => item.ID !== key.ID);
+      message.success("删除成功");
     },
     onCancel() {
       console.log("Cancel");
@@ -236,19 +236,20 @@ const onDelete = (key: any) => {
 const addFlag = ref<boolean>(false);
 const handleOk = () => {
   formRef.value
-    .valareaate()
+    .validate()
     .then(() => {
       if (addFlag.value) {
-        // 添加
-      } else {
-        // 编辑
-      }
-      confirmLoading.value = true;
-      setTimeout(() => {
+        confirmLoading.value = true;
         visible.value = false;
         confirmLoading.value = false;
         formRef.value.resetFields();
-      }, 2000);
+        // 添加
+        message.success("添加成功");
+      } else {
+        // 编辑
+        visible.value = false;
+        message.success("编辑成功");
+      }
     })
     .catch((error: ValidateErrorEntity<FormState>) => {
       console.log("error", error);

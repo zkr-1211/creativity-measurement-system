@@ -76,6 +76,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { Modal } from "ant-design-vue";
 import { createVNode } from "vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import { message } from "ant-design-vue";
 
 interface dataType {
   area: string;
@@ -197,19 +198,21 @@ const onDelete = (key: any) => {
 const addFlag = ref<boolean>(false);
 const handleOk = () => {
   formRef.value
-    .valareaate()
+    .validate()
     .then(() => {
       if (addFlag.value) {
         // 添加
-      } else {
-        // 编辑
-      }
-      confirmLoading.value = true;
-      setTimeout(() => {
+            confirmLoading.value = true;
         visible.value = false;
         confirmLoading.value = false;
         formRef.value.resetFields();
-      }, 2000);
+        message.success("添加成功");
+      } else {
+        // 编辑
+        visible.value = false;
+        message.success("编辑成功");
+      }
+  
     })
     .catch((error: ValidateErrorEntity<FormState>) => {
       console.log("error", error);

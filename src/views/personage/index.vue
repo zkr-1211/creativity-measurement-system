@@ -20,6 +20,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
+import { getTasksList } from "@/api/tasks";
 import RecordInfos from "./components/RecordInfos.vue";
 import RecordCard from "./components/RecordCard.vue";
 import { useStore } from "@/store";
@@ -28,10 +29,18 @@ const userInfo = computed(() => {
   return store.getUserInfo;
 });
 const person = reactive({
-  name: "我是学生",
-  avatar: "",
+  name: "张老师",
+  avatar: "https://s1.ax1x.com/2022/04/22/LR9is1.png",
 });
-
+function getList() {
+  let query = {
+    question_set_id: 23,
+    uid: 3956,
+  };
+  getTasksList(query).then((res) => {
+    console.log(res);
+  });
+}
 // 遍历对象形式生成infoList数组
 const infoList = Object.keys(userInfo.value).map((key) => {
   if (key === "name") {
@@ -58,6 +67,7 @@ for (let i = 1; i < 1; i++) {
     title: "创造力测评",
   });
 }
+getList()
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";

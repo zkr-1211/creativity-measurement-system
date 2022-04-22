@@ -142,7 +142,9 @@
                     <div class="name">
                       头像
                     </div>
-                    <div class="header" />
+                    <div class="header">
+                   <img src="https://s1.ax1x.com/2022/04/22/LR9is1.png" alt="">
+  </div>
                     <a-upload
                       v-model:file-list="fileList"
                       class="upload"
@@ -274,7 +276,7 @@ export default defineComponent({
     })
     // 个人信息
     const personage = reactive({
-      userName: '张克榕',
+      userName: '张老师',
       sex: '男',
       sclass: '1',
       stuId: '123456',
@@ -394,6 +396,10 @@ export default defineComponent({
               @include wh(144px, 144px);
               background: rgba(0, 0, 0, 1);
               @include borderRadius(50%);
+              img{
+                @include wh(100%, 100%);
+                @include borderRadius(50%);
+              }
             }
             .upload {
               // margin: 20px auto;

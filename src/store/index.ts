@@ -17,7 +17,7 @@ interface UserState {
 export const useStore = defineStore("store", {
   state: (): UserState => ({
     userInfo: {},
-    token: "7da67a847f9b800ad774064102d0594f892a0148757db01d6bd16f6f9071fc83",
+    token: "24fb80d0c49245437ac65bd0f1746d24e055b38c0aa169d675067fa192060edf",
     collapsed: false,
     courseInfo: {},
     orgInfo: {},
