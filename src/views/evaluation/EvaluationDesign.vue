@@ -373,7 +373,7 @@
                         title="确定删除该选项吗？"
                         ok-text="删除"
                         cancel-text="取消"
-                        @confirm="delOption(optIndex)"
+                        @confirm="delOption(optItem.question_option_id)"
                       >
                         <div class="delete">删除</div>
                       </a-popconfirm>
@@ -437,6 +437,7 @@ import {
   delQuestions,
   detailQuestions,
   updateQuestions,
+  delOptions
 } from "@/api/questions";
 import { message, Modal } from "ant-design-vue";
 import { useStore } from "@/store";
@@ -720,8 +721,17 @@ const addOption = () => {
     });
   }
 };
-const delOption = (index) => {
-  options.value.splice(index, 1);
+const delOption = (question_option_id) => {
+  delOptions(question_option_id)
+    .then((res) => {
+      detailQuestions(question_set_id.value);
+      getList();
+      message.success("删除成功");
+    })
+    .catch((err) => {
+      message.error("删除失败");
+    });
+  // options.value.splice(index, 1);
 };
 const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
@@ -788,7 +798,6 @@ const onSave = (index) => {
         "is_partial_score": false,
       };
     }
-  console.log("item",  question_set_id.value);
     updateQuestions(question_id.value, data)
       .then((res) => {
         // getList();

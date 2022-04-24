@@ -31,3 +31,10 @@ export function detailQuestions(questionId) {
     method: "GET",
   });
 }
+
+export function delOptions(questionOptionId) {
+  return request({
+    url: "/questions/options/" + questionOptionId,
+    method: "DELETE",
+  });
+}

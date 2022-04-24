@@ -30,7 +30,7 @@
             <div class="other-right">
               <div class="select-item">
                 <div class="select-level">
-                  学段：
+                  学校：
                   <a-select
                     ref="select"
                     v-model:value="learningPeriod"
@@ -38,8 +38,7 @@
                     @change="handleChange"
                     style="width: 220px"
                   >
-                    <a-select-option value="1"> 小学 </a-select-option>
-                    <a-select-option value="2"> 初中 </a-select-option>
+                    <a-select-option value="1"> 阳光学院 </a-select-option>
                   </a-select>
                 </div>
                 <!-- <div class="participate-num">
