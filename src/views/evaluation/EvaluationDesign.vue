@@ -35,7 +35,7 @@
                     v-for="(q, questionsIndex) in questions"
                     :key="q.question_id"
                     class="item"
-                    @click="selectQuestions(q,item.question_set_id)"
+                    @click="selectQuestions(q, item.question_set_id)"
                   >
                     <div class="item-left">
                       <div class="index">0{{ questionsIndex + 1 }}：</div>
@@ -431,13 +431,14 @@ import {
   updateQuestionsSet,
   delQuestionsSet,
   detailQuestionsSet,
+  addTesting,
 } from "@/api/questionsset";
 import {
   createQuestions,
   delQuestions,
   detailQuestions,
   updateQuestions,
-  delOptions
+  delOptions,
 } from "@/api/questions";
 import { message, Modal } from "ant-design-vue";
 import { useStore } from "@/store";
@@ -611,9 +612,17 @@ const handleChange = (value: any) => {
   console.log(`selected ${value}`);
   // evaValue.value = value;
 };
+// 添加到测评问卷
+function addTestings(course_id, question_set_id) {
+  let query = {
+    course_id: course_id,
+  };
+  let data = {
+    questionSetId: question_set_id,
+  };
+  addTesting(query, data).then((res) => {});
+}
 const handleOk = () => {
-  console.log("点击了确定");
-
   formRef.value
     .validate()
     .then(() => {
@@ -624,7 +633,8 @@ const handleOk = () => {
         confirmLoading.value = true;
         createQuestionsSet(query, formState)
           .then((res) => {
-            console.log(res.data);
+            question_set_id.value = res.data.question_set_id;
+            addTestings(course_id, question_set_id.value);
             visible.value = false;
             confirmLoading.value = false;
             formRef.value.resetFields();
@@ -737,7 +747,7 @@ const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {
-        selectQuestionsSet(question_set_id.value);
+  selectQuestionsSet(question_set_id.value);
   let data = {};
   if (addFlag.value) {
     if (isSelect.value == 1) {
@@ -792,10 +802,10 @@ const onSave = (index) => {
       };
     } else {
       data = {
-        "content": proContent.value,
-        "answer_key": answerKey.value,
-        "score": score.value,
-        "is_partial_score": false,
+        content: proContent.value,
+        answer_key: answerKey.value,
+        score: score.value,
+        is_partial_score: false,
       };
     }
     updateQuestions(question_id.value, data)

@@ -17,7 +17,7 @@ export function createQuestionsSet(query, data) {
   });
 }
 
-export function updateQuestionsSet(questionSetId,data) {
+export function updateQuestionsSet(questionSetId, data) {
   return request({
     url: "/questions/set/" + questionSetId,
     method: "PUT",
@@ -38,4 +38,12 @@ export function detailQuestionsSet(questionSetId) {
     method: "GET",
   });
 }
-
+// 向测评课程的测评问卷中添加题集
+export function addTesting(query, data) {
+  return request({
+    url: "/course/testing",
+    method: "POST",
+    params: query,
+    data: data,
+  });
+}
