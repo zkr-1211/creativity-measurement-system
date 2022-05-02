@@ -251,7 +251,15 @@
                         class="eva-des"
                         style="display: flex; align-items: center"
                       >
-                        <div class="des">选项1:</div>
+                        <div class="des">选项{{ optIndex + 1 }}:</div>
+                        <div class="txarea" v-if="isSelect == 1">
+                          <a-input
+                            style="margin-left: 10px"
+                            v-model:value="optItem.name"
+                            placeholder="请输入选项名称"
+                            :rows="4"
+                          />
+                        </div>
                         <div class="txarea" v-if="isSelect == 1">
                           <a-input
                             style="margin-left: 10px"
@@ -270,7 +278,22 @@
                           />
                         </div>
                       </div>
-
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          margin-top: 10px;
+                        "
+                      >
+                        <span> 排序值: </span>
+                        <div class="txarea">
+                          <a-input
+                            style="margin-left: 20px"
+                            v-model:value.number="optItem.sort"
+                            placeholder="请输入选项排序值"
+                          />
+                        </div>
+                      </div>
                       <div
                         style="
                           display: flex;
@@ -368,15 +391,8 @@
                           </div> -->
                         <!-- </div> -->
                       </div>
-
-                      <a-popconfirm
-                        title="确定删除该选项吗？"
-                        ok-text="删除"
-                        cancel-text="取消"
-                        @confirm="delOption(optItem.question_option_id)"
-                      >
-                        <div class="delete">删除</div>
-                      </a-popconfirm>
+                      <div class="delete" @click="update(optItem)">保存</div>
+                      <div class="delete" @click="delOption(optItem)">删除</div>
                     </div>
                   </a-col>
                 </a-row>
@@ -439,6 +455,11 @@ import {
   detailQuestions,
   updateQuestions,
   delOptions,
+  updateOptions,
+  addOptions,
+  addBlanks,
+  updateBlanks,
+  delBlanks,
 } from "@/api/questions";
 import { message, Modal } from "ant-design-vue";
 import { useStore } from "@/store";
@@ -712,18 +733,18 @@ const options = ref<any>([]);
 const addOption = () => {
   if (isSelect.value == 1) {
     options.value.push({
-      // name: "",// 选项名称，例如A、B这类，为空则系统自动生成选项
-      value: "asdfsdf",
+      name: "", // 选项名称，例如A、B这类，为空则系统自动生成选项
+      value: "",
       // resource_id: undefined,// 该选项的文件资源ID，与文本内容二选一，优先展示文件资源
       score: undefined,
-      sort: 0,
+      sort: '',
       is_answer: false,
     });
   } else {
     options.value.push({
       resource_id: undefined,
       score: undefined,
-      sort: 0,
+      sort: '',
       answer: "",
       is_ignore_case: true,
       is_include_str: false,
@@ -731,18 +752,73 @@ const addOption = () => {
     });
   }
 };
-const delOption = (question_option_id) => {
-  delOptions(question_option_id)
-    .then((res) => {
-      detailQuestions(question_set_id.value);
-      getList();
-      message.success("删除成功");
-    })
-    .catch((err) => {
-      message.error("删除失败");
-    });
+const delOption = (optItem) => {
+  let item = {
+    type: isSelect.value == 1 ? "RADIO" : "FILL_BLANK",
+  };
+  if (isSelect.value == 1) {
+    if (optItem.question_option_id) {
+      delOptions(optItem.question_option_id)
+        .then((res) => {
+          detailQues(item, question_id.value);
+          getList();
+          message.success("删除成功");
+        })
+        .catch((err) => {
+          message.error("删除失败");
+        });
+    } else {
+      options.value.splice(options.value.indexOf(optItem), 1);
+    }
+  } else {
+    if (optItem.question_blank_id) {
+      delBlanks(optItem.question_blank_id)
+        .then((res) => {
+          detailQues(item, question_id.value);
+          getList();
+          message.success("删除成功");
+        })
+        .catch((err) => {
+          message.error("删除失败");
+        });
+    } else {
+      options.value.splice(options.value.indexOf(optItem), 1);
+    }
+  }
+
   // options.value.splice(index, 1);
 };
+async function update(optItem) {
+  console.log(optItem, "===optItem");
+  let item = {
+    type: isSelect.value == 1 ? "RADIO" : "FILL_BLANK",
+  };
+  let data = optItem;
+  if (optItem.question_option_id || optItem.question_blank_id) {
+    if (isSelect.value == 1) {
+      await updateOptions(optItem.question_option_id, data);
+    } else {
+      await updateBlanks(optItem.question_blank_id, data);
+    }
+    detailQues(item, question_id.value);
+    message.success("更新成功");
+  } else {
+    let query = {
+      question_id: question_id.value,
+    };
+    try {
+      if (isSelect.value == 1) {
+        await addOptions(query, data);
+      } else {
+        await addBlanks(query, data);
+      }
+      detailQues(item, question_id.value);
+      message.success("添加成功");
+    } catch (error) {
+      message.error(`${error}`);
+    }
+  }
+}
 const answerKey = ref<any>("sdfsdfdsfsdf");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
@@ -826,23 +902,26 @@ const question_id = ref();
 function selectQuestions(item, id) {
   question_set_id.value = id;
   question_id.value = item.question_id;
-  detailQuestions(item.question_id).then((res) => {
+  detailQues(item, item.question_id);
+}
+function detailQues(item, id) {
+  detailQuestions(id).then((res) => {
     isSelect.value = item.type == "RADIO" ? 1 : 2;
     answerKey.value = res.data.answer_key;
     opi_random.value = res.data.opi_random ? "选项随机" : "选项不随机";
     proContent.value = res.data.content;
     if (item.type == "RADIO") {
-      options.value = res.data.options;
+      options.value = res.data.options || [];
     } else {
-      options.value = res.data.blanks;
+      options.value = res.data.blanks || [];
     }
     addFlag.value = false;
   });
-  // proContent.value = item.des;
-  // isSelect.value = item.queType;
-  // options.value = item.questionsItem;
-  // editAreaTitle.value = item.title;
 }
+// proContent.value = item.des;
+// isSelect.value = item.queType;
+// options.value = item.questionsItem;
+// editAreaTitle.value = item.title;
 getList();
 </script>
 <style lang="scss" scoped>
