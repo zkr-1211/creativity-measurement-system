@@ -11,6 +11,7 @@ export const frameIn: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "BasicLayout" */ "@/layouts/BasicLayout.vue"),
     meta: {
       title: "首页",
+      auth: true,
     },
     children: [
       {
@@ -34,6 +35,7 @@ export const frameIn: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "BasicLayout" */ "@/layouts/BasicLayout.vue"),
     meta: {
       title: "机构",
+      auth: true,
     },
     children: [
       {

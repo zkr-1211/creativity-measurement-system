@@ -16,7 +16,7 @@
     </div>
     <div class="button">
       <a-button type="primary" @click="toSet"> 编辑设置 </a-button>
-      <a-button class="dbutton"> 删除档案 </a-button>
+      <!-- <a-button class="dbutton"> 删除档案 </a-button> -->
     </div>
   </a-card>
 </template>

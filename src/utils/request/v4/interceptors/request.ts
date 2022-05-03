@@ -1,6 +1,5 @@
-import { useStore } from "@/store";
 import { AxiosRequestConfig } from "axios";
-const store = useStore();
+import { useStore } from "@/store";
 export default (axios) => {
   axios.interceptors.request.use(
     (config) => {
@@ -18,6 +17,7 @@ export default (axios) => {
           config.baseURL = "";
           break;
       }
+      const store = useStore();
       const token = store.getToken;
       const appSource = import.meta.env.VITE_APP_SOURCE || "shu.ke";
       if (appSource) {

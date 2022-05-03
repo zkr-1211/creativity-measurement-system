@@ -5,7 +5,7 @@
         <img :src="person.avatar" alt="" />
       </div>
       <div class="name">
-        {{ person.name }}
+        {{ person.realname }}
       </div>
     </div>
     <div class="infos">
@@ -16,7 +16,7 @@
     </div>
     <div class="button">
       <a-button type="primary" @click="toSet"> 编辑设置 </a-button>
-      <a-button class="dbutton"> 删除档案 </a-button>
+      <!-- <a-button class="dbutton"> 删除档案 </a-button> -->
     </div>
   </a-card>
 </template>
@@ -25,31 +25,11 @@
 import { onMounted, ref, PropType } from "vue";
 import { useRouter } from "vue-router";
 interface propsType {
-  name: string;
+  realname: string;
   avatar: string;
+  phone: string;
+  external_id: string;
 }
-const infoList = [
-  {
-    label: "姓名",
-    name: "张老师",
-  },
-  {
-    label: "年龄",
-    name: "23",
-  },
-  {
-    label: "性别",
-    name: "男",
-  },
-  {
-    label: "学校",
-    name: "阳光学院",
-  },
-  {
-    label: "手机号",
-    name: "15846255645",
-  },
-];
 const props = defineProps({
   person: {
     type: Object as PropType<propsType>,
@@ -64,6 +44,20 @@ const props = defineProps({
     default: () => null,
   },
 });
+const infoList = [
+  {
+    label: "学号",
+    name: props.person.external_id || "XXXXXX",
+  },
+  {
+    label: "学校",
+    name: "阳光学院",
+  },
+  {
+    label: "手机号",
+    name: props.person.phone || "XXXXXXXXXXX",
+  },
+];
 const loading = ref<boolean>(true);
 onMounted(() => {
   setTimeout(() => {

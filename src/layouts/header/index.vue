@@ -1,10 +1,7 @@
 <template>
   <a-layout-header>
     <div class="left">
-      <div
-        style="margin-right: 24px; cursor: pointer;"
-        @click="change"
-      >
+      <div style="margin-right: 24px; cursor: pointer" @click="change">
         <MenuFoldOutlined v-if="!collapsed" />
         <MenuUnfoldOutlined v-else />
       </div>
@@ -16,10 +13,7 @@
           :to="{ path: item.path }"
         >
           {{ item.meta.title }}
-          <template
-            v-if="item.children && item.children.length > 1"
-            #overlay
-          >
+          <template v-if="item.children && item.children.length > 1" #overlay>
             <a-menu>
               <a-menu-item
                 v-for="each in item.children"
@@ -82,12 +76,14 @@
         <div class="user-info">
           <div class="user-header">
             <img
-              src="https://s1.ax1x.com/2022/04/20/LsaTcn.png"
+              :src="
+                userInfo.avatar || 'https://s1.ax1x.com/2022/04/20/LsaTcn.png'
+              "
               alt=""
-            >
+            />
           </div>
           <div class="user-name">
-            张老师
+            {{ userInfo.realname || "张老师" }}
           </div>
         </div>
       </a-dropdown>
@@ -100,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import Tabs from '@/components/tabs/index.vue'
+import Tabs from "@/components/tabs/index.vue";
 
 import {
   ZoomInOutlined,
@@ -110,38 +106,45 @@ import {
   UserOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
-  MenuUnfoldOutlined
-} from '@ant-design/icons-vue'
-import { useFullscreen } from '@vueuse/core'
-import { useRoute } from 'vue-router'
-import { useStore } from '@/store'
-import { computed } from 'vue'
-import { ref } from 'vue'
-const { enter, exit } = useFullscreen()
-const route = useRoute()
-let matched:any = []
+  MenuUnfoldOutlined,
+} from "@ant-design/icons-vue";
+import { useFullscreen } from "@vueuse/core";
+import { useRoute } from "vue-router";
+import { useStore } from "@/store";
+import { computed } from "vue";
+import { ref } from "vue";
+const { enter, exit } = useFullscreen();
+const route = useRoute();
+let matched: any = [];
 matched = computed(() => {
-  let arr = route.matched
-  if (arr[0].path !== '/') {
-    arr = route.matched
+  let arr = route.matched;
+  if (arr[0].path !== "/") {
+    arr = route.matched;
   }
-  return arr.filter(item => item.meta?.title)
-})
+  return arr.filter((item) => item.meta?.title);
+});
 // console.log('matched', matched)
 
-const store = useStore()
+const store = useStore();
 const collapsed = computed(() => {
-  return store.getCollapsed
-})
+  return store.getCollapsed;
+});
+interface userInfo {
+  realname: string;
+  avatar: string;
+}
+const userInfo: any = computed(() => {
+  return store.getUserInfo;
+});
 const change = () => {
-  store.collapsed = !store.collapsed
-}
-const isFullScree = ref(false)
+  store.collapsed = !store.collapsed;
+};
+const isFullScree = ref(false);
 const FullScree = () => {
-  !isFullScree.value && enter()
-  isFullScree.value && exit()
-  isFullScree.value = !isFullScree.value
-}
+  !isFullScree.value && enter();
+  isFullScree.value && exit();
+  isFullScree.value = !isFullScree.value;
+};
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -170,7 +173,7 @@ const FullScree = () => {
 }
 .left {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .user {
   @include faj;
@@ -190,7 +193,7 @@ const FullScree = () => {
       background: #aad315;
       @include borderRadius(50%);
       overflow: hidden;
-      img{
+      img {
         width: 100%;
         height: 100%;
       }
