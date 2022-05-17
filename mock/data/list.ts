@@ -19,9 +19,9 @@ function administrator():dataType[] {
   return Mock.mock({
     'list|25': [{
       id: '@increment(1)',
-      ID: '@natural(300,1000)',
+      ID: '@natural(300,100)',
       name: '@ctitle()',
-      createNum: '@integer(10,500)',
+      createNum: '@integer(10,50)',
       phone: '@natural(30,100)',
       time: '@date()',
       increase: '@boolean'

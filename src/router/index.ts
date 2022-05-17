@@ -42,8 +42,7 @@ router.beforeEach((to, from, next) => {
   // 这里暂时将cookie里是否存有token作为验证是否登录的条件
   // 请根据自身业务需要修改
   const token =
-    util.cookies.getAll()[import.meta.env.VITE_APP_TOKEN_KEY] ||
-    "43b1dd78675cd6f9f7ff9b80dd54fe23a1aee0195200e842069980647242452f";
+    util.cookies.getAll()[import.meta.env.VITE_APP_TOKEN_KEY]
   next();
   if (token && token !== "undefined") {
     next();

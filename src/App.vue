@@ -14,9 +14,10 @@ const store = useStore();
 if (util.cookies.getAll()[import.meta.env.VITE_APP_TOKEN_KEY]) {
   GetDetails()
     .then(async (res) => {
-      util.cookies.set("uuid", res[0].id);
+      console.log('res===',res.data.userinfo);
+      util.cookies.set("uuid", res.data.userinfo.uid);
       // 设置 pinia 用户信息
-      await store.setUserInfo(res[0]);
+      await store.setUserInfo(res.data.userinfo);
     })
     .catch((err) => {
       console.log("err:", err);

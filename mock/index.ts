@@ -16,7 +16,7 @@ export default [
           "list|10": [
             {
               title: "@name",
-              num: "@natural(1,1000)",
+              num: "@natural(1,100)",
               percent: "@natural(1,100)",
             },
           ],
@@ -35,25 +35,25 @@ export default [
           list: [
             {
               title: "@name",
-              count: "@natural(1,10000)",
+              count: "@natural(1,100)",
               up: "@natural(1,50)",
               down: "@natural(1,50)",
               day: "@natural(1,250)",
             },
             {
               title: "@name",
-              count: "@natural(1,10000)",
-              "data|20": ["@natural(1,1000)"],
+              count: "@natural(1,100)",
+              "data|20": ["@natural(1,10)"],
               day: "@natural(1,250)",
             },
             {
               title: "@name",
-              count: "@natural(1,10000)",
-              "data|20": ["@natural(1,1000)"],
+              count: "@natural(1,100)",
+              "data|20": ["@natural(1,100)"],
             },
             {
               title: "@name",
-              count: "@natural(1,10000)",
+              count: "@natural(1,100)",
               percent: "@natural(50,100)",
             },
           ],
@@ -88,7 +88,7 @@ export default [
           list: [
             {
               data: {
-                "datax|12": ["@natural(200,2000)"],
+                "datax|12": ["@natural(20,200)"],
                 "datay|12": ["@natural(1,12)月"],
               },
             },
@@ -96,7 +96,7 @@ export default [
               "list|7": [
                 {
                   title: "@name",
-                  conut: "@natural(500,10000)",
+                  conut: "@natural(50,100)",
                 },
               ],
             },

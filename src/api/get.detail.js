@@ -1,10 +1,9 @@
 import request from "@/utils/request/v4";
 
-export function GetDetails (data) {
+export function GetDetails () {
   return request({
-    url: '/api/get-details',
-    method: 'post',
-    data,
+    url: 'auth/v2/users/info',
+    method: 'GET',
     baseURL: 'https://apis-dev.shukeapp.net'
   })
 }

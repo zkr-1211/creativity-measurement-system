@@ -482,7 +482,7 @@ interface FormState {
   time_limit: any;
   is_auto_correct: boolean;
 }
-const proContent = ref("sdfsdfd");
+const proContent = ref("");
 const score = ref(100);
 const opi_random = ref("选项不随机");
 const selectContent = ref("");
@@ -819,7 +819,7 @@ async function update(optItem) {
     }
   }
 }
-const answerKey = ref<any>("sdfsdfdsfsdf");
+const answerKey = ref<any>("");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {

@@ -23,10 +23,7 @@
       </div>
     </div> -->
     <a-list>
-      <a-list-item
-        v-for="(item, index) in 6"
-        :key="index"
-      >
+      <a-list-item v-for="(item, index) in 6" :key="index">
         <a-list-item-meta>
           <template #avatar>
             <a-avatar
@@ -36,7 +33,7 @@
           </template>
           <template #title>
             <div class="item-right-top">
-               张老师在
+              {{ userInfo.realname }}在
               <span> 智力测评</span>
               新建题集
               <span>自制力测评</span>
@@ -56,33 +53,41 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
+import { onMounted, defineComponent } from "vue";
+import { useStore } from "@/store";
+
 export default defineComponent({
-  name: 'RecordList',
+  name: "RecordList",
   components: {},
   setup() {
-    onMounted(() => {})
-    return {}
-  }
-})
+    const store = useStore();
+    const userInfo = computed(() => {
+      return store.getUserInfo;
+    });
+    onMounted(() => {});
+    return {
+      userInfo
+    };
+  },
+});
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
-     .item-right-top {
-        span {
-          color: #3fa4ed;
-        }
-      }
-      .item-right-bottom {
-        span {
-          @include sc(14px, rgba(0, 0, 0, 0.25));
-          &:nth-of-type(2) {
-            margin-left: 30px;
-          }
-        }
-        span {
-        }
-      }
+.item-right-top {
+  span {
+    color: #3fa4ed;
+  }
+}
+.item-right-bottom {
+  span {
+    @include sc(14px, rgba(0, 0, 0, 0.25));
+    &:nth-of-type(2) {
+      margin-left: 30px;
+    }
+  }
+  span {
+  }
+}
 .eva-record {
   padding-left: 10px;
   overflow: auto;

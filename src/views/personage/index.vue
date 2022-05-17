@@ -9,7 +9,7 @@
         :xl="7"
         :style="{ marginBottom: '24px' }"
       >
-        <RecordInfos :person="person" :info-list="infoList" is-stu />
+        <RecordInfos :person="userInfo" :info-list="infoList" is-stu />
       </a-col>
       <a-col :xs="24" :sm="24" :md="24" :xl="17">
         <RecordCard />

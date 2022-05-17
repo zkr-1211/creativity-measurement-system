@@ -29,6 +29,7 @@ interface propsType {
   avatar: string;
   phone: string;
   external_id: string;
+  school_name: string;
 }
 const props = defineProps({
   person: {
@@ -51,7 +52,7 @@ const infoList = [
   },
   {
     label: "学校",
-    name: "阳光学院",
+    name: props.person.school_name || "XX学院",
   },
   {
     label: "手机号",

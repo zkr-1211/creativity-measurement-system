@@ -67,7 +67,7 @@
               <UserOutlined />
               个人信息
             </a-menu-item>
-            <a-menu-item key="2">
+            <a-menu-item key="2" @click="loginOut">
               <LogoutOutlined />
               退出登入
             </a-menu-item>
@@ -144,6 +144,11 @@ const FullScree = () => {
   !isFullScree.value && enter();
   isFullScree.value && exit();
   isFullScree.value = !isFullScree.value;
+};
+const loginOut = () => {
+  window.location.href = `${
+    import.meta.env.VITE_APP_SSO_CENTER
+  }`;
 };
 </script>
 <style lang="scss" scoped>

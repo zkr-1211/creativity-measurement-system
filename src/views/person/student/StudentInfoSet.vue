@@ -2,24 +2,14 @@
   <div class="body">
     <div class="content">
       <div class="left">
-        <a-menu
-          v-model:selectedKeys="selectedKeys"
-          :mode="mode"
-          :theme="theme"
-        >
-          <a-menu-item key="1">
-            基本设置
-          </a-menu-item>
-          <a-menu-item key="2">
-            监护人信息
-          </a-menu-item>
+        <a-menu v-model:selectedKeys="selectedKeys" :mode="mode" :theme="theme">
+          <a-menu-item key="1"> 基本设置 </a-menu-item>
+          <a-menu-item key="2"> 监护人信息 </a-menu-item>
         </a-menu>
       </div>
       <div class="right">
         <template v-if="selectedKeys[0] === '1'">
-          <div class="title">
-            基本设置
-          </div>
+          <div class="title">基本设置</div>
           <div class="infos">
             <a-row :gutter="24">
               <a-col
@@ -31,20 +21,16 @@
               >
                 <div class="center">
                   <div class="eva-name">
-                    <div class="name">
-                      姓名
-                    </div>
+                    <div class="name">姓名</div>
                     <div class="input">
                       <a-input
-                        v-model:value.trim="userName"
+                        v-model:value.trim="userInfo.realname"
                         placeholder="请输入姓名"
                       />
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      性别
-                    </div>
+                    <div class="name">性别</div>
                     <div class="input">
                       <a-select
                         ref="select"
@@ -53,16 +39,12 @@
                         @focus="focus"
                         @change="handleChangeState"
                       >
-                        <a-select-option value="jack">
-                          Jack
-                        </a-select-option>
+                        <a-select-option value=""> </a-select-option>
                       </a-select>
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      班级
-                    </div>
+                    <div class="name">班级</div>
                     <div class="input">
                       <a-input
                         v-model:value.trim="sclass"
@@ -71,20 +53,16 @@
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      学号
-                    </div>
+                    <div class="name">学号</div>
                     <div class="input">
                       <a-input
-                        v-model:value.trim="stuId"
+                        v-model:value.trim="userInfo.external_id"
                         placeholder="请输入学号"
                       />
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      身份证
-                    </div>
+                    <div class="name">身份证</div>
                     <div class="input">
                       <a-input
                         v-model:value.trim="ID"
@@ -93,20 +71,16 @@
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      手机号
-                    </div>
+                    <div class="name">手机号</div>
                     <div class="input">
                       <a-input
-                        v-model:value.trim="phoneNum"
+                        v-model:value.trim="userInfo.phone"
                         placeholder="请输入手机号"
                       />
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      所在省市
-                    </div>
+                    <div class="name">所在省市</div>
                     <div class="region">
                       <a-cascader
                         v-model:value="value"
@@ -120,13 +94,8 @@
                       />
                     </div>
                   </div>
-                  <div
-                    class="button"
-                    @click="updateInfo"
-                  >
-                    <a-button type="primary">
-                      更新基本信息
-                    </a-button>
+                  <div class="button" @click="updateInfo">
+                    <a-button type="primary"> 更新基本信息 </a-button>
                   </div>
                 </div>
               </a-col>
@@ -139,12 +108,10 @@
               >
                 <div class="r-r">
                   <div class="header-info">
-                    <div class="name">
-                      头像
-                    </div>
+                    <div class="name">头像</div>
                     <div class="header">
-                   <img src="https://s1.ax1x.com/2022/04/22/LR9is1.png" alt="">
-  </div>
+                      <img :src="userInfo.avatar" alt="" />
+                    </div>
                     <a-upload
                       v-model:file-list="fileList"
                       class="upload"
@@ -165,9 +132,7 @@
           </div>
         </template>
         <template v-else-if="selectedKeys[0] === '2'">
-          <div class="title">
-            监护人信息
-          </div>
+          <div class="title">监护人信息</div>
           <div class="infos">
             <a-row :gutter="24">
               <a-col
@@ -179,9 +144,7 @@
               >
                 <div class="center">
                   <div class="eva-name">
-                    <div class="name">
-                      姓名
-                    </div>
+                    <div class="name">姓名</div>
                     <div class="input">
                       <a-input
                         v-model:value.trim="guardianName"
@@ -190,9 +153,7 @@
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      性别
-                    </div>
+                    <div class="name">性别</div>
                     <div class="input">
                       <a-select
                         ref="select"
@@ -201,16 +162,12 @@
                         @focus="focus"
                         @change="handleChangeState"
                       >
-                        <a-select-option value="jack">
-                          Jack
-                        </a-select-option>
+                        <a-select-option value=""> </a-select-option>
                       </a-select>
                     </div>
                   </div>
                   <div class="eva-name">
-                    <div class="name">
-                      手机号
-                    </div>
+                    <div class="name">手机号</div>
                     <div class="input">
                       <a-input
                         v-model:value.trim="guardianPhoneNum"
@@ -219,9 +176,7 @@
                     </div>
                   </div>
                   <div class="save">
-                    <a-button type="primary">
-                      保存
-                    </a-button>
+                    <a-button type="primary"> 保存 </a-button>
                   </div>
                 </div>
               </a-col>
@@ -234,10 +189,10 @@
               >
                 <div class="r-r">
                   <div class="header-info">
-                    <div class="name">
-                      头像
+                    <div class="name">头像</div>
+                    <div class="header">
+                      <img :src="userInfo.avatar" alt="" />
                     </div>
-                    <div class="header" />
                   </div>
                 </div>
               </a-col>
@@ -250,11 +205,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
-import { UploadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
-import map from '@/assets/js/map'
-
+import { defineComponent, reactive, toRefs, ref } from "vue";
+import { UploadOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
+import map from "@/assets/js/map";
+import { useStore } from "@/store";
 interface Option {
   code: string;
   value: string;
@@ -263,67 +218,72 @@ interface Option {
   children?: Option[];
   [key: string]: any;
 }
-const options: Option[] = map
+const options: Option[] = map;
 export default defineComponent({
   components: {
-    UploadOutlined
+    UploadOutlined,
   },
+
   setup() {
     const stateMenu = reactive({
-      mode: 'inline',
-      theme: 'light',
-      selectedKeys: ['1']
-    })
+      mode: "inline",
+      theme: "light",
+      selectedKeys: ["1"],
+    });
+    const store = useStore();
+    const userInfo = computed(() => {
+      return store.getUserInfo;
+    });
     // 个人信息
     const personage = reactive({
-      userName: '张老师',
-      sex: '男',
-      sclass: '1',
-      stuId: '123456',
-      ID: '123456',
-      phoneNum: '123456',
+      userName: "张老师",
+      sex: "男",
+      sclass: "1",
+      stuId: "123456",
+      ID: "123456",
+      phoneNum: "123456",
       // 监护人信息
-      guardianName: '阿斯顿',
-      guardiansex: '女',
-      guardianPhoneNum: '1254788'
-    })
+      guardianName: "阿斯顿",
+      guardiansex: "女",
+      guardianPhoneNum: "1254788",
+    });
     // 测评名称
-    const evaName = ref('')
+    const evaName = ref("");
 
     // 测评介绍
-    const evaDes = ref('')
+    const evaDes = ref("");
 
     // 上传文件
-    const fileList = ref([])
+    const fileList = ref([]);
     const handleChangeFile = (infoFile: {
       file: { status: string; name: any };
       fileList: any;
     }) => {
-      if (infoFile.file.status !== 'uploading') {
-        console.log(infoFile.file, infoFile.fileList)
+      if (infoFile.file.status !== "uploading") {
+        console.log(infoFile.file, infoFile.fileList);
       }
 
-      if (infoFile.file.status === 'done') {
-        message.success(`${infoFile.file.name} file uploaded successfully`)
-      } else if (infoFile.file.status === 'error') {
-        message.error(`${infoFile.file.name} file upload failed.`)
+      if (infoFile.file.status === "done") {
+        message.success(`${infoFile.file.name} file uploaded successfully`);
+      } else if (infoFile.file.status === "error") {
+        message.error(`${infoFile.file.name} file upload failed.`);
       }
-    }
+    };
     // 更新基本信息
     const updateInfo = () => {
       const params = {
         evaName: evaName.value,
-        evaDes: evaDes.value
-      }
-      console.log(params)
-    }
+        evaDes: evaDes.value,
+      };
+      console.log(params);
+    };
     const focus = () => {
-      console.log('focus')
-    }
+      console.log("focus");
+    };
 
     const handleChangeState = (value: any) => {
-      console.log(`selected ${value}`)
-    }
+      console.log(`selected ${value}`);
+    };
     // 表格
     return {
       ...toRefs(stateMenu),
@@ -334,10 +294,11 @@ export default defineComponent({
       focus,
       handleChangeState,
       value: ref<string[]>([]),
-      options
-    }
-  }
-})
+      options,
+      userInfo,
+    };
+  },
+});
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/mixin";
@@ -396,7 +357,7 @@ export default defineComponent({
               @include wh(144px, 144px);
               background: rgba(0, 0, 0, 1);
               @include borderRadius(50%);
-              img{
+              img {
                 @include wh(100%, 100%);
                 @include borderRadius(50%);
               }
