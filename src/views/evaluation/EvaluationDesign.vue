@@ -582,7 +582,7 @@ function detQueSet(id: number) {
           message.success("删除成功");
         })
         .catch((err) => {
-          message.error("删除失败");
+          message.error(`${err}`);
         });
     },
     onCancel() {
@@ -609,7 +609,7 @@ function delQue(id: number) {
           message.success("删除成功");
         })
         .catch((err) => {
-          message.error("删除失败");
+          message.error(`${err}`);
         });
     },
     onCancel() {
@@ -697,6 +697,10 @@ function aNewPhase() {
 }
 // 新建题目
 function newTopic(item) {
+  proContent.value = "";
+  answerKey.value = "";
+  options.value = [];
+  addFlag.value = true;
   question_set_id.value = item.question_set_id;
   editAreaTitle.value = item.name;
   message.info("在右侧编辑题目!");
@@ -737,14 +741,14 @@ const addOption = () => {
       value: "",
       // resource_id: undefined,// 该选项的文件资源ID，与文本内容二选一，优先展示文件资源
       score: undefined,
-      sort: '',
+      sort: "",
       is_answer: false,
     });
   } else {
     options.value.push({
       resource_id: undefined,
       score: undefined,
-      sort: '',
+      sort: "",
       answer: "",
       is_ignore_case: true,
       is_include_str: false,
@@ -765,7 +769,7 @@ const delOption = (optItem) => {
           message.success("删除成功");
         })
         .catch((err) => {
-          message.error("删除失败");
+          message.error(`${err}`);
         });
     } else {
       options.value.splice(options.value.indexOf(optItem), 1);
@@ -779,7 +783,7 @@ const delOption = (optItem) => {
           message.success("删除成功");
         })
         .catch((err) => {
-          message.error("删除失败");
+          message.error(`${err}`);
         });
     } else {
       options.value.splice(options.value.indexOf(optItem), 1);
@@ -823,7 +827,6 @@ const answerKey = ref<any>("");
 const saveLoading = ref(false);
 const { proxy }: any = getCurrentInstance();
 const onSave = (index) => {
-  selectQuestionsSet(question_set_id.value);
   let data = {};
   if (addFlag.value) {
     if (isSelect.value == 1) {
@@ -867,7 +870,7 @@ const onSave = (index) => {
         saveLoading.value = false;
       })
       .catch((err) => {
-        message.error("添加失败", err);
+        message.error(`${err}`);
         saveLoading.value = false;
       });
   } else {
@@ -889,9 +892,10 @@ const onSave = (index) => {
         // getList();
         message.success("修改成功");
         saveLoading.value = false;
+        selectQuestionsSet(question_set_id.value);
       })
       .catch((err) => {
-        message.error("修改失败", err);
+        message.error(`${err}`);
         saveLoading.value = false;
       });
   }
@@ -902,6 +906,7 @@ const question_id = ref();
 function selectQuestions(item, id) {
   question_set_id.value = id;
   question_id.value = item.question_id;
+  addFlag.value = false;
   detailQues(item, item.question_id);
 }
 function detailQues(item, id) {

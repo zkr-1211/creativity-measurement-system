@@ -15,7 +15,7 @@
         </div>
       </div>
       <template #right>
-        <a-button type="primary" @click="setTheEdit"> 关闭测评 </a-button>
+        <a-button type="primary" @click="closeEva"> 关闭测评 </a-button>
       </template>
     </page-header>
     <div class="content">
@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts" setup>
+import { message } from "ant-design-vue";
 import { useStore } from "@/store";
 const router = useRouter();
 const route = useRoute();
@@ -69,9 +70,10 @@ const infoList = ref([
     footerDes: "今年新增123",
   },
 ])
-function setTheEdit() {
-  router.push({
-    path: "/evaluation/evaluationset",
+async function closeEva() {
+  message.success("关闭成功");
+  router.replace({
+    path: "/organization/detail",
     query: {
       id: id,
     },

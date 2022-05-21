@@ -16,7 +16,10 @@
         </div>
       </div>
       <template #right>
-        <a-button type="primary" @click="setTheEdit"> 设置编辑 </a-button>
+        <a-button type="primary" @click="setTheEdit" style="margin-right: 20px">
+          设置编辑
+        </a-button>
+        <a-button type="primary" @click="closeEva"> 删除测评 </a-button>
       </template>
     </page-header>
     <div class="content">
@@ -82,6 +85,8 @@
 </template>
 
 <script lang="ts" setup>
+import { message, Modal } from "ant-design-vue";
+import { deleteCourse } from "@/api/course";
 import { useStore } from "@/store";
 const router = useRouter();
 const handleChange = () => {};
@@ -95,6 +100,30 @@ const courseInfo = computed(() => {
   return store.getCourseInfo;
 });
 
+async function closeEva() {
+  Modal.confirm({
+    title: () => "你确定删除该测评吗？",
+    content: () => "删除后不可撤回",
+    okText: () => "确定",
+    okType: "danger",
+    cancelText: () => "取消",
+    onOk() {
+      deleteCourse(courseInfo.value.course_id).then((res) => {
+        message.success("删除成功");
+        router
+          .replace({
+            path: "/evaluation/allevaluation",
+          })
+          .catch((err) => {
+            message.error(err);
+          });
+      });
+    },
+    onCancel() {
+      console.log("Cancel");
+    },
+  });
+}
 function setTheEdit() {
   router.push({
     path: "/evaluation/evaluationset",
@@ -172,7 +201,7 @@ onMounted(() => {
     @include wh(152px, 72px);
     background: rgba(0, 0, 0, 1);
     border: #bbbbbb solid 2px;
-    img{
+    img {
       width: 100%;
       height: 100%;
     }

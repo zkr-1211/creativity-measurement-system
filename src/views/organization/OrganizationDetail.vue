@@ -203,7 +203,6 @@ import PageHeader from "@/components/page-header/index.vue";
 import RecordList from "@/components/record-list/index.vue";
 import { useRouter } from "vue-router";
 import { message, Modal } from "ant-design-vue";
-import { func } from "vue-types";
 import { useStore } from "@/store";
 const store = useStore();
 const orgInfo = computed(() => {
