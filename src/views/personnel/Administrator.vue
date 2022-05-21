@@ -318,6 +318,8 @@ const handleOk = () => {
             getList();
           })
           .catch((err) => {
+            visible.value = false;
+            confirmLoading.value = false;
             message.error(err.message);
           });
         // 添加
@@ -345,6 +347,8 @@ const handleOk = () => {
             getList();
           })
           .catch((err) => {
+            visible.value = false;
+            confirmLoading.value = false;
             message.error(err.message);
           });
         // 编辑
